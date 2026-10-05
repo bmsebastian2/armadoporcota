@@ -360,6 +360,62 @@
       background: var(--ambar)
     }
 
+    /* Ficha fijada por click o tap: se puede clickear, con link a la demo y cierre. */
+    .ficha-hero.fijada {
+      width: 244px;
+      pointer-events: auto
+    }
+
+    .ficha-hero.fijada .ficha-cab {
+      padding-right: 22px
+    }
+
+    .ficha-link,
+    .ficha-cerrar {
+      display: none
+    }
+
+    .ficha-hero.fijada .ficha-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--verde);
+      font-size: 14px;
+      font-weight: 550;
+      text-decoration: none
+    }
+
+    .ficha-link:hover {
+      text-decoration: underline
+    }
+
+    .ficha-hero.fijada .ficha-cerrar {
+      display: block;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      border: 0;
+      border-radius: 4px;
+      background: none;
+      color: var(--suave);
+      font: inherit;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer
+    }
+
+    .ficha-cerrar:hover {
+      color: var(--papel)
+    }
+
+    .ficha-link:focus-visible,
+    .ficha-cerrar:focus-visible {
+      outline: 2px solid var(--verde);
+      outline-offset: 2px
+    }
+
     @media (hover: none), (max-width: 900px) {
       .ficha-hero,
       .ficha-hero.abajo {
@@ -380,6 +436,12 @@
 
       .ficha-hero:not(.con-unidad) .ficha-datos {
         display: none
+      }
+
+      /* Ancla del botón de cerrar en la tarjeta fija. */
+      #ficha-hero.fijada {
+        position: relative;
+        width: auto
       }
     }
 
@@ -1364,7 +1426,8 @@
           <div class="solo-lector" id="unidades-hero" role="group" aria-label="Piso 8, unidades de ejemplo"></div>
           <span class="sello">Disponible · Reservado · Vendido</span>
         </div>
-        <!-- Repite lo que ya dicen los botones accesibles: oculta para el lector. -->
+        <!-- Repite lo que ya dicen los botones accesibles: oculta para el lector,
+             salvo fijada, que trae link y cierre (el JS saca el aria-hidden). -->
         <div class="ficha-hero" id="ficha-hero" aria-hidden="true" hidden>
           <p class="ficha-pista">Tocá una unidad del piso 8 para ver sus datos.</p>
           <div class="ficha-datos">
@@ -1372,7 +1435,9 @@
             <p class="ficha-tipo" data-f="tipo"></p>
             <p class="ficha-precio" data-f="precio"></p>
             <p class="ficha-estado"><i></i><span data-f="estado"></span></p>
+            <a class="ficha-link" href="https://armadoporcota.vercel.app/" target="_blank" rel="noopener">Ver esta unidad en la demo</a>
           </div>
+          <button class="ficha-cerrar" type="button" aria-label="Cerrar ficha">×</button>
         </div>
       </div>
     </div>
@@ -1920,10 +1985,13 @@
       const COLOR_ESTADO = { disponible: COLORES.disp, reservada: COLORES.res, vendida: COLORES.vend };
       const usd = n => 'US$ ' + n.toLocaleString('es-UY');
       // `auto` es la unidad que muestra la auto-demo; cede ante cualquier otra.
+      // `sel` es la fijada con click o tap: manda sobre hover y foco hasta cerrarla.
       const heroSel = { hover: null, foco: null, sel: null, auto: null };
 
       function pintarHero() {
-        const activa = heroSel.hover || heroSel.foco || heroSel.sel || heroSel.auto;
+        const activa = heroSel.sel || heroSel.hover || heroSel.foco || heroSel.auto;
+        ficha.classList.toggle('fijada', !!heroSel.sel);
+        ficha.setAttribute('aria-hidden', !heroSel.sel);
         hero.unidades.forEach(u => {
           const on = u === activa;
           u.material.emissive.copy(u.material.color).multiplyScalar(on ? .45 : 0);
@@ -1976,8 +2044,17 @@
         ficha.style.top = p.y + 'px';
       }
 
+      // Fijar frena la auto-demo sin reloj de vuelta; soltar arranca la espera de 8 s.
       function seleccionarHero(u) {
         heroSel.sel = u;
+        if (u) {
+          clearInterval(autoReloj);
+          clearTimeout(esperaReloj);
+          autoActivo = false;
+          heroSel.auto = null;
+        } else {
+          frenarAuto();
+        }
         pintarHero();
       }
 
@@ -1994,12 +2071,13 @@
       }
 
       function arrancarAuto() {
+        // Ficha fijada: no vuelve hasta que se cierre (seleccionarHero(null) reprograma).
+        if (heroSel.sel) return;
         // Mouse quieto sobre una unidad o foco de teclado todavía puesto: esperar más.
         if (heroSel.hover || heroSel.foco) {
           esperaReloj = setTimeout(arrancarAuto, 8000);
           return;
         }
-        heroSel.sel = null;
         autoActivo = true;
         if (quieto) {
           heroSel.auto = hero.unidades.find(u => u.userData.dato && u.userData.dato.estado === 'disponible') || null;
@@ -2062,7 +2140,24 @@
           lienzoHero.style.cursor = '';
           pintarHero();
         });
-        lienzoHero.addEventListener('click', e => { frenarAuto(); seleccionarHero(apuntada(e)); });
+        lienzoHero.addEventListener('click', e => seleccionarHero(apuntada(e)));
+
+        // Soltar la ficha: botón de cerrar, Escape o click en cualquier lugar fuera
+        // de la ficha, del lienzo (lo resuelve su propio click) y de los botones.
+        // El botón de cerrar desaparece: con teclado (detail 0) el foco vuelve a la
+        // unidad para no perderse. Con mouse no, o la ficha seguiría abierta por foco.
+        ficha.querySelector('.ficha-cerrar').addEventListener('click', e => {
+          const b = heroSel.sel.userData.boton;
+          seleccionarHero(null);
+          if (e.detail === 0) b.focus();
+        });
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape' && heroSel.sel) seleccionarHero(null);
+        });
+        document.addEventListener('click', e => {
+          if (!heroSel.sel || ficha.contains(e.target) || e.target === lienzoHero || caja.contains(e.target)) return;
+          seleccionarHero(null);
+        });
         ficha.hidden = false;
         pintarHero();
         arrancarAuto();
