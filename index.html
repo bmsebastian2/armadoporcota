@@ -177,11 +177,109 @@
 
     /* ---------- hero ---------- */
     #hero {
+      position: relative;
       border-top: none;
       padding: 78px 0 84px
     }
 
+    /* Cotas del hero: capa decorativa detrás del contenido, lenguaje de plano.
+       Posiciones calculadas en JS desde la misma cámara que el 3D. */
+    .cotas-hero,
+    .cotas-marco {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none
+    }
+
+    /* La capa del marco va detrás del canvas, que es transparente fuera del
+       edificio: el dibujo queda "debajo" de la maqueta. Solo tablet y celular. */
+    .vista-hero .marco {
+      isolation: isolate
+    }
+
+    .cotas-marco {
+      z-index: -1;
+      display: none
+    }
+
+    :is(.cotas-hero, .cotas-marco) .grilla {
+      opacity: .07
+    }
+
+    #cotas-grilla path {
+      fill: none;
+      stroke: var(--papel)
+    }
+
+    :is(.cotas-hero, .cotas-marco) :is(line, circle) {
+      fill: none;
+      stroke: var(--tenue);
+      stroke-width: 1
+    }
+
+    :is(.cotas-hero, .cotas-marco) .ref {
+      stroke-dasharray: 2 4
+    }
+
+    :is(.cotas-hero, .cotas-marco) :is(.marca-nivel, .flecha) {
+      fill: var(--tenue)
+    }
+
+    :is(.cotas-hero, .cotas-marco) text {
+      font: 11px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      letter-spacing: .16em;
+      fill: var(--tenue)
+    }
+
+    :is(.cotas-hero, .cotas-marco) .num {
+      letter-spacing: .06em
+    }
+
+    .cotas-marco .num {
+      font-size: 10px;
+      letter-spacing: 0
+    }
+
+    .cotas-hero .nombre {
+      fill: var(--papel);
+      fill-opacity: .5
+    }
+
+    #cotas-dibujo,
+    .cotas-marco {
+      animation: cotas-entra .9s .2s both
+    }
+
+    @keyframes cotas-entra {
+      from {
+        opacity: 0
+      }
+    }
+
+    /* Tablet y celular: no hay margen fuera del canvas para las cotas, así que
+       grilla, eje, cotas y norte van dentro del marco. */
+    @media (width < 1280px) {
+      #cotas-dibujo {
+        display: none
+      }
+
+      .cotas-marco {
+        display: block
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      #cotas-dibujo,
+      .cotas-marco {
+        animation: none
+      }
+    }
+
     #hero .env {
+      position: relative;
       display: grid;
       grid-template-columns: 1.05fr .95fr;
       gap: 52px;
@@ -1400,6 +1498,24 @@
 
   <!-- ============ HERO ============ -->
   <section id="hero">
+    <svg class="cotas-hero" id="cotas-hero" aria-hidden="true" focusable="false">
+      <defs>
+        <pattern id="cotas-grilla" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M24 .5H.5V24" />
+        </pattern>
+        <!-- La grilla se apaga hacia el texto: el JS lleva el degradé del borde del
+             texto al borde del edificio (horizontal en dos columnas, vertical en una). -->
+        <linearGradient id="cotas-luz" gradientUnits="userSpaceOnUse" x1="50%" y1="0" x2="60%" y2="0">
+          <stop offset="0" stop-color="#fff" stop-opacity="0" />
+          <stop offset="1" stop-color="#fff" />
+        </linearGradient>
+        <mask id="cotas-mascara">
+          <rect width="100%" height="100%" fill="url(#cotas-luz)" />
+        </mask>
+      </defs>
+      <rect class="grilla" width="100%" height="100%" fill="url(#cotas-grilla)" mask="url(#cotas-mascara)" />
+      <g id="cotas-dibujo"></g>
+    </svg>
     <div class="env">
       <div>
         <p class="rotulo">Uruguay · Venta en pozo y loteos</p>
@@ -1416,6 +1532,7 @@
       </div>
       <div class="vista-hero">
         <div class="marco">
+          <svg class="cotas-marco" id="cotas-marco" aria-hidden="true" focusable="false"></svg>
           <!-- Respaldo estático: mientras carga three.js o si no hay WebGL. Dibujado por código. -->
           <svg class="fallback-hero" viewBox="0 0 480 440" preserveAspectRatio="xMidYMid slice" role="img"
             aria-label="Edificio de ejemplo con el piso 8 resaltado">
@@ -1810,6 +1927,118 @@
     });
     otros.addEventListener('close', () => document.documentElement.classList.remove('sin-scroll'));
 
+    /* Torre del hero. La leen el 3D (iniciar3D), el inventario y las cotas del
+       hero, que se dibujan sin esperar a three.js. */
+    const NOMBRE_EDIFICIO = 'Edificio Demo';
+    const TORRE_HERO = { pisos: 11, porFila: 3, ancho: 3.4, prof: 3.6, alto: 1.9, sep: 2.4, destacado: 8 };
+    const CAMARA_HERO = { distancia: 34, elevacion: 6 };
+    const FOV_3D = 34;
+    const UNIDADES_DESTACADO = 4;
+    const ALTO_PISO_M = 3; // para las cotas de nivel: ▽ +24,00 en el piso 8
+
+    /* Cotas del hero: eje de niveles, cotas, norte y rótulo, en px de la capa SVG.
+       Proyecta con la misma cámara que montar(), sin three.js. */
+    function alturaEnLienzo(y, z, a, b) {
+      const lejos = CAMARA_HERO.distancia * Math.max(1, 1.1 / (a / b));
+      const h = CAMARA_HERO.elevacion * lejos / CAMARA_HERO.distancia;
+      const L = Math.hypot(h, lejos);
+      const dy = y - h, dz = z - lejos;
+      const prof = -(dy * h + dz * lejos) / L;
+      const arriba = (dy * lejos - dz * h) / L;
+      return b / 2 * (1 - arriba / (prof * Math.tan(FOV_3D * Math.PI / 360)));
+    }
+
+    // Norte: el frente que ve la cámara es el norte (hero-units.json), así que la
+    // flecha apunta hacia el observador, girada como el vaivén medio de la torre.
+    function norte(nx, ny) {
+      const giro = 151, t = giro * Math.PI / 180;
+      return `<circle cx="${nx}" cy="${ny}" r="11"/>` +
+        `<path class="flecha" transform="translate(${nx} ${ny}) rotate(${giro})" d="M0-9l4 13-4-3-4 3z"/>` +
+        `<text x="${nx + Math.sin(t) * 20 - 4}" y="${ny - Math.cos(t) * 20 + 4}">N</text>`;
+    }
+
+    // Mismo criterio que la ficha: sin hover o angosto, es tarjeta fija bajo el edificio.
+    const fichaFijaCotas = matchMedia('(hover: none), (max-width: 900px)');
+
+    function dibujarCotas() {
+      const capa = document.getElementById('cotas-hero');
+      const c = document.getElementById('lienzo-hero').getBoundingClientRect();
+      const a = c.width, b = c.height;
+      if (!a || !b) return;
+      const base = capa.getBoundingClientRect();
+      const x0 = c.left - base.left, y0 = c.top - base.top;
+
+      // Nivel p sobre el plano del frente; mismo paso que crearTorre.
+      const T = TORRE_HERO, paso = T.alto + .32;
+      const enLienzo = p => Math.round(alturaEnLienzo((p - T.pisos / 2) * paso, T.sep + T.prof / 2, a, b)) + .5;
+      const nivel = p => y0 + enLienzo(p);
+      const eje = Math.round(x0 + a + 14) + .5, fin = eje + 74;
+      const cota = p => (p ? '+' : '±') + (p * ALTO_PISO_M).toFixed(2).replace('.', ',');
+      const s = [];
+
+      // Grilla: se enciende del borde del texto al centro del edificio.
+      const tx = document.querySelector('#hero .env > div').getBoundingClientRect();
+      const dosColumnas = c.left > tx.right;
+      const luz = document.getElementById('cotas-luz');
+      const [x1, y1, x2, y2] = dosColumnas
+        ? [tx.right - base.left, 0, x0 + a / 2, 0]
+        : [0, tx.bottom - base.top, 0, y0 + b / 2];
+      Object.entries({ x1, y1, x2, y2 }).forEach(([k, v]) => luz.setAttribute(k, v));
+
+      // Tablet y celular: lo mismo dentro del marco, con lo que entra en cuadro.
+      // Eje pegado al borde derecho, con el ▽ apoyado en él y la cota a su izquierda:
+      // en celular al edificio le sobran ~35 px a la derecha.
+      const ex = Math.round(a - 11) + .5, enCuadro = y => y > 14 && y < b - 4;
+      const m = [`<rect class="grilla" width="100%" height="100%" fill="url(#cotas-grilla)"/>`,
+        `<line x1="${ex}" y1="0" x2="${ex}" y2="${b}"/>`];
+      for (let p = 0; p <= T.pisos; p++) {
+        const y = enLienzo(p);
+        if (enCuadro(y)) m.push(`<line x1="${ex - 4}" y1="${y}" x2="${ex + 4}" y2="${y}"/>`);
+      }
+      [0, T.destacado, T.pisos].map(p => [p, enLienzo(p)]).filter(([, y]) => enCuadro(y)).forEach(([p, y]) => m.push(
+        `<line class="${p ? 'ref' : ''}" x1="${ex - 46}" y1="${y}" x2="${ex}" y2="${y}"/>`,
+        `<path class="marca-nivel" d="M${ex} ${y}l-4-7h8z"/>`,
+        `<text class="num" x="${ex - 7}" y="${y - 4}" text-anchor="end">${cota(p)}</text>`));
+      // Norte arriba a la izquierda: la torre gira hacia la derecha y esa esquina queda libre.
+      m.push(norte(30, 28));
+      document.getElementById('cotas-marco').innerHTML = m.join('');
+
+      // Eje vertical con una marca por piso, de planta baja a azotea.
+      s.push(`<line x1="${eje}" y1="${nivel(T.pisos) - 12}" x2="${eje}" y2="${nivel(0) + 12}"/>`);
+      for (let p = 0; p <= T.pisos; p++) s.push(`<line x1="${eje - 4}" y1="${nivel(p)}" x2="${eje + 4}" y2="${nivel(p)}"/>`);
+
+      // Cotas de nivel: planta baja (línea de suelo), piso destacado y azotea.
+      // Con la ficha fija bajo el edificio, la línea de suelo arranca a su derecha.
+      const fija = fichaFijaCotas.matches;
+      [[0, fija ? x0 + a : x0, ''], [T.destacado, x0 + a, 'ref'], [T.pisos, x0 + a * .6, 'ref']].forEach(([p, desde, clase]) => {
+        const y = nivel(p);
+        s.push(`<line class="${clase}" x1="${desde}" y1="${y}" x2="${fin}" y2="${y}"/>`,
+          `<path class="marca-nivel" d="M${eje + 12} ${y}l-4-7h8z"/>`,
+          `<text class="num" x="${eje + 22}" y="${y - 5}">${cota(p)}</text>`);
+      });
+
+      // Norte junto a la base, a la derecha del eje.
+      s.push(norte(eje + 52, nivel(0) + 44));
+
+      // Rótulo del proyecto, como carátula de plano, bajo la línea de suelo
+      // (o bajo la ficha, si está fija debajo del edificio).
+      const unidades = (T.pisos - 1) * T.porFila * 2 + UNIDADES_DESTACADO;
+      const vista = document.querySelector('.vista-hero').getBoundingClientRect();
+      const r = Math.max(nivel(0) + 28, vista.bottom - base.top + 24);
+      [[NOMBRE_EDIFICIO.toUpperCase(), 'nombre'], ['MONTEVIDEO', ''], [`${unidades} UNIDADES · ${T.pisos} PISOS`, ''], ['09:42 · 21 JUN', '']]
+        .forEach(([txt, clase], i) => s.push(`<text class="${clase}" x="${x0}" y="${r + i * 18 + (i === 3 ? 8 : 0)}">${txt}</text>`));
+
+      document.getElementById('cotas-dibujo').innerHTML = s.join('');
+    }
+    dibujarCotas();
+    // La ficha fija cambia el alto de .vista-hero sin cambiar el del hero.
+    if ('ResizeObserver' in window) {
+      const ro = new ResizeObserver(dibujarCotas);
+      ro.observe(document.getElementById('hero'));
+      ro.observe(document.querySelector('.vista-hero'));
+    } else addEventListener('resize', dibujarCotas);
+    fichaFijaCotas.addEventListener('change', dibujarCotas);
+
     /* three.js (~121 KB br) se pide después del evento load: el texto y el CTA
        del hero se pintan sin esperarlo. Sin WebGL ni se baja, y queda el SVG. */
     function hayWebGL() {
@@ -1832,7 +2061,8 @@
 
     function iniciar3D() {
       /* ============================================================
-         Hero: torre en vivo. Misma lógica que la demo, sin interacción.
+         Hero: torre en vivo. Misma lógica que la demo; el piso 8 es
+         seleccionable (ver más abajo), el resto es decorativo.
          ============================================================ */
 
       const COLORES = { disp: 0x3E9B84, res: 0xD3A04A, vend: 0x5E6968 };
@@ -1865,10 +2095,10 @@
 
           if (p === destacado) {
             // Mismo largo que una fila normal y fondo de frente a contrafrente.
-            const anchoU = (porFila * (ancho + .3) - .3 - .9) / 4;
+            const anchoU = (porFila * (ancho + .3) - .3 - .9) / UNIDADES_DESTACADO;
             const geoU = new THREE.BoxGeometry(anchoU, alto, prof + 2 * sep);
             const bordesU = new THREE.EdgesGeometry(geoU);
-            for (let c = 0; c < 4; c++) {
+            for (let c = 0; c < UNIDADES_DESTACADO; c++) {
               const caja = new THREE.Mesh(geoU, new THREE.MeshStandardMaterial({
                 color: ESTADOS_REAL.sinDato, roughness: .45, metalness: .05, transparent: true, opacity: .94
               }));
@@ -1919,7 +2149,7 @@
       function montar(canvas, opciones, distancia, elevacion, real) {
         if (!canvas) return null;
         const escena = new THREE.Scene();
-        const cam = new THREE.PerspectiveCamera(34, canvas.clientWidth / canvas.clientHeight, .1, 400);
+        const cam = new THREE.PerspectiveCamera(FOV_3D,canvas.clientWidth / canvas.clientHeight, .1, 400);
         const gl = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         gl.setPixelRatio(Math.min(devicePixelRatio, 2));
 
@@ -1958,7 +2188,7 @@
       }
 
       const lienzoHero = document.getElementById('lienzo-hero');
-      const hero = montar(lienzoHero, { pisos: 11, porFila: 3, ancho: 3.4, prof: 3.6, alto: 1.9, sep: 2.4, destacado: 8 }, 34, 6, true);
+      const hero = montar(lienzoHero, TORRE_HERO, CAMARA_HERO.distancia, CAMARA_HERO.elevacion, true);
 
       const vistas = [
         hero,
@@ -2025,7 +2255,13 @@
       // Cada cuadro, porque el vaivén mueve la unidad: la ficha queda encima de ella.
       const sobre = new THREE.Vector3();
       function ubicarFicha() {
-        if (!enFicha || !ficha.classList.contains('con-unidad') || fichaFija.matches) return;
+        // Tarjeta fija: soltar la posición de escritorio. Fijada es position: relative
+        // y el left/top viejo la correría fuera de pantalla al achicar la ventana.
+        if (fichaFija.matches) {
+          ficha.style.left = ficha.style.top = '';
+          return;
+        }
+        if (!enFicha || !ficha.classList.contains('con-unidad')) return;
         const a = lienzoHero.clientWidth, b = lienzoHero.clientHeight;
         const enPantalla = dy => {
           enFicha.getWorldPosition(sobre);
@@ -2196,7 +2432,7 @@
        No depende de three.js.
        ============================================================ */
     (function () {
-      const NOMBRE_EDIFICIO = 'Edificio Demo';
+      // NOMBRE_EDIFICIO: constante compartida, junto a TORRE_HERO.
       const PISOS_PLANILLA = [10, 9, 8, 7];
       // Elevación en unidades del viewBox: columna de números de piso a la izquierda.
       // El alto de la unidad no es fijo: sale del ancho real para no bajar de TACTIL px.
