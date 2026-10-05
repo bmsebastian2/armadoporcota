@@ -44,7 +44,7 @@
       /* Estados de unidad: el verde solo significa "disponible". */
       --state-available: #3E9B84;
       --state-reserved: #D3A04A;
-      --state-sold: #626B6A;
+      --state-sold: #6A7271;
       /* El relleno de vendido es oscuro para separarse del verde; como texto no alcanza. */
       --state-sold-text: #7C8886;
       /* Acción principal: neutra, para que el color lo pongan solo los estados. */
@@ -116,6 +116,7 @@
     }
 
     .rotulo {
+      font-family: var(--fuente-mono);
       font-size: 12px;
       letter-spacing: .14em;
       text-transform: uppercase;
@@ -279,17 +280,6 @@
       fill-opacity: .5
     }
 
-    #cotas-dibujo,
-    .cotas-marco {
-      animation: cotas-entra .9s .2s both
-    }
-
-    @keyframes cotas-entra {
-      from {
-        opacity: 0
-      }
-    }
-
     /* Tablet y celular: no hay margen fuera del canvas para las cotas, así que
        grilla, eje, cotas y norte van dentro del marco. */
     @media (width < 1280px) {
@@ -299,14 +289,6 @@
 
       .cotas-marco {
         display: block
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      #cotas-dibujo,
-      .cotas-marco {
-        animation: none
       }
     }
 
@@ -392,6 +374,7 @@
     }
 
     .marco .sello {
+      font-family: var(--fuente-mono);
       position: absolute;
       left: 14px;
       bottom: 12px;
@@ -482,6 +465,7 @@
     }
 
     .ficha-ejemplo {
+      font-family: var(--fuente-mono);
       font-size: 10.5px;
       letter-spacing: .08em;
       text-transform: uppercase;
@@ -565,9 +549,7 @@
       border-radius: var(--radio-ctrl);
       background: none;
       color: var(--suave);
-      font: inherit;
-      font-size: 18px;
-      line-height: 1;
+      font: 18px/1 var(--fuente-mono);
       cursor: pointer
     }
 
@@ -663,8 +645,7 @@
       justify-content: center;
       gap: 18px;
       border: 1px solid var(--linea);
-      border-radius: var(--radio);
-      background: var(--tinta-2)
+      border-radius: var(--radio)
     }
 
     .paso-lamina svg {
@@ -888,8 +869,7 @@
     .inv-lamina {
       border: 1px solid var(--linea);
       border-radius: var(--radio);
-      padding: 18px 20px 20px;
-      background: var(--tinta-2)
+      padding: 18px 20px 20px
     }
 
     .inv-cab {
@@ -1133,16 +1113,14 @@
       border: 1px solid var(--linea);
       border-radius: var(--radio);
       overflow: hidden;
-      background: var(--tinta-2);
       display: flex;
       flex-direction: column;
       text-decoration: none;
-      transition: border-color .18s, transform .18s;
+      transition: border-color .18s;
     }
 
     .demo:hover {
-      border-color: var(--linea-hover);
-      transform: translateY(-2px)
+      border-color: var(--linea-hover)
     }
 
     .demo .lam {
@@ -1274,7 +1252,7 @@
     .sol-sim .div { stroke: var(--linea) }
     .sol-sim .celda { fill: var(--sol); fill-opacity: 0; stroke: var(--papel); stroke-width: 1.5; transition: fill-opacity .25s }
     .sol-sim .cara { stroke: var(--gris); stroke-opacity: .35; stroke-width: 4; stroke-linecap: square; transition: stroke .25s, stroke-opacity .25s }
-    .sol-sim .cara.luz { stroke: var(--sol); stroke-width: 5; filter: url(#sol-brillo) }
+    .sol-sim .cara.luz { stroke: var(--sol); stroke-width: 5 }
     .sol-sim .cod { fill: var(--papel); font: 500 12px/1 var(--fuente-mono); text-anchor: middle }
     .sol-sim .halo { fill: var(--sol); fill-opacity: .16 }
     .sol-sim .disco { fill: var(--sol) }
@@ -1399,8 +1377,7 @@
       border-radius: var(--radio-ctrl);
       background: transparent;
       color: var(--papel);
-      font-size: 22px;
-      line-height: 1;
+      font: 22px/1 var(--fuente-mono);
       cursor: pointer
     }
 
@@ -1425,6 +1402,7 @@
     }
 
     .etiq {
+      font-family: var(--fuente-mono);
       display: inline-block;
       padding: 4px 9px;
       border-radius: var(--radio-ctrl);
@@ -1455,6 +1433,7 @@
     }
 
     .demanda-ejemplo {
+      font-family: var(--fuente-mono);
       padding: 4px 8px;
       border: 1px solid var(--linea);
       border-radius: var(--radio-ctrl);
@@ -1522,14 +1501,7 @@
       display: block;
       height: 100%;
       width: var(--w);
-      background: var(--gris);
-      transform-origin: left;
-      transform: scaleX(0);
-      transition: transform .9s cubic-bezier(.2, .7, .2, 1) calc(var(--i) * 90ms)
-    }
-
-    .barras.llenas .lleno {
-      transform: none
+      background: var(--gris)
     }
 
     .barras .fila.activa {
@@ -1714,6 +1686,7 @@
 
     summary::after {
       content: "+";
+      font-family: var(--fuente-mono);
       color: var(--tenue);
       font-weight: 400
     }
@@ -1737,8 +1710,8 @@
       align-items: center
     }
 
+    /* El JPG trae fondo blanco: invertido y en screen, el blanco desaparece y el logo queda claro. */
     .logo-caja {
-      background: #fff;
       border-radius: var(--radio);
       padding: 28px 30px;
       border: 1px solid var(--linea);
@@ -1751,14 +1724,12 @@
       width: 100%;
       max-width: 340px;
       height: auto;
-      display: block
+      display: block;
+      filter: grayscale(1) invert(1);
+      mix-blend-mode: screen
     }
 
     /* ---------- cierre ---------- */
-    #cierre {
-      background: var(--tinta-2)
-    }
-
     #cierre .env {
       text-align: center
     }
@@ -2102,11 +2073,6 @@
         <svg viewBox="0 0 560 400" role="img"
           aria-label="Planta del edificio con el recorrido del sol el 21 de junio en Montevideo. El sol pasa siempre por el norte: la fachada norte recibe sol todo el día y la sur nunca.">
           <defs>
-            <!-- userSpaceOnUse: una línea horizontal tiene caja de alto 0 y el filtro la borraría. -->
-            <filter id="sol-brillo" filterUnits="userSpaceOnUse" x="0" y="0" width="560" height="400">
-              <feGaussianBlur stdDeviation="3" result="b" />
-              <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-            </filter>
             <clipPath id="sol-ruedo"><circle cx="280" cy="200" r="170" /></clipPath>
           </defs>
           <circle class="anillo" cx="280" cy="200" r="56.7" />
@@ -2212,14 +2178,14 @@
                 <path class="doc-hoja" d="M0 4h40l10 10v70H0z" />
                 <path class="doc-pliegue" d="M40 4v10h10" />
                 <path class="doc-linea" d="M8 24h34v44H8zM24 24v18h18M8 50h16" />
-                <rect class="doc-tag" x="-2" y="64" width="24" height="12" rx="2" />
+                <rect class="doc-tag" x="-2" y="64" width="24" height="12" />
                 <text x="10" y="72.5">PDF</text>
               </g>
               <g class="doc" transform="translate(70 0)">
                 <path class="doc-hoja" d="M0 4h40l10 10v70H0z" />
                 <path class="doc-pliegue" d="M40 4v10h10" />
                 <path class="doc-linea" d="M8 24h34M8 34h34M8 44h34M8 54h34M20 20v38M32 20v38" />
-                <rect class="doc-tag" x="-2" y="64" width="30" height="12" rx="2" />
+                <rect class="doc-tag" x="-2" y="64" width="30" height="12" />
                 <text x="13" y="72.5">XLSX</text>
               </g>
             </svg>
@@ -2231,14 +2197,14 @@
           <p class="paso-num" aria-hidden="true">02</p>
           <div class="paso-lamina">
             <svg viewBox="-8 -26 96 122" role="img" aria-label="Fachada del edificio con el logo de la desarrolladora">
-              <rect class="mini-logo" x="16" y="-22" width="48" height="14" rx="2" />
+              <rect class="mini-logo" x="16" y="-22" width="48" height="14" />
               <text class="mini-logo-txt" x="40" y="-12.5">TU LOGO</text>
               <path class="mini-estructura" d="M0 0h80v92H0zM0 4h80M0 26h80M0 48h80M0 70h80M-6 92h92" />
               <g class="mini-unidades">
-                <rect x="6" y="7" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="24" y="7" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="7" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="60" y="7" width="14" height="16" rx="1.5" data-estado="reservada" />
-                <rect x="6" y="29" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="24" y="29" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="42" y="29" width="14" height="16" rx="1.5" data-estado="reservada" /><rect x="60" y="29" width="14" height="16" rx="1.5" data-estado="vendida" />
-                <rect x="6" y="51" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="24" y="51" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="51" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="60" y="51" width="14" height="16" rx="1.5" data-estado="disponible" />
-                <rect x="6" y="73" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="24" y="73" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="73" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="60" y="73" width="14" height="16" rx="1.5" data-estado="vendida" />
+                <rect x="6" y="7" width="14" height="16" data-estado="disponible" /><rect x="24" y="7" width="14" height="16" data-estado="vendida" /><rect x="42" y="7" width="14" height="16" data-estado="disponible" /><rect x="60" y="7" width="14" height="16" data-estado="reservada" />
+                <rect x="6" y="29" width="14" height="16" data-estado="vendida" /><rect x="24" y="29" width="14" height="16" data-estado="disponible" /><rect x="42" y="29" width="14" height="16" data-estado="reservada" /><rect x="60" y="29" width="14" height="16" data-estado="vendida" />
+                <rect x="6" y="51" width="14" height="16" data-estado="disponible" /><rect x="24" y="51" width="14" height="16" data-estado="vendida" /><rect x="42" y="51" width="14" height="16" data-estado="vendida" /><rect x="60" y="51" width="14" height="16" data-estado="disponible" />
+                <rect x="6" y="73" width="14" height="16" data-estado="vendida" /><rect x="24" y="73" width="14" height="16" data-estado="vendida" /><rect x="42" y="73" width="14" height="16" data-estado="disponible" /><rect x="60" y="73" width="14" height="16" data-estado="vendida" />
               </g>
             </svg>
           </div>
@@ -2261,10 +2227,10 @@
             <svg viewBox="-8 -2 96 98" aria-hidden="true">
               <path class="mini-estructura" d="M0 0h80v92H0zM0 4h80M0 26h80M0 48h80M0 70h80M-6 92h92" />
               <g class="mini-unidades">
-                <rect x="6" y="7" width="14" height="16" rx="1.5" data-estado="disponible" data-id="A801" /><rect x="24" y="7" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="7" width="14" height="16" rx="1.5" data-estado="disponible" class="mini-foco" data-id="A803" /><rect x="60" y="7" width="14" height="16" rx="1.5" data-estado="reservada" />
-                <rect x="6" y="29" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="24" y="29" width="14" height="16" rx="1.5" data-estado="disponible" data-id="A702" /><rect x="42" y="29" width="14" height="16" rx="1.5" data-estado="reservada" /><rect x="60" y="29" width="14" height="16" rx="1.5" data-estado="vendida" />
-                <rect x="6" y="51" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="24" y="51" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="51" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="60" y="51" width="14" height="16" rx="1.5" data-estado="disponible" />
-                <rect x="6" y="73" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="24" y="73" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="73" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="60" y="73" width="14" height="16" rx="1.5" data-estado="vendida" />
+                <rect x="6" y="7" width="14" height="16" data-estado="disponible" data-id="A801" /><rect x="24" y="7" width="14" height="16" data-estado="vendida" /><rect x="42" y="7" width="14" height="16" data-estado="disponible" class="mini-foco" data-id="A803" /><rect x="60" y="7" width="14" height="16" data-estado="reservada" />
+                <rect x="6" y="29" width="14" height="16" data-estado="vendida" /><rect x="24" y="29" width="14" height="16" data-estado="disponible" data-id="A702" /><rect x="42" y="29" width="14" height="16" data-estado="reservada" /><rect x="60" y="29" width="14" height="16" data-estado="vendida" />
+                <rect x="6" y="51" width="14" height="16" data-estado="disponible" /><rect x="24" y="51" width="14" height="16" data-estado="vendida" /><rect x="42" y="51" width="14" height="16" data-estado="vendida" /><rect x="60" y="51" width="14" height="16" data-estado="disponible" />
+                <rect x="6" y="73" width="14" height="16" data-estado="vendida" /><rect x="24" y="73" width="14" height="16" data-estado="vendida" /><rect x="42" y="73" width="14" height="16" data-estado="disponible" /><rect x="60" y="73" width="14" height="16" data-estado="vendida" />
               </g>
             </svg>
           </div>
@@ -2948,13 +2914,12 @@
           .catch(err => console.warn('Hero sin datos, queda decorativo:', err));
       }
 
-      let t = 0, heroListo = false;
+      let heroListo = false;
       (function animar() {
         requestAnimationFrame(animar);
-        t += quieto ? 0 : 0.0022;
         vistas.forEach(v => {
-          // El hero no gira entero: vaivén corto para que el piso 8 quede siempre de frente.
-          v.orbita.rotation.y = v === hero ? 0.5 + Math.sin(t * 3) * .2 : 0.6 + t * 0.7;
+          // Ángulo fijo: lo que se mueve son los datos, no la maqueta. El hero deja el piso 8 de frente.
+          v.orbita.rotation.y = v === hero ? 0.5 : 0.6;
           v.gl.render(v.escena, v.cam);
         });
         if (hero) ubicarFicha();
@@ -3069,7 +3034,7 @@
             'aria-label': `${u.id}, piso ${piso(u)}, ${dorm}, ${u.m2} m², orientación ${u.orientacion}, ` +
               `${usd(u.precioUSD)}, ${ESTADO_TXT[u.estado].toLowerCase()}`,
           }, svg);
-          const rect = el('rect', { x, y, width: G.ancho, height: alto, rx: 2 }, g);
+          const rect = el('rect', { x, y, width: G.ancho, height: alto }, g);
           g.dato = u;
           return { u, g, rect, x, y };
         });
@@ -3243,7 +3208,6 @@
     (function () {
       const lista = document.getElementById('demanda-barras');
       if (!lista) return;
-      const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
       const fig = document.getElementById('demanda-fachada');
       const NS = 'http://www.w3.org/2000/svg';
       // Celda de la mini fachada, en unidades del viewBox.
@@ -3282,7 +3246,7 @@
           const piso = +u.id.slice(1, -2), col = +u.id.slice(-2);
           const rect = document.createElementNS(NS, 'rect');
           Object.entries({
-            class: 'u', 'data-estado': u.estado, rx: 1.5, width: C.ancho, height: C.alto,
+            class: 'u', 'data-estado': u.estado, width: C.ancho, height: C.alto,
             x: (col - 1) * (C.ancho + C.sep),
             y: C.techo + (pisos - piso) * (C.alto + C.sep),
           }).forEach(([k, v]) => rect.setAttribute(k, v));
@@ -3305,7 +3269,7 @@
           const fila = document.createElement(f.dormitorios === null ? 'div' : 'button');
           fila.className = 'fila';
           fila.innerHTML = `<span></span><span class="pct">${f.pct}%</span>` +
-            `<span class="riel" aria-hidden="true"><span class="lleno" style="--w:${f.pct / max * 100}%;--i:${i}"></span></span>`;
+            `<span class="riel" aria-hidden="true"><span class="lleno" style="--w:${f.pct / max * 100}%"></span></span>`;
           fila.firstChild.textContent = f.etiqueta;
           if (fila.tagName === 'BUTTON') {
             fila.type = 'button';
@@ -3327,14 +3291,6 @@
           `Hay demanda por ${dorm} al ${lider.orientacion.toLowerCase()}.`;
         document.getElementById('demanda-quedan').textContent = lider.disponibles;
         document.getElementById('demanda-accion').hidden = false;
-
-        if (quieto || !('IntersectionObserver' in window)) return lista.classList.add('llenas');
-        const io = new IntersectionObserver(entradas => {
-          if (!entradas[0].isIntersecting) return;
-          io.disconnect();
-          lista.classList.add('llenas');
-        }, { threshold: .4 });
-        io.observe(lista);
       }
 
       fetch('data/demand-demo.json')

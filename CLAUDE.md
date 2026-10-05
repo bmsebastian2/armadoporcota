@@ -27,7 +27,6 @@ usar `/rosso`: la demo está en la raíz de su propio dominio, no en una subcarp
 index.html            Landing de Cota
 mapa-uruguay-3d.html  Demo de loteo (grilla de lotes con calles) — sin enlace desde la landing
 logo-desarrollo.jpg   Logo de Desarrollo de Soluciones Tecnológicas
-sol-brusco.jpg        Captura del visor con el sol. Ya no se usa: la sección #sol es un simulador SVG
 data/
   hero-units.json       Piso 8 seleccionable del hero (datos de ejemplo)
   inventory-demo.json   Sección #inventario: 10 pisos × 4 unidades, de planilla a fachada SVG
