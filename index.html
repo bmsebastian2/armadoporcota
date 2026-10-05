@@ -309,26 +309,19 @@
       margin-top: 34px;
       display: flex;
       gap: 12px;
-      flex-wrap: wrap;
-      /* El secundario queda a la altura del botón, no del botón + microcopy. */
-      align-items: flex-start
+      flex-wrap: wrap
     }
 
-    .accion-principal {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px
-    }
-
+    /* Debajo de los dos botones, en su propia línea, a 8 px. */
     .microcopy {
-      margin: 0;
+      flex-basis: 100%;
+      margin: -4px 0 0;
       font-size: 13px;
       color: var(--suave)
     }
 
-    /* Celular: CTA del hero a todo el ancho, una línea, 48 px de alto. El hero se
-       aprieta para que en 375×667 asome la tarjeta de piso debajo del CTA. */
+    /* Celular: CTAs del hero apilados a todo el ancho, una línea, 48 px de alto. El
+       hero se aprieta para que en 375×667 asome la tarjeta de piso debajo. */
     @media (max-width:560px) {
       #hero {
         padding-top: 40px
@@ -340,24 +333,12 @@
       }
 
       #hero .acciones {
-        row-gap: 4px
-      }
-
-      /* Secundario como link de texto, con alto táctil de 44 px. */
-      #hero .btn-s {
-        min-height: 44px;
-        padding: 0;
-        border-color: transparent;
-        text-decoration: underline;
-        text-underline-offset: 3px
-      }
-
-      .accion-principal {
-        width: 100%;
+        margin-top: 24px;
+        flex-direction: column;
         align-items: stretch
       }
 
-      .accion-principal .btn-p {
+      #hero .acciones .btn {
         height: 48px;
         padding-block: 0;
         justify-content: center;
@@ -1500,6 +1481,13 @@
       }
     }
 
+    /* Va después del bloque de 900 px, que fija el gap de #hero .env. */
+    @media (max-width:560px) {
+      #hero .env {
+        gap: 24px
+      }
+    }
+
     @media (prefers-reduced-motion:reduce) {
       * {
         transition-duration: .01ms !important
@@ -1526,7 +1514,7 @@
         <a href="#planes">Precio</a>
         <a href="#quien">Quién</a>
       </div>
-      <a class="btn btn-p" href="#contacto">Ver mi edificio en Cota <span aria-hidden="true">→</span></a>
+      <a class="btn btn-p" href="#contacto">Quiero mi planta gratis</a>
     </div>
   </nav>
 
@@ -1559,11 +1547,9 @@
           elige su unidad; el vendedor deja de contestar por WhatsApp qué queda.
         </p>
         <div class="acciones">
-          <div class="accion-principal">
-            <a class="btn btn-p" href="#contacto" aria-describedby="microcopy-hero">Ver mi edificio en Cota <span aria-hidden="true">→</span></a>
-            <p class="microcopy" id="microcopy-hero">Te armamos una planta gratis · Sin compromiso</p>
-          </div>
-          <a class="btn btn-s" href="#demos">Ver las demos</a>
+          <a class="btn btn-p" href="#contacto" aria-describedby="microcopy-hero">Quiero mi planta gratis</a>
+          <a class="btn btn-s" href="https://armadoporcota.vercel.app/?p=brusco" target="_blank" rel="noopener">Explorar un edificio <span aria-hidden="true">→</span></a>
+          <p class="microcopy" id="microcopy-hero">Sin compromiso</p>
         </div>
         <p class="pie-hero">Tu equipo marca una unidad como vendida y el edificio cambia en el momento.</p>
       </div>
@@ -1819,7 +1805,7 @@
           <h3>Tu proyecto, navegable y al día</h3>
           <p class="precio">1.800 <small>de armado</small></p>
           <p class="mensual">+ 120 por mes mientras vendas</p>
-          <a class="btn btn-p" href="#contacto">Empezar</a>
+          <a class="btn btn-p" href="#contacto">Quiero mi planta gratis</a>
         </div>
         <ul>
           <li>Hasta 200 unidades, en una o varias torres</li>
@@ -1921,8 +1907,8 @@
       </p>
       <div class="acciones">
         <a class="btn btn-p"
-          href="https://wa.me/59891856500?text=Hola,%20quiero%20ver%20una%20planta%20de%20mi%20proyecto%20en%20Cota">Escribir
-          por WhatsApp</a>
+          href="https://wa.me/59891856500?text=Hola,%20quiero%20ver%20una%20planta%20de%20mi%20proyecto%20en%20Cota">Quiero
+          mi planta gratis</a>
         <a class="btn btn-s" href="mailto:bmsebastian2@gmail.com?subject=Planta%20de%20muestra">Escribir por mail</a>
       </div>
       <p class="pie-hero" style="margin-top:22px">
