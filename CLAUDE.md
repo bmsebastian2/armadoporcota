@@ -27,8 +27,16 @@ usar `/rosso`: la demo está en la raíz de su propio dominio, no en una subcarp
 index.html            Landing de Cota
 mapa-uruguay-3d.html  Demo de loteo (grilla de lotes con calles) — sin enlace desde la landing
 logo-desarrollo.jpg   Logo de Desarrollo de Soluciones Tecnológicas
+sol-brusco.jpg        Imagen de la sección de sol
+data/
+  hero-units.json       Piso 8 seleccionable del hero (datos de ejemplo)
+  inventory-demo.json   Sección #inventario: 10 pisos × 4 unidades, de planilla a fachada SVG
 README.md
 ```
+
+Las dos piezas de `data/` se cargan con `fetch`: con doble clic (`file://`) el hero queda
+decorativo y `#inventario` muestra solo el titular. Para probar en local, levantar un
+servidor (`python -m http.server`).
 
 ## Qué es esto
 
