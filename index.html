@@ -327,6 +327,45 @@
       color: var(--suave)
     }
 
+    /* Celular: CTA del hero a todo el ancho, una línea, 48 px de alto. El hero se
+       aprieta para que en 375×667 asome la tarjeta de piso debajo del CTA. */
+    @media (max-width:560px) {
+      #hero {
+        padding-top: 40px
+      }
+
+      #hero .rotulo,
+      #hero .pie-hero {
+        display: none
+      }
+
+      #hero .acciones {
+        row-gap: 4px
+      }
+
+      /* Secundario como link de texto, con alto táctil de 44 px. */
+      #hero .btn-s {
+        min-height: 44px;
+        padding: 0;
+        border-color: transparent;
+        text-decoration: underline;
+        text-underline-offset: 3px
+      }
+
+      .accion-principal {
+        width: 100%;
+        align-items: stretch
+      }
+
+      .accion-principal .btn-p {
+        height: 48px;
+        padding-block: 0;
+        justify-content: center;
+        font-size: 16px;
+        white-space: nowrap
+      }
+    }
+
     .pie-hero {
       margin-top: 22px;
       font-size: 13.5px;
