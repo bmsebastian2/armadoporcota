@@ -16,9 +16,17 @@
       --suave: rgba(237, 233, 226, .62);
       --tenue: rgba(237, 233, 226, .38);
       --linea: rgba(237, 233, 226, .13);
-      --verde: #3E9B84;
-      --ambar: #D3A04A;
       --gris: #7C8886;
+      /* Estados de unidad: el verde solo significa "disponible". */
+      --state-available: #3E9B84;
+      --state-reserved: #D3A04A;
+      --state-sold: #626B6A;
+      /* El relleno de vendido es oscuro para separarse del verde; como texto no alcanza. */
+      --state-sold-text: #7C8886;
+      /* Acción principal: neutra, para que el color lo pongan solo los estados. */
+      --action-primary: #E4DED3;
+      --action-primary-hover: #F2EEE7;
+      --action-primary-text: #0E1513;
       --ancho: 1120px;
     }
 
@@ -153,12 +161,12 @@
     }
 
     .btn-p {
-      background: var(--verde);
-      color: #08120F
+      background: var(--action-primary);
+      color: var(--action-primary-text)
     }
 
     .btn-p:hover {
-      background: #4CB89C
+      background: var(--action-primary-hover)
     }
 
     .btn-s {
@@ -287,7 +295,7 @@
     }
 
     #hero h1 span {
-      color: var(--verde)
+      color: var(--suave)
     }
 
     .bajada {
@@ -451,11 +459,15 @@
     }
 
     .ficha-hero[data-estado="disponible"] .ficha-estado i {
-      background: var(--verde)
+      background: var(--state-available)
     }
 
     .ficha-hero[data-estado="reservada"] .ficha-estado i {
-      background: var(--ambar)
+      background: var(--state-reserved)
+    }
+
+    .ficha-hero[data-estado="vendida"] .ficha-estado i {
+      background: var(--state-sold)
     }
 
     /* Ficha fijada por click o tap: se puede clickear, con link a la demo y cierre. */
@@ -476,13 +488,9 @@
     .ficha-hero.fijada .ficha-link {
       display: inline-block;
       margin-top: 12px;
-      color: var(--verde);
+      color: var(--papel);
       font-size: 14px;
       font-weight: 550;
-      text-decoration: none
-    }
-
-    .ficha-link:hover {
       text-decoration: underline
     }
 
@@ -510,7 +518,7 @@
 
     .ficha-link:focus-visible,
     .ficha-cerrar:focus-visible {
-      outline: 2px solid var(--verde);
+      outline: 2px solid var(--papel);
       outline-offset: 2px
     }
 
@@ -575,7 +583,7 @@
     .num {
       font-size: 12px;
       letter-spacing: .14em;
-      color: var(--verde);
+      color: var(--papel);
       margin-bottom: 14px
     }
 
@@ -745,15 +753,27 @@
     }
 
     .inv-u[data-estado="disponible"] rect {
-      fill: var(--verde)
+      fill: var(--state-available)
     }
 
+    /* Señal sin color: reservada con borde punteado, vendida con trama diagonal. */
     .inv-u[data-estado="reservada"] rect {
-      fill: var(--ambar)
+      fill: var(--state-reserved);
+      stroke-width: 3;
+      stroke-dasharray: 4 3
     }
 
     .inv-u[data-estado="vendida"] rect {
-      fill-opacity: .55
+      fill: url(#inv-trama)
+    }
+
+    .inv-trama-fondo {
+      fill: var(--state-sold)
+    }
+
+    .inv-trama-linea {
+      stroke: rgba(237, 233, 226, .35);
+      stroke-width: 1.5
     }
 
     .inv-u.activa rect,
@@ -790,22 +810,25 @@
     }
 
     .inv-leyenda i {
-      width: 10px;
+      /* Proporción de unidad de fachada: deja ver el punteado y la trama. */
+      width: 16px;
       height: 10px;
       border-radius: 2px;
       background: var(--gris)
     }
 
     .inv-leyenda [data-estado="disponible"] i {
-      background: var(--verde)
+      background: var(--state-available)
     }
 
     .inv-leyenda [data-estado="reservada"] i {
-      background: var(--ambar)
+      background: var(--state-reserved);
+      border: 1.5px dashed var(--tinta)
     }
 
     .inv-leyenda [data-estado="vendida"] i {
-      opacity: .55
+      background: repeating-linear-gradient(45deg, rgba(237, 233, 226, .35) 0 1.5px, transparent 1.5px 4px),
+        var(--state-sold)
     }
 
     .inv-resumen {
@@ -843,7 +866,7 @@
     }
 
     .demo:hover {
-      border-color: rgba(62, 155, 132, .55);
+      border-color: rgba(237, 233, 226, .4);
       transform: translateY(-2px)
     }
 
@@ -865,7 +888,7 @@
 
     .demo .abrir {
       margin-top: 16px;
-      color: var(--verde);
+      color: var(--papel);
       font-size: 14px;
       font-weight: 550
     }
@@ -880,7 +903,7 @@
     .demo-principal {
       display: grid;
       grid-template-columns: 1.1fr .9fr;
-      border-color: rgba(62, 155, 132, .45)
+      border-color: rgba(237, 233, 226, .3)
     }
 
     .demo-principal .lam {
@@ -898,8 +921,8 @@
     }
 
     .etiq-real {
-      border-color: rgba(62, 155, 132, .5);
-      color: var(--verde)
+      border-color: rgba(237, 233, 226, .3);
+      color: var(--papel)
     }
 
     .mas-proyectos {
@@ -938,7 +961,7 @@
     }
 
     .mas-flecha {
-      color: var(--verde);
+      color: var(--papel);
       font-weight: 550;
       white-space: nowrap
     }
@@ -986,7 +1009,7 @@
 
     .comparar-fila b {
       font-weight: 550;
-      color: var(--ambar);
+      color: var(--papel);
       font-variant-numeric: tabular-nums;
       text-align: right
     }
@@ -1075,51 +1098,8 @@
     }
 
     .demo-torre .lam {
-      background: radial-gradient(circle at 50% 25%, rgba(62, 155, 132, .18), transparent 35%),
+      background: radial-gradient(circle at 50% 25%, rgba(237, 233, 226, .06), transparent 35%),
         linear-gradient(180deg, #111b19 0%, #0d1513 100%);
-    }
-
-    .demo-illustration {
-      width: 100%;
-      height: 100%;
-      display: block
-    }
-
-    .demo-illustration .panel {
-      fill: #0f1a18;
-      stroke: rgba(237, 233, 226, .12);
-      stroke-width: 1.5
-    }
-
-    .demo-illustration .floor {
-      fill: #1a2b29
-    }
-
-    .demo-illustration .unit {
-      opacity: .96
-    }
-
-    .demo-illustration .unit--green {
-      fill: #3E9B84
-    }
-
-    .demo-illustration .unit--gray {
-      fill: #2D3938
-    }
-
-    .demo-illustration .unit--gold {
-      fill: #D3A04A
-    }
-
-    .demo-illustration .roof {
-      fill: #182521
-    }
-
-    .demo-illustration .meta {
-      fill: #DCE7E4;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .08em
     }
 
     .etiq {
@@ -1165,7 +1145,7 @@
       display: block;
       height: 8px;
       border-radius: 2px;
-      background: var(--verde);
+      background: var(--suave);
       text-decoration: none;
     }
 
@@ -1187,15 +1167,15 @@
     }
 
     .plan.destacado {
-      border-color: rgba(62, 155, 132, .5);
-      background: rgba(62, 155, 132, .05)
+      border-color: rgba(237, 233, 226, .3);
+      background: rgba(237, 233, 226, .03)
     }
 
     .plan .cinta {
       font-size: 11px;
       letter-spacing: .12em;
       text-transform: uppercase;
-      color: var(--verde);
+      color: var(--papel);
       margin-bottom: 12px
     }
 
@@ -1244,8 +1224,8 @@
       width: 7px;
       height: 7px;
       border-radius: 2px;
-      background: var(--verde);
-      opacity: .7
+      background: var(--papel);
+      opacity: .5
     }
 
     .plan .btn {
@@ -1260,8 +1240,8 @@
       align-items: center;
       max-width: 880px;
       padding: 36px;
-      border-color: rgba(62, 155, 132, .5);
-      background: rgba(62, 155, 132, .05)
+      border-color: rgba(237, 233, 226, .3);
+      background: rgba(237, 233, 226, .03)
     }
 
     .plan-unico ul {
@@ -1479,8 +1459,8 @@
     <div class="env">
       <a class="marca" href="#hero">
         <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
-          <path d="M4 13h12" stroke="#3E9B84" stroke-width="1.6" />
-          <path d="M10 5l3.4 5.6H6.6L10 5z" fill="#3E9B84" />
+          <path d="M4 13h12" stroke="currentColor" stroke-width="1.6" />
+          <path d="M10 5l3.4 5.6H6.6L10 5z" fill="currentColor" />
         </svg>
         Cota
       </a>
@@ -1536,8 +1516,8 @@
           <!-- Respaldo estático: mientras carga three.js o si no hay WebGL. Dibujado por código. -->
           <svg class="fallback-hero" viewBox="0 0 480 440" preserveAspectRatio="xMidYMid slice" role="img"
             aria-label="Edificio de ejemplo con el piso 8 resaltado">
-            <defs><g id="piso-fb"><path d="M122 20h180l38 16H160z" fill="#B4BBBD" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" fill="#8E9698"/><rect x="160" y="36" width="180" height="4" fill="#B4BBBD"/><path d="M127-13l38 16v33l-38-16z" fill="#9AA2A5" fill-opacity=".18"/><g fill="#9AA2A5" fill-opacity=".3" stroke="#1A2124" stroke-opacity=".26"><rect x="165" y="3" width="54" height="33"/><rect x="222" y="3" width="54" height="33"/><rect x="279" y="3" width="54" height="33"/></g></g></defs>
-            <use href="#piso-fb" y="392"/><use href="#piso-fb" y="352"/><use href="#piso-fb" y="312"/><use href="#piso-fb" y="272"/><use href="#piso-fb" y="232"/><use href="#piso-fb" y="192"/><use href="#piso-fb" y="152"/><use href="#piso-fb" y="112"/><g transform="translate(0 72)"><path d="M122 20h180l38 16H160z" fill="#B4BBBD" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" fill="#8E9698"/><rect x="160" y="36" width="180" height="4" fill="#B4BBBD"/><path d="M127-13l38 16v33l-38-16z" fill="#3E9B84" fill-opacity=".75"/><g stroke="#0E1513" stroke-opacity=".6"><rect x="165" y="3" width="40.25" height="33" fill="#3E9B84"/><rect x="208.25" y="3" width="40.25" height="33" fill="#5E6968"/><rect x="251.5" y="3" width="40.25" height="33" fill="#D3A04A"/><rect x="294.75" y="3" width="40.25" height="33" fill="#3E9B84"/></g></g><use href="#piso-fb" y="32"/><use href="#piso-fb" y="-8"/>
+            <defs><g id="piso-fb"><path d="M122 20h180l38 16H160z" fill="#B4BBBD" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" fill="#8E9698"/><rect x="160" y="36" width="180" height="4" fill="#B4BBBD"/><path d="M127-13l38 16v33l-38-16z" fill="#9AA2A5" fill-opacity=".18"/><g fill="#9AA2A5" fill-opacity=".3" stroke="#1A2124" stroke-opacity=".26"><rect x="165" y="3" width="54" height="33"/><rect x="222" y="3" width="54" height="33"/><rect x="279" y="3" width="54" height="33"/></g></g><pattern id="fb-trama" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" style="fill:var(--state-sold)"/><line x1="0" y1="0" x2="0" y2="6" stroke="#EDE9E2" stroke-opacity=".35" stroke-width="1.5"/></pattern></defs>
+            <use href="#piso-fb" y="392"/><use href="#piso-fb" y="352"/><use href="#piso-fb" y="312"/><use href="#piso-fb" y="272"/><use href="#piso-fb" y="232"/><use href="#piso-fb" y="192"/><use href="#piso-fb" y="152"/><use href="#piso-fb" y="112"/><g transform="translate(0 72)"><path d="M122 20h180l38 16H160z" fill="#B4BBBD" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" fill="#8E9698"/><rect x="160" y="36" width="180" height="4" fill="#B4BBBD"/><path d="M127-13l38 16v33l-38-16z" style="fill:var(--state-available)" fill-opacity=".75"/><g stroke="#0E1513" stroke-opacity=".6"><rect x="165" y="3" width="40.25" height="33" style="fill:var(--state-available)"/><rect x="208.25" y="3" width="40.25" height="33" fill="url(#fb-trama)"/><rect x="251.5" y="3" width="40.25" height="33" style="fill:var(--state-reserved)" stroke-width="3" stroke-dasharray="4 3" stroke-opacity="1"/><rect x="294.75" y="3" width="40.25" height="33" style="fill:var(--state-available)"/></g></g><use href="#piso-fb" y="32"/><use href="#piso-fb" y="-8"/>
           </svg>
           <canvas id="lienzo-hero"></canvas>
           <div class="solo-lector" id="unidades-hero" role="group" aria-label="Piso 8, unidades de ejemplo"></div>
@@ -1726,8 +1706,8 @@
             <div class="barra"><i>2 dorm norte</i><u style="width:100%"></u><b>38%</b></div>
             <div class="barra"><i>3 dorm</i><u style="width:63%"></u><b>24%</b></div>
             <div class="barra"><i>1 dorm norte</i><u style="width:55%"></u><b>21%</b></div>
-            <div class="barra"><i>2 dorm sur</i><u style="width:29%;background:#D3A04A"></u><b>11%</b></div>
-            <div class="barra"><i>1 dorm sur</i><u style="width:16%;background:#7C8886"></u><b>6%</b></div>
+            <div class="barra"><i>2 dorm sur</i><u style="width:29%"></u><b>11%</b></div>
+            <div class="barra"><i>1 dorm sur</i><u style="width:16%"></u><b>6%</b></div>
           </div>
           <p class="plomo" style="margin-top:20px;font-size:14px">
             Acá el dato dice: sobran unidades al sur y falta stock de 2 dormitorios al
@@ -2065,10 +2045,12 @@
          seleccionable (ver más abajo), el resto es decorativo.
          ============================================================ */
 
-      const COLORES = { disp: 0x3E9B84, res: 0xD3A04A, vend: 0x5E6968 };
+      // Los colores de estado salen de los tokens CSS de :root.
+      const token = n => new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue(n).trim()).getHex();
+      const COLORES = { disp: token('--state-available'), res: token('--state-reserved'), vend: token('--state-sold') };
       // Esquema real de la demo: unidades gris translúcido
       // por defecto, con una franja destacada en verde "disponible".
-      const ESTADOS_REAL = { disponible: 0x2F7A68, sinDato: 0x9AA2A5 };
+      const ESTADOS_REAL = { disponible: COLORES.disp, sinDato: 0x9AA2A5 };
       const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       // `destacado`: piso (0 = planta baja) que se arma con 4 unidades pasantes
@@ -2498,6 +2480,13 @@
         svg.textContent = '';
         svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
         svg.setAttribute('aria-label', `${NOMBRE_EDIFICIO}, fachada: ${pisos} pisos de ${porPiso} unidades`);
+
+        // Trama de vendida, del mismo tamaño en pantalla aunque la fachada se achique.
+        const t = Math.round(6 / Math.min(s, 1));
+        const trama = el('pattern', { id: 'inv-trama', width: t, height: t, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' },
+          el('defs', {}, svg));
+        el('rect', { class: 'inv-trama-fondo', width: t, height: t }, trama);
+        el('line', { class: 'inv-trama-linea', x1: 0, y1: 0, x2: 0, y2: t, 'vector-effect': 'non-scaling-stroke' }, trama);
 
         const est = el('g', { class: 'inv-estructura', 'aria-hidden': 'true' }, svg);
         el('rect', { x: G.x0, y: G.techo - 6, width: W - G.x0, height: 6 }, est);
