@@ -1599,107 +1599,80 @@
       max-width: 44ch
     }
 
-    /* ---------- planes ---------- */
-    .plan {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--linea);
-      border-radius: 8px;
-      padding: 28px;
-      background: var(--tinta-2)
+    /* ---------- precio ---------- */
+    /* Columna editorial: montos en la tipografía de títulos, etiquetas en mono como
+       las cotas del hero. Sin verde: ese color es solo "disponible". */
+    .tarifa {
+      max-width: 34rem;
+      margin: 0 auto;
+      text-align: center
     }
 
-    .plan.destacado {
-      border-color: rgba(237, 233, 226, .3);
-      background: rgba(237, 233, 226, .03)
+    .tarifa .intro {
+      margin: 0 auto 40px
     }
 
-    .plan .cinta {
-      font-size: 11px;
-      letter-spacing: .12em;
+    .tramo {
+      padding: 34px 0 36px;
+      border-bottom: 1px solid var(--linea)
+    }
+
+    .tramo-etiq,
+    .tarifa-condiciones {
+      font: 11px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      letter-spacing: .16em;
       text-transform: uppercase;
-      color: var(--papel);
-      margin-bottom: 12px
+      color: var(--tenue)
     }
 
-    .precio {
-      margin: 16px 0 4px;
-      font-size: 31px;
+    .tramo-monto {
+      margin: 14px 0 2px;
+      font-size: clamp(52px, 7vw, 68px);
       font-weight: 700;
-      letter-spacing: -.03em;
-      font-variant-numeric: tabular-nums
+      line-height: 1.05;
+      letter-spacing: -.035em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap
     }
 
-    .precio small {
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--tenue);
-      letter-spacing: 0
-    }
-
-    .mensual {
+    .tramo-monto .moneda {
+      font-size: .42em;
+      font-weight: 500;
+      letter-spacing: 0;
       color: var(--suave);
-      font-size: 14.5px;
-      margin-bottom: 20px
+      vertical-align: .9em
     }
 
-    .plan ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 26px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px
-    }
-
-    .plan li {
-      position: relative;
-      padding-left: 20px;
-      font-size: 14.5px;
+    .tramo-periodo {
+      font-size: 15px;
       color: var(--suave)
     }
 
-    .plan li::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 9px;
-      width: 7px;
-      height: 7px;
-      border-radius: 2px;
-      background: var(--papel);
-      opacity: .5
+    .tramo-linea {
+      max-width: 40ch;
+      margin: 18px auto 0;
+      font-size: 15px;
+      color: var(--suave)
     }
 
-    .plan .btn {
-      margin-top: auto;
-      justify-content: center
+    .tarifa-condiciones {
+      margin-top: 22px
     }
 
-    .plan-unico {
-      display: grid;
-      grid-template-columns: .9fr 1.1fr;
-      gap: 40px;
-      align-items: center;
-      max-width: 880px;
-      padding: 36px;
-      border-color: rgba(237, 233, 226, .3);
-      background: rgba(237, 233, 226, .03)
+    .tarifa-cierre {
+      margin: 40px 0 26px;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -.01em
     }
 
-    .plan-unico ul {
-      margin: 0
+    /* Si no entra en una línea, corta entre las dos frases y no deja una palabra sola. */
+    .tarifa-cierre span {
+      display: inline-block
     }
 
-    .plan-unico .btn {
-      margin-top: 8px
-    }
-
-    .nota-precio {
-      margin-top: 26px;
-      font-size: 13.5px;
-      color: var(--tenue);
-      max-width: 62ch
+    .tarifa .microcopy {
+      margin-top: 10px
     }
 
     /* ---------- faq ---------- */
@@ -1806,7 +1779,6 @@
 
       #hero .env,
       .sol-grid,
-      .plan-unico,
       .demanda,
       .firma {
         grid-template-columns: 1fr;
@@ -1870,15 +1842,6 @@
 
       .otros-lista .etiq {
         margin-bottom: 10px
-      }
-
-      .plan-unico {
-        padding: 26px
-      }
-
-      .plan-unico .btn {
-        width: 100%;
-        justify-content: center
       }
 
       .mas-proyectos {
@@ -2306,34 +2269,29 @@
   <!-- ============ PLANES ============ -->
   <section id="planes">
     <div class="env">
-      <div class="intro">
-        <p class="rotulo">Precio</p>
-        <h2>Armado una vez, mantenimiento mientras vendas.</h2>
-        <p>Un solo plan, sin letra chica. Precios en dólares, sin IVA.</p>
-      </div>
-      <div class="plan plan-unico">
-        <div>
-          <p class="cinta">Todo incluido</p>
-          <h3>Tu proyecto, navegable y al día</h3>
-          <p class="precio">1.800 <small>de armado</small></p>
-          <p class="mensual">+ 120 por mes mientras vendas</p>
-          <a class="btn btn-p" href="#contacto">Quiero mi planta gratis</a>
+      <!-- Montos y condiciones salen de PRECIOS, al principio del script. -->
+      <div class="tarifa">
+        <div class="intro">
+          <p class="rotulo">Precio</p>
+          <h2>Armado una vez, mantenimiento mientras vendas.</h2>
         </div>
-        <ul>
-          <li>Hasta 200 unidades, en una o varias torres</li>
-          <li>Link propio por unidad, para mandar por WhatsApp</li>
-          <li>Filtros por tipología, estado y orientación</li>
-          <li>Simulador de sol con las horas de cada unidad</li>
-          <li>Planta 2D y render por tipología</li>
-          <li>Panel de ventas con usuarios y permisos</li>
-          <li>Panel de demanda por unidad</li>
-          <li>Con tu marca, en un link propio</li>
-        </ul>
+        <div class="tramo">
+          <p class="tramo-etiq">Armado</p>
+          <p class="tramo-monto" data-precio="setupUSD"></p>
+          <p class="tramo-periodo">una vez</p>
+          <p class="tramo-linea">Cargamos tu inventario, armamos el edificio y lo publicamos con tu marca.</p>
+        </div>
+        <div class="tramo">
+          <p class="tramo-etiq">Mientras vendés</p>
+          <p class="tramo-monto" data-precio="monthlyUSD"></p>
+          <p class="tramo-periodo">por mes<span id="precio-fin" hidden>, hasta vender la última unidad</span></p>
+          <p class="tramo-linea">Publicación, actualizaciones del inventario y panel comercial.</p>
+        </div>
+        <p class="tarifa-condiciones" id="precio-condiciones" hidden></p>
+        <p class="tarifa-cierre"><span>Un solo sistema.</span> <span>Todo tu inventario.</span></p>
+        <a class="btn btn-p" href="#contacto" aria-describedby="microcopy-precio">Quiero mi planta gratis</a>
+        <p class="microcopy" id="microcopy-precio">Sin compromiso</p>
       </div>
-      <p class="nota-precio">
-        Pago anual adelantado: dos meses bonificados. Proyectos de más de 200 unidades, o
-        varios proyectos a la vez, se cotizan aparte.
-      </p>
     </div>
   </section>
 
@@ -2437,6 +2395,34 @@
   </footer>
 
   <script>
+    /* Precio. Montos en USD. Las condiciones en null no se muestran: se
+       completan cuando estén confirmadas. */
+    const PRECIOS = {
+      setupUSD: 1800,
+      monthlyUSD: 120,
+      unitLimit: null,           // número: "Hasta N unidades"
+      taxNote: null,             // texto, p. ej. "Precios en dólares, sin IVA"
+      monthlyEndsWhenSold: null, // true: la mensualidad termina al vender la última unidad
+    };
+
+    // Punto de miles a mano: en español toLocaleString deja 1800 sin separar.
+    const miles = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    document.querySelectorAll('[data-precio]').forEach(el => {
+      const moneda = document.createElement('span');
+      moneda.className = 'moneda';
+      moneda.textContent = 'US$';
+      el.replaceChildren(moneda, ' ' + miles(PRECIOS[el.dataset.precio]));
+    });
+    {
+      const condiciones = [];
+      if (PRECIOS.unitLimit != null) condiciones.push(`Hasta ${miles(PRECIOS.unitLimit)} unidades`);
+      if (PRECIOS.taxNote != null) condiciones.push(PRECIOS.taxNote);
+      const el = document.getElementById('precio-condiciones');
+      el.textContent = condiciones.join(' · ');
+      el.hidden = !condiciones.length;
+      document.getElementById('precio-fin').hidden = PRECIOS.monthlyEndsWhenSold !== true;
+    }
+
     /* Popup de otros proyectos. Fuera de iniciar3D para que abra y cierre aunque
        three.js todavía no haya llegado. Las miniaturas se montan la primera vez
        que se abre: con el dialog cerrado el canvas mide 0 y la cámara saldría mal. */
