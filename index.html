@@ -1457,12 +1457,37 @@
       gap: 18px
     }
 
-    .barras li {
+    .demanda-cuerpo {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: start
+    }
+
+    .barras .fila {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 8px 16px;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: none;
+      text-align: left;
       font: 13px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
       color: var(--suave)
+    }
+
+    button.fila {
+      cursor: pointer
+    }
+
+    button.fila:hover {
+      color: var(--papel)
+    }
+
+    button.fila:focus-visible {
+      outline: 1px solid var(--suave);
+      outline-offset: 6px
     }
 
     .barras .pct {
@@ -1491,12 +1516,57 @@
       transform: none
     }
 
-    .barras li.lider {
+    .barras .fila.activa {
       color: var(--papel)
     }
 
-    .barras li.lider .lleno {
+    .barras .fila.activa .lleno {
       background: var(--papel)
+    }
+
+    /* Mini fachada: las unidades de la tipología elegida toman el color de su estado. */
+    .mini-fachada {
+      margin: 0;
+      width: 96px
+    }
+
+    .mini-fachada svg {
+      display: block;
+      width: 100%;
+      height: auto
+    }
+
+    .mini-fachada .techo {
+      fill: var(--tenue)
+    }
+
+    .mini-fachada .u {
+      fill: var(--linea);
+      transition: fill .3s
+    }
+
+    .mini-fachada .on[data-estado="disponible"] {
+      fill: var(--state-available)
+    }
+
+    .mini-fachada .on[data-estado="reservada"] {
+      fill: var(--state-reserved)
+    }
+
+    .mini-fachada .on[data-estado="vendida"] {
+      fill: var(--state-sold)
+    }
+
+    .mini-fachada figcaption {
+      margin-top: 12px;
+      font: 10.5px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      color: var(--tenue);
+      text-align: center
+    }
+
+    .mini-fachada figcaption b {
+      font-weight: 400;
+      color: var(--state-available)
     }
 
     .insight {
@@ -2122,7 +2192,13 @@
             <span>% de consultas por tipología · últimos 30 días</span>
             <span class="demanda-ejemplo">Datos de ejemplo</span>
           </p>
-          <ol class="barras" id="demanda-barras" aria-label="Porcentaje de consultas por tipología"></ol>
+          <div class="demanda-cuerpo">
+            <ol class="barras" id="demanda-barras" aria-label="Porcentaje de consultas por tipología"></ol>
+            <figure class="mini-fachada" id="demanda-fachada" hidden>
+              <svg role="img"></svg>
+              <figcaption aria-live="polite"></figcaption>
+            </figure>
+          </div>
         </div>
         <div class="demanda-insight">
           <p class="insight">
@@ -3163,6 +3239,54 @@
       const lista = document.getElementById('demanda-barras');
       if (!lista) return;
       const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const fig = document.getElementById('demanda-fachada');
+      const NS = 'http://www.w3.org/2000/svg';
+      // Celda de la mini fachada, en unidades del viewBox.
+      const C = { ancho: 22, alto: 11, sep: 3, techo: 6 };
+      let botones = [], activa = null, celdas = [];
+
+      const esDe = (u, t) => u.dormitorios === t.dormitorios && u.orientacion === t.orientacion;
+
+      function resaltar(boton) {
+        activa = boton;
+        botones.forEach(b => {
+          b.classList.toggle('activa', b === boton);
+          b.setAttribute('aria-pressed', b === boton);
+        });
+        if (!celdas.length) return;
+        const t = boton.tipologia;
+        const suyas = celdas.filter(c => esDe(c.u, t));
+        celdas.forEach(c => c.rect.classList.toggle('on', suyas.includes(c)));
+        const disp = suyas.filter(c => c.u.estado === 'disponible').length;
+        fig.querySelector('svg').setAttribute('aria-label',
+          `Fachada: ${suyas.length} unidades de ${t.etiqueta}, ${disp} disponibles`);
+        fig.querySelector('figcaption').innerHTML = `${t.etiqueta}<br><b>${disp}</b> de ${suyas.length} disp.`;
+      }
+
+      function armarFachada(inv) {
+        const { pisos, porPiso } = inv;
+        const svg = fig.querySelector('svg');
+        const W = porPiso * C.ancho + (porPiso - 1) * C.sep;
+        const H = C.techo + pisos * (C.alto + C.sep);
+        svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+        const techo = document.createElementNS(NS, 'rect');
+        Object.entries({ class: 'techo', width: W, height: 2 }).forEach(([k, v]) => techo.setAttribute(k, v));
+        svg.appendChild(techo);
+        // Mismo código de unidad que #inventario: A + piso + columna de dos dígitos.
+        celdas = inv.unidades.map(u => {
+          const piso = +u.id.slice(1, -2), col = +u.id.slice(-2);
+          const rect = document.createElementNS(NS, 'rect');
+          Object.entries({
+            class: 'u', 'data-estado': u.estado, rx: 1.5, width: C.ancho, height: C.alto,
+            x: (col - 1) * (C.ancho + C.sep),
+            y: C.techo + (pisos - piso) * (C.alto + C.sep),
+          }).forEach(([k, v]) => rect.setAttribute(k, v));
+          svg.appendChild(rect);
+          return { u, rect };
+        });
+        fig.hidden = false;
+        if (activa) resaltar(activa);
+      }
 
       function armar(d) {
         const filas = d.tipologias.slice().sort((a, b) => b.pct - a.pct);
@@ -3170,14 +3294,27 @@
         filas.sort((a, b) => (a.dormitorios === null) - (b.dormitorios === null));
         const max = Math.max(...filas.map(f => f.pct));
 
-        filas.forEach((f, i) => {
+        // "Otros" no tiene unidades que resaltar: va como fila quieta, no como botón.
+        botones = filas.map((f, i) => {
           const li = document.createElement('li');
-          if (i === 0) li.className = 'lider';
-          li.innerHTML = `<span></span><span class="pct">${f.pct}%</span>` +
+          const fila = document.createElement(f.dormitorios === null ? 'div' : 'button');
+          fila.className = 'fila';
+          fila.innerHTML = `<span></span><span class="pct">${f.pct}%</span>` +
             `<span class="riel" aria-hidden="true"><span class="lleno" style="--w:${f.pct / max * 100}%;--i:${i}"></span></span>`;
-          li.firstChild.textContent = f.etiqueta;
+          fila.firstChild.textContent = f.etiqueta;
+          if (fila.tagName === 'BUTTON') {
+            fila.type = 'button';
+            fila.tipologia = f;
+            const elegir = () => resaltar(fila);
+            fila.addEventListener('pointerenter', elegir);
+            fila.addEventListener('focus', elegir);
+            fila.addEventListener('click', elegir);
+          }
+          li.appendChild(fila);
           lista.appendChild(li);
-        });
+          return fila;
+        }).filter(b => b.tagName === 'BUTTON');
+        resaltar(botones[0]);
 
         const lider = filas[0];
         const dorm = `${lider.dormitorios} dormitorio${lider.dormitorios === 1 ? '' : 's'}`;
@@ -3198,7 +3335,10 @@
       fetch('data/demand-demo.json')
         .then(r => r.ok ? r.json() : Promise.reject(r.status))
         .then(armar)
-        .catch(err => console.warn('Demanda sin datos, queda solo el titular:', err));
+        .then(() => fetch('data/inventory-demo.json'))
+        .then(r => r.ok ? r.json() : Promise.reject(r.status))
+        .then(armarFachada)
+        .catch(err => console.warn('Demanda incompleta, queda lo que cargó:', err));
     })();
 
     /* ============================================================
