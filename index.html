@@ -1225,61 +1225,116 @@
       align-items: center
     }
 
-    .comparar {
-      margin-top: 26px;
-      border: 1px solid var(--linea);
-      border-radius: 8px;
-      background: var(--tinta-2);
-      padding: 16px 18px
+    /* Simulador de sol: planta con norte arriba, el sol recorre su arco del día.
+       --sol es la luz, no un estado: no reusar el ámbar de "reservado". */
+    .sol-sim {
+      --sol: #F5C969;
+      margin: 0
     }
 
-    .comparar-tit {
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--tenue);
-      margin-bottom: 8px
+    .sol-sim svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      touch-action: pan-y
     }
 
-    .comparar-fila {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 8px 0;
-      font-size: 14.5px
-    }
+    .sol-sim .ruedo { fill: none; stroke: var(--linea) }
+    .sol-sim .anillo { fill: none; stroke: var(--linea); stroke-dasharray: 2 5 }
+    .sol-sim .rumbo { fill: var(--tenue); font: 600 11px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; text-anchor: middle }
+    .sol-sim .rumbo.n { fill: var(--papel) }
+    .sol-sim .arco { fill: none; stroke: var(--sol); stroke-opacity: .35; stroke-width: 1.5; stroke-dasharray: 1 6; stroke-linecap: round }
+    .sol-sim .marca { fill: var(--sol); fill-opacity: .5 }
+    .sol-sim .marca-txt { fill: var(--tenue); font: 10px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; text-anchor: middle; dominant-baseline: middle }
+    .sol-sim .sombra { fill: #000; fill-opacity: .38 }
+    .sol-sim .rayo { stroke: var(--sol); stroke-opacity: .28; stroke-width: 1; stroke-dasharray: 3 5 }
+    .sol-sim .planta { fill: #1F2B28; stroke: var(--linea) }
+    .sol-sim .div { stroke: var(--linea) }
+    .sol-sim .celda { fill: var(--sol); fill-opacity: 0; stroke: var(--papel); stroke-width: 1.5; transition: fill-opacity .25s }
+    .sol-sim .cara { stroke: var(--gris); stroke-opacity: .35; stroke-width: 4; stroke-linecap: square; transition: stroke .25s, stroke-opacity .25s }
+    .sol-sim .cara.luz { stroke: var(--sol); stroke-width: 5; filter: url(#sol-brillo) }
+    .sol-sim .cod { fill: var(--papel); font: 600 12px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; text-anchor: middle }
+    .sol-sim .halo { fill: var(--sol); fill-opacity: .16 }
+    .sol-sim .disco { fill: var(--sol) }
 
-    .comparar-fila + .comparar-fila {
+    .sol-panel {
+      padding: 16px 18px 18px;
       border-top: 1px solid var(--linea)
     }
 
-    .comparar-fila i {
+    .sol-hora {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .sol-hora output {
+      font: 500 30px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      color: var(--papel);
+      font-variant-numeric: tabular-nums
+    }
+
+    .sol-hora span {
+      font-size: 12.5px;
+      color: var(--tenue)
+    }
+
+    .sol-rango {
+      display: block;
+      width: 100%;
+      margin: 14px 0 4px;
+      accent-color: var(--sol);
+      cursor: pointer
+    }
+
+    .sol-extremos {
+      display: flex;
+      justify-content: space-between;
+      font: 11.5px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      color: var(--tenue)
+    }
+
+    .sol-unidades {
+      margin-top: 12px
+    }
+
+    .sol-u {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2px 14px;
+      padding: 9px 0;
+      font-size: 14.5px
+    }
+
+    .sol-u + .sol-u {
+      border-top: 1px solid var(--linea)
+    }
+
+    .sol-u i {
       font-style: normal;
       color: var(--suave)
     }
 
-    .comparar-fila b {
+    .sol-u b {
       font-weight: 550;
-      color: var(--papel);
-      font-variant-numeric: tabular-nums;
+      color: var(--gris);
       text-align: right
     }
 
-    .comparar-fila b.sin {
-      color: var(--gris)
+    .sol-u.luz b {
+      color: var(--sol)
     }
 
-    .sol-captura {
-      margin: 0
+    .sol-u small {
+      grid-column: 1 / -1;
+      font-size: 12.5px;
+      color: var(--tenue);
+      font-variant-numeric: tabular-nums
     }
 
-    .sol-captura img {
-      width: 100%;
-      height: auto;
-      display: block
-    }
-
-    .sol-captura figcaption {
+    .sol-sim figcaption {
       padding: 10px 14px;
       font-size: 12.5px;
       color: var(--tenue);
@@ -1920,11 +1975,6 @@
           mejor asoleadas. Eso deja de ser algo que dice el vendedor y pasa a ser algo que
           el comprador comprueba solo.
         </p>
-        <div class="comparar" aria-label="Sol directo el 21 de junio en BRUSCO">
-          <p class="comparar-tit">BRUSCO · 21 de junio</p>
-          <div class="comparar-fila"><i>B803 · al norte</i><b>Sol de 07:57 a 17:36</b></div>
-          <div class="comparar-fila"><i>A906 · al sur</i><b class="sin">Sin sol directo</b></div>
-        </div>
         <p style="margin-top:22px">
           Para vos, es el argumento del sobreprecio: la unidad al norte vale más, y ahora
           se puede demostrar.
@@ -1932,10 +1982,59 @@
         <a class="btn btn-s" style="margin-top:26px"
           href="https://armadoporcota.vercel.app/?p=brusco&amp;sol=invierno">Probalo en BRUSCO, el 21 de junio →</a>
       </div>
-      <figure class="marco sol-captura">
-        <img src="sol-brusco.jpg" width="1044" height="791" loading="lazy"
-          alt="Visor de BRUSCO con el simulador solar en el 21 de junio: la unidad B803, al norte, recibe sol directo de 07:57 a 17:36.">
-        <figcaption>Captura real del visor · B803, 21 de junio, 12:00</figcaption>
+      <figure class="marco sol-sim" id="sol-sim">
+        <!-- Planta con norte arriba. Distancia al centro = 90° − altura del sol,
+             como un diagrama solar. Lo dinámico lo dibuja el script de abajo. -->
+        <svg viewBox="0 0 560 400" role="img"
+          aria-label="Planta del edificio con el recorrido del sol el 21 de junio en Montevideo. El sol pasa siempre por el norte: la fachada norte recibe sol todo el día y la sur nunca.">
+          <defs>
+            <!-- userSpaceOnUse: una línea horizontal tiene caja de alto 0 y el filtro la borraría. -->
+            <filter id="sol-brillo" filterUnits="userSpaceOnUse" x="0" y="0" width="560" height="400">
+              <feGaussianBlur stdDeviation="3" result="b" />
+              <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+            <clipPath id="sol-ruedo"><circle cx="280" cy="200" r="170" /></clipPath>
+          </defs>
+          <circle class="anillo" cx="280" cy="200" r="56.7" />
+          <circle class="anillo" cx="280" cy="200" r="113.3" />
+          <circle class="ruedo" cx="280" cy="200" r="170" />
+          <text class="rumbo n" x="280" y="20">N</text>
+          <text class="rumbo" x="280" y="392">S</text>
+          <text class="rumbo" x="464" y="204">E</text>
+          <text class="rumbo" x="96" y="204">O</text>
+          <path class="sombra" id="sol-sombra" clip-path="url(#sol-ruedo)" />
+          <path class="arco" id="sol-arco" />
+          <g id="sol-marcas"></g>
+          <line class="rayo" id="sol-rayo" />
+          <rect class="planta" x="205" y="172" width="150" height="56" />
+          <line class="div" x1="205" y1="200" x2="355" y2="200" />
+          <g id="sol-celdas"></g>
+          <line class="cara" data-n="0" x1="205" y1="172" x2="355" y2="172" />
+          <line class="cara" data-n="90" x1="355" y1="172" x2="355" y2="228" />
+          <line class="cara" data-n="180" x1="205" y1="228" x2="355" y2="228" />
+          <line class="cara" data-n="270" x1="205" y1="172" x2="205" y2="228" />
+          <text class="cod" x="317.5" y="161">B803</text>
+          <text class="cod" x="242.5" y="249">A906</text>
+          <g id="sol-astro">
+            <circle class="halo" r="22" />
+            <circle class="disco" r="10" />
+          </g>
+        </svg>
+        <div class="sol-panel">
+          <div class="sol-hora">
+            <output id="sol-hora" for="sol-rango">12:00</output>
+            <span id="sol-alt">21 de junio · Montevideo</span>
+          </div>
+          <input class="sol-rango" id="sol-rango" type="range" step="1" value="720"
+            aria-label="Hora del día, 21 de junio">
+          <div class="sol-extremos"><span id="sol-sale"></span><span id="sol-pone"></span></div>
+          <div class="sol-unidades">
+            <div class="sol-u" data-n="0"><i>B803 · al norte</i><b></b><small></small></div>
+            <div class="sol-u" data-n="180"><i>A906 · al sur</i><b></b><small></small></div>
+          </div>
+        </div>
+        <figcaption>Esquema de BRUSCO en planta, norte arriba. El sol se calcula para
+          Montevideo; no incluye la sombra de edificios vecinos.</figcaption>
       </figure>
     </div>
   </section>
@@ -3066,6 +3165,203 @@
         ciclo();
         reloj = setInterval(ciclo, PASO);
       }, { threshold: .5 }).observe(lamina);
+    })();
+  </script>
+
+  <script>
+    /* ============================================================
+       Simulador de sol: 21 de junio en Montevideo, en planta.
+       Posición solar con las fórmulas de NOAA, sin refracción: da
+       salida 07:57 y puesta 17:36, igual que el visor de BRUSCO.
+       No depende de three.js.
+       ============================================================ */
+    (function () {
+      const LAT = -34.9011, LON = -56.1645, HUSO = -3, DIA_DEL_ANO = 172;
+      const CX = 280, CY = 200, RUEDO = 170;
+      // Planta en px del SVG y altura del edificio en la misma escala, para la sombra.
+      const PLANTA = [[205, 172], [355, 172], [355, 228], [205, 228]];
+      const ALTURA = 70;
+      const CELDAS_POR_FILA = 6, B803 = 4, A906 = 1;
+
+      const fig = document.getElementById('sol-sim');
+      if (!fig) return;
+      const $ = id => document.getElementById(id);
+      const rango = $('sol-rango');
+      const RAD = Math.PI / 180;
+
+      // Altura y azimut (desde el norte, horario) en grados, para minutos de hora local.
+      function sol(min) {
+        const g = 2 * Math.PI / 365 * (DIA_DEL_ANO - 1 + (min / 60 - 12) / 24);
+        const ecTiempo = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g)
+          - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+        const dec = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g)
+          - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g)
+          - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
+        const h = ((min + ecTiempo + 4 * LON - 60 * HUSO) / 4 - 180) * RAD, f = LAT * RAD;
+        const alt = Math.asin(Math.sin(f) * Math.sin(dec) + Math.cos(f) * Math.cos(dec) * Math.cos(h));
+        const az = Math.atan2(Math.sin(h), Math.cos(h) * Math.sin(f) - Math.tan(dec) * Math.cos(f)) / RAD + 180;
+        return { alt: alt / RAD, az: az % 360 };
+      }
+
+      // Cruce del horizonte por bisección, a cada lado del mediodía solar.
+      function cruce(a, b, sube) {
+        for (let i = 0; i < 40; i++) {
+          const m = (a + b) / 2;
+          if ((sol(m).alt > 0) === sube) b = m; else a = m;
+        }
+        return (a + b) / 2;
+      }
+      const SALE = cruce(240, 766, true), PONE = cruce(766, 1260, false);
+
+      const hhmm = m => {
+        const r = Math.round(m);
+        return String(Math.floor(r / 60)).padStart(2, '0') + ':' + String(r % 60).padStart(2, '0');
+      };
+      // Distancia al centro = 90° − altura: arriba del todo, en el centro.
+      const punto = ({ alt, az }) => {
+        const r = RUEDO * (90 - Math.max(alt, 0)) / 90;
+        return [CX + r * Math.sin(az * RAD), CY - r * Math.cos(az * RAD)];
+      };
+      // Cara iluminada: sol sobre el horizonte y del lado de su normal.
+      const incidencia = (s, normal) =>
+        s.alt < -1e-6 ? 0 : Math.max(0, Math.cos(s.alt * RAD) * Math.cos((s.az - normal) * RAD));
+
+      // Minutos de sol directo en el día, por cara. Paso de un minuto.
+      function horasDeSol(normal) {
+        let n = 0, desde = null, hasta = null;
+        for (let m = Math.ceil(SALE); m <= PONE; m++) {
+          if (incidencia(sol(m), normal) > 0) { n++; if (desde === null) desde = m; hasta = m; }
+        }
+        return { n, desde, hasta };
+      }
+
+      // Lo fijo: arco del día, marcas horarias, celdas de la planta.
+      const ns = 'http://www.w3.org/2000/svg';
+      const nuevo = (tag, attrs, padre) => {
+        const el = document.createElementNS(ns, tag);
+        for (const k in attrs) el.setAttribute(k, attrs[k]);
+        padre.appendChild(el);
+        return el;
+      };
+      let d = '';
+      for (let m = SALE; m < PONE + 5; m += 5) d += (d ? 'L' : 'M') + punto(sol(Math.min(m, PONE))).map(v => v.toFixed(1)).join(' ');
+      $('sol-arco').setAttribute('d', d);
+
+      const marcas = $('sol-marcas');
+      for (let hora = 8; hora <= 17; hora++) {
+        const [x, y] = punto(sol(hora * 60));
+        nuevo('circle', { class: 'marca', cx: x, cy: y, r: 2.5 }, marcas);
+        if (hora % 3 === 0) {
+          // Etiqueta hacia afuera del ruedo.
+          const dx = x - CX, dy = y - CY, l = Math.hypot(dx, dy) || 1;
+          nuevo('text', { class: 'marca-txt', x: x + dx / l * 28, y: y + dy / l * 28 }, marcas).textContent = hora + 'h';
+        }
+      }
+
+      const celdas = $('sol-celdas');
+      const [x0, y0] = PLANTA[0], anchoC = (PLANTA[1][0] - x0) / CELDAS_POR_FILA, altoC = (PLANTA[2][1] - y0) / 2;
+      for (let i = 1; i < CELDAS_POR_FILA; i++) {
+        nuevo('line', { class: 'div', x1: x0 + i * anchoC, y1: y0, x2: x0 + i * anchoC, y2: y0 + 2 * altoC }, celdas);
+      }
+      // Cada celda resaltada se tiñe con el sol que entra por su fachada.
+      nuevo('rect', { class: 'celda', 'data-n': 0, x: x0 + B803 * anchoC + 2, y: y0 + 2, width: anchoC - 4, height: altoC - 4 }, celdas);
+      nuevo('rect', { class: 'celda', 'data-n': 180, x: x0 + A906 * anchoC + 2, y: y0 + altoC + 2, width: anchoC - 4, height: altoC - 4 }, celdas);
+
+      rango.min = Math.ceil(SALE);
+      rango.max = Math.round(PONE);
+      $('sol-sale').textContent = hhmm(Math.ceil(SALE)) + ' sale el sol';
+      $('sol-pone').textContent = 'se pone ' + hhmm(PONE);
+
+      const filas = [...fig.querySelectorAll('.sol-u')];
+      filas.forEach(f => {
+        const { n, desde, hasta } = horasDeSol(+f.dataset.n);
+        f.querySelector('small').textContent = n
+          ? `En el día: ${Math.floor(n / 60)} h ${n % 60} min de sol, de ${hhmm(desde)} a ${hhmm(Math.min(hasta + 1, PONE))}`
+          : 'En el día: 0 horas de sol directo';
+      });
+
+      // Envolvente convexa (cadena monótona) de la planta y su proyección en el piso.
+      function envolvente(pts) {
+        pts.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+        const cruz = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+        const lado = lista => {
+          const h = [];
+          for (const p of lista) {
+            while (h.length >= 2 && cruz(h[h.length - 2], h[h.length - 1], p) <= 0) h.pop();
+            h.push(p);
+          }
+          h.pop();
+          return h;
+        };
+        return lado(pts).concat(lado(pts.slice().reverse()));
+      }
+
+      const caras = [...fig.querySelectorAll('.cara')], tinte = [...fig.querySelectorAll('.celda')];
+      const astro = $('sol-astro'), rayo = $('sol-rayo'), sombra = $('sol-sombra');
+
+      function dibujar(v) {
+        // El rango va de minuto entero a minuto entero; el sol, de salida a puesta exactas.
+        const m = Math.min(Math.max(v, SALE), PONE);
+        const s = sol(m), [x, y] = punto(s);
+        astro.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+        rayo.setAttribute('x1', x); rayo.setAttribute('y1', y);
+        rayo.setAttribute('x2', CX); rayo.setAttribute('y2', CY);
+
+        // Sombra: hacia el lado opuesto al sol, larga como altura / tan(altura del sol).
+        const largo = s.alt > .5 ? Math.min(ALTURA / Math.tan(s.alt * RAD), 900) : 900;
+        const dx = -Math.sin(s.az * RAD) * largo, dy = Math.cos(s.az * RAD) * largo;
+        const casco = envolvente(PLANTA.concat(PLANTA.map(([px, py]) => [px + dx, py + dy])));
+        sombra.setAttribute('d', 'M' + casco.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L') + 'Z');
+
+        caras.forEach(c => {
+          const k = incidencia(s, +c.dataset.n);
+          c.classList.toggle('luz', k > 0);
+          c.style.strokeOpacity = k > 0 ? (.45 + .55 * k).toFixed(2) : '';
+        });
+        tinte.forEach(c => { c.style.fillOpacity = (.5 * incidencia(s, +c.dataset.n)).toFixed(2); });
+
+        const estado = filas.map(f => {
+          const luz = incidencia(s, +f.dataset.n) > 0;
+          f.classList.toggle('luz', luz);
+          f.querySelector('b').textContent = luz ? 'Sol directo' : 'Sin sol directo';
+          return f.querySelector('i').textContent.split(' ')[0] + (luz ? ' con sol' : ' sin sol');
+        });
+
+        const hora = hhmm(m);
+        $('sol-hora').textContent = hora;
+        $('sol-alt').textContent = `21 de junio · sol a ${Math.round(s.alt)}° sobre el horizonte`;
+        rango.setAttribute('aria-valuetext', `${hora}: ${estado.join(', ')}`);
+      }
+
+      rango.addEventListener('input', () => dibujar(+rango.value));
+      dibujar(+rango.value);
+
+      // Al entrar en pantalla, el día pasa una vez y vuelve al mediodía.
+      // Tocar el rango corta la animación.
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      let tocado = false, cuadro = 0;
+      const cortar = () => { tocado = true; cancelAnimationFrame(cuadro); };
+      rango.addEventListener('pointerdown', cortar);
+      rango.addEventListener('keydown', cortar);
+
+      const io = new IntersectionObserver(entradas => {
+        if (!entradas[0].isIntersecting) return;
+        io.disconnect();
+        if (tocado) return;
+        const ini = performance.now(), DIA = 5200, VUELTA = 1300, MEDIODIA = 720;
+        const suave = t => t < .5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+        const lo = +rango.min, hi = +rango.max;
+        (function paso(ahora) {
+          if (tocado) return;
+          const t = ahora - ini;
+          const v = t < DIA ? lo + (hi - lo) * suave(t / DIA)
+            : hi + (MEDIODIA - hi) * suave(Math.min((t - DIA) / VUELTA, 1));
+          rango.value = Math.round(v);
+          dibujar(v);
+          if (t < DIA + VUELTA) cuadro = requestAnimationFrame(paso);
+        })(ini);
+      }, { threshold: .5 });
+      io.observe(fig);
     })();
   </script>
 </body>
