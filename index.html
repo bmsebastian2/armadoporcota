@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- three.js se pide tarde (ver cargar3D); la conexión ya queda abierta. -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <title>Cota · Tu edificio se vende antes de existir</title>
   <meta name="description"
     content="Convertimos loteos y edificios en pozo en mapas navegables con disponibilidad en vivo. Para desarrolladoras e inmobiliarias en Uruguay.">
@@ -232,6 +234,153 @@
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--tenue);
+    }
+
+    /* Respaldo estático del hero: tapa el canvas vacío hasta el primer cuadro. */
+    .fallback-hero {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      transition: opacity .4s, visibility .4s
+    }
+
+    .marco.con-3d .fallback-hero {
+      opacity: 0;
+      visibility: hidden
+    }
+
+    /* Botones de las unidades del hero: para teclado y lector de pantalla.
+       El indicador de foco es la propia unidad resaltada en el 3D. */
+    .solo-lector {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap
+    }
+
+    /* Ficha de unidad del hero. Escritorio: flota sobre la unidad (JS pone
+       left/top). Sin hover o angosto: tarjeta fija debajo del edificio. */
+    .vista-hero {
+      position: relative
+    }
+
+    .ficha-hero {
+      position: absolute;
+      z-index: 2;
+      width: 220px;
+      padding: 14px 16px 15px;
+      background: var(--tinta);
+      border: 1px solid var(--linea);
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      transform: translate(-50%, calc(-100% - 14px));
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .15s, visibility .15s
+    }
+
+    .ficha-hero.abajo {
+      transform: translate(-50%, 14px)
+    }
+
+    .ficha-hero.con-unidad {
+      opacity: 1;
+      visibility: visible
+    }
+
+    .ficha-pista {
+      display: none;
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--tenue)
+    }
+
+    .ficha-cab {
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px
+    }
+
+    .ficha-cab b {
+      font-size: 17px;
+      font-weight: 650
+    }
+
+    .ficha-ejemplo {
+      font-size: 10.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--tenue)
+    }
+
+    .ficha-tipo {
+      margin: 4px 0 0;
+      font-size: 13.5px;
+      color: var(--suave)
+    }
+
+    .ficha-precio {
+      margin: 10px 0 0;
+      font-size: 20px;
+      font-weight: 650;
+      font-variant-numeric: tabular-nums
+    }
+
+    .ficha-estado {
+      margin: 6px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13.5px;
+      color: var(--suave)
+    }
+
+    .ficha-estado i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gris)
+    }
+
+    .ficha-hero[data-estado="disponible"] .ficha-estado i {
+      background: var(--verde)
+    }
+
+    .ficha-hero[data-estado="reservada"] .ficha-estado i {
+      background: var(--ambar)
+    }
+
+    @media (hover: none), (max-width: 900px) {
+      .ficha-hero,
+      .ficha-hero.abajo {
+        position: static;
+        width: auto;
+        min-height: 116px;
+        margin-top: 12px;
+        transform: none;
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        transition: none
+      }
+
+      .ficha-hero:not(.con-unidad) .ficha-pista {
+        display: block
+      }
+
+      .ficha-hero:not(.con-unidad) .ficha-datos {
+        display: none
+      }
     }
 
     /* ---------- grillas ---------- */
@@ -963,9 +1112,28 @@
         </div>
         <p class="pie-hero">Tu equipo marca una unidad como vendida y el edificio cambia en el momento.</p>
       </div>
-      <div class="marco">
-        <canvas id="lienzo-hero"></canvas>
-        <span class="sello">Disponible · Reservado · Vendido</span>
+      <div class="vista-hero">
+        <div class="marco">
+          <!-- Respaldo estático: mientras carga three.js o si no hay WebGL. Dibujado por código. -->
+          <svg class="fallback-hero" viewBox="0 0 480 440" preserveAspectRatio="xMidYMid slice" role="img"
+            aria-label="Edificio de ejemplo con el piso 8 resaltado">
+            <defs><g id="piso-fb"><path d="M122 20h180l38 16H160z" fill="#B4BBBD" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" fill="#8E9698"/><rect x="160" y="36" width="180" height="4" fill="#B4BBBD"/><path d="M127-13l38 16v33l-38-16z" fill="#9AA2A5" fill-opacity=".18"/><g fill="#9AA2A5" fill-opacity=".3" stroke="#1A2124" stroke-opacity=".26"><rect x="165" y="3" width="54" height="33"/><rect x="222" y="3" width="54" height="33"/><rect x="279" y="3" width="54" height="33"/></g></g></defs>
+            <use href="#piso-fb" y="392"/><use href="#piso-fb" y="352"/><use href="#piso-fb" y="312"/><use href="#piso-fb" y="272"/><use href="#piso-fb" y="232"/><use href="#piso-fb" y="192"/><use href="#piso-fb" y="152"/><use href="#piso-fb" y="112"/><g transform="translate(0 72)"><path d="M122 20h180l38 16H160z" fill="#B4BBBD" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" fill="#8E9698"/><rect x="160" y="36" width="180" height="4" fill="#B4BBBD"/><path d="M127-13l38 16v33l-38-16z" fill="#3E9B84" fill-opacity=".75"/><g stroke="#0E1513" stroke-opacity=".6"><rect x="165" y="3" width="40.25" height="33" fill="#3E9B84"/><rect x="208.25" y="3" width="40.25" height="33" fill="#5E6968"/><rect x="251.5" y="3" width="40.25" height="33" fill="#D3A04A"/><rect x="294.75" y="3" width="40.25" height="33" fill="#3E9B84"/></g></g><use href="#piso-fb" y="32"/><use href="#piso-fb" y="-8"/>
+          </svg>
+          <canvas id="lienzo-hero"></canvas>
+          <div class="solo-lector" id="unidades-hero" role="group" aria-label="Piso 8, unidades de ejemplo"></div>
+          <span class="sello">Disponible · Reservado · Vendido</span>
+        </div>
+        <!-- Repite lo que ya dicen los botones accesibles: oculta para el lector. -->
+        <div class="ficha-hero" id="ficha-hero" aria-hidden="true" hidden>
+          <p class="ficha-pista">Tocá una unidad del piso 8 para ver sus datos.</p>
+          <div class="ficha-datos">
+            <p class="ficha-cab"><b data-f="id"></b><span class="ficha-ejemplo">Datos de ejemplo</span></p>
+            <p class="ficha-tipo" data-f="tipo"></p>
+            <p class="ficha-precio" data-f="precio"></p>
+            <p class="ficha-estado"><i></i><span data-f="estado"></span></p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1302,131 +1470,21 @@
     </div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
-    /* ============================================================
-       Hero: torre en vivo. Misma lógica que la demo, sin interacción.
-       ============================================================ */
-
-    const COLORES = { disp: 0x3E9B84, res: 0xD3A04A, vend: 0x5E6968 };
-    // Esquema real de la demo: unidades gris translúcido
-    // por defecto, con una franja destacada en verde "disponible".
-    const ESTADOS_REAL = { disponible: 0x2F7A68, sinDato: 0x9AA2A5 };
-    const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function crearTorre({ pisos, porFila, ancho, prof, alto, sep }, real) {
-      const grupo = new THREE.Group();
-      const geo = new THREE.BoxGeometry(ancho, alto, prof);
-      const bordes = new THREE.EdgesGeometry(geo);
-      const paso = alto + 0.32;
-      let semilla = 4711;
-      const azar = () => (semilla = (semilla * 1103515245 + 12345) % 2147483648) / 2147483648;
-
-      const matLosa = new THREE.MeshStandardMaterial({
-        color: real ? 0xB4BBBD : 0x2A3634, roughness: .9
-      });
-      const geoLosa = new THREE.BoxGeometry(porFila * (ancho + .3) + .5, .3, prof * 2 + sep + .5);
-
-      for (let p = 0; p < pisos; p++) {
-        const losa = new THREE.Mesh(geoLosa, matLosa);
-        losa.position.y = p * paso - .15;
-        grupo.add(losa);
-
-        for (let f = -1; f <= 1; f += 2) {
-          for (let c = 0; c < porFila; c++) {
-            const r = azar();
-            let estado, opacidad;
-            if (real) {
-              const disponible = r < .18;
-              estado = disponible ? ESTADOS_REAL.disponible : ESTADOS_REAL.sinDato;
-              opacidad = disponible ? .94 : .55;
-            } else {
-              estado = r < .2 - p * .012 ? COLORES.vend : r < .42 ? COLORES.res : COLORES.disp;
-              opacidad = .92;
-            }
-            const mat = new THREE.MeshStandardMaterial({
-              color: estado, roughness: .45, metalness: .05, transparent: true, opacity: opacidad
-            });
-            const caja = new THREE.Mesh(geo, mat);
-            caja.position.set((c - (porFila - 1) / 2) * (ancho + .3), p * paso + alto / 2, f * sep);
-            grupo.add(caja);
-
-            const bl = new THREE.LineSegments(bordes,
-              new THREE.LineBasicMaterial({
-                color: real ? 0x1A2124 : 0x0E1513, transparent: true, opacity: real ? .26 : .5
-              }));
-            bl.position.copy(caja.position);
-            grupo.add(bl);
-          }
-        }
-      }
-      grupo.userData.altura = pisos * paso;
-      return grupo;
-    }
-
-    function montar(canvas, opciones, distancia, elevacion, real) {
-      if (!canvas) return null;
-      const escena = new THREE.Scene();
-      const cam = new THREE.PerspectiveCamera(34, canvas.clientWidth / canvas.clientHeight, .1, 400);
-      const gl = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      gl.setPixelRatio(Math.min(devicePixelRatio, 2));
-
-      escena.add(new THREE.HemisphereLight(0xDDEAE6, 0x141D1B, .95));
-      const luz = new THREE.DirectionalLight(0xFFF6E8, .95);
-      luz.position.set(-24, 40, 22);
-      escena.add(luz);
-
-      // Una torre, o varias si viene una lista (cada una con su desplazamiento x/z).
-      const lista = [].concat(opciones);
-      const altura = Math.max(...lista.map(o => o.pisos * (o.alto + 0.32)));
-      const orbita = new THREE.Group();
-      lista.forEach(o => {
-        const torre = crearTorre(o, real);
-        torre.position.set(o.x || 0, -altura / 2, o.z || 0);
-        orbita.add(torre);
-      });
-      escena.add(orbita);
-
-      function medir() {
-        const a = canvas.clientWidth, b = canvas.clientHeight;
-        gl.setSize(a, b, false);
-        cam.aspect = a / b;
-        cam.updateProjectionMatrix();
-        // Lienzo angosto (miniaturas de la hoja en celular): alejar para que entre el ancho.
-        const lejos = distancia * Math.max(1, 1.1 / cam.aspect);
-        cam.position.set(0, elevacion * lejos / distancia, lejos);
-        cam.lookAt(0, 0, 0);
-      }
-      medir();
-      addEventListener('resize', medir);
-
-      return { gl, escena, cam, orbita };
-    }
-
-    const vistas = [
-      montar(document.getElementById('lienzo-hero'), { pisos: 11, porFila: 3, ancho: 3.4, prof: 3.6, alto: 1.9, sep: 2.4 }, 34, 6, true),
-      // BRUSCO: Torre A de 13 pisos y Torre B de 11, más angosta.
-      montar(document.getElementById('lam-brusco'), [
-        { pisos: 13, porFila: 3, ancho: 2.6, prof: 2.8, alto: 1.5, sep: 1.8, x: -5.2 },
-        { pisos: 11, porFila: 2, ancho: 2.6, prof: 2.8, alto: 1.5, sep: 1.8, x: 5.6 },
-      ], 54, 5, true),
-    ].filter(Boolean);
-
-    /* Popup de otros proyectos. Las miniaturas se montan la primera vez que se
-       abre: con el dialog cerrado el canvas mide 0 y la cámara saldría mal. */
+    /* Popup de otros proyectos. Fuera de iniciar3D para que abra y cierre aunque
+       three.js todavía no haya llegado. Las miniaturas se montan la primera vez
+       que se abre: con el dialog cerrado el canvas mide 0 y la cámara saldría mal. */
     const otros = document.getElementById('otros');
-    let otrosMontados = false;
+    let otrosMontados = false, montarOtros = null;
+    function montarOtrosSiSePuede() {
+      if (otrosMontados || !montarOtros || !otros.open) return;
+      otrosMontados = true;
+      montarOtros();
+    }
     document.getElementById('abrir-otros').addEventListener('click', () => {
       otros.showModal();
       document.documentElement.classList.add('sin-scroll');
-      if (otrosMontados) return;
-      otrosMontados = true;
-      vistas.push(...[
-        // ROSSO: 10 pisos de 8 unidades (4 por frente).
-        montar(document.getElementById('lam-rosso'), { pisos: 10, porFila: 4, ancho: 2.6, prof: 3.0, alto: 1.6, sep: 2.0 }, 40, 4, true),
-        // Altamira: 6 niveles, más bajo y ancho.
-        montar(document.getElementById('lam-altamira'), { pisos: 6, porFila: 4, ancho: 2.8, prof: 3.0, alto: 1.7, sep: 2.0 }, 34, 6, true),
-      ].filter(Boolean));
+      montarOtrosSiSePuede();
     });
     document.getElementById('cerrar-otros').addEventListener('click', () => otros.close());
     // Clic en el fondo oscuro (fuera de la caja) cierra.
@@ -1438,15 +1496,353 @@
     });
     otros.addEventListener('close', () => document.documentElement.classList.remove('sin-scroll'));
 
-    let t = 0;
-    (function animar() {
-      requestAnimationFrame(animar);
-      t += quieto ? 0 : 0.0022;
-      vistas.forEach((v, i) => {
-        v.orbita.rotation.y = 0.6 + t * (i === 0 ? 1 : 0.7);
-        v.gl.render(v.escena, v.cam);
-      });
-    })();
+    /* three.js (~121 KB br) se pide después del evento load: el texto y el CTA
+       del hero se pintan sin esperarlo. Sin WebGL ni se baja, y queda el SVG. */
+    function hayWebGL() {
+      try {
+        const c = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+      } catch (e) {
+        return false;
+      }
+    }
+    function cargar3D() {
+      if (!hayWebGL()) return;
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      s.onload = iniciar3D;
+      document.head.appendChild(s);
+    }
+    if (document.readyState === 'complete') cargar3D();
+    else addEventListener('load', cargar3D);
+
+    function iniciar3D() {
+      /* ============================================================
+         Hero: torre en vivo. Misma lógica que la demo, sin interacción.
+         ============================================================ */
+
+      const COLORES = { disp: 0x3E9B84, res: 0xD3A04A, vend: 0x5E6968 };
+      // Esquema real de la demo: unidades gris translúcido
+      // por defecto, con una franja destacada en verde "disponible".
+      const ESTADOS_REAL = { disponible: 0x2F7A68, sinDato: 0x9AA2A5 };
+      const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // `destacado`: piso (0 = planta baja) que se arma con 4 unidades pasantes
+      // seleccionables. El resto de la torre se apaga para que resalte.
+      function crearTorre({ pisos, porFila, ancho, prof, alto, sep, destacado }, real) {
+        const grupo = new THREE.Group();
+        const geo = new THREE.BoxGeometry(ancho, alto, prof);
+        const bordes = new THREE.EdgesGeometry(geo);
+        const paso = alto + 0.32;
+        let semilla = 4711;
+        const azar = () => (semilla = (semilla * 1103515245 + 12345) % 2147483648) / 2147483648;
+
+        const matLosa = new THREE.MeshStandardMaterial({
+          color: real ? 0xB4BBBD : 0x2A3634, roughness: .9
+        });
+        const geoLosa = new THREE.BoxGeometry(porFila * (ancho + .3) + .5, .3, prof * 2 + sep + .5);
+        const apagada = destacado !== undefined;
+        const unidades = [];
+
+        for (let p = 0; p < pisos; p++) {
+          const losa = new THREE.Mesh(geoLosa, matLosa);
+          losa.position.y = p * paso - .15;
+          grupo.add(losa);
+
+          if (p === destacado) {
+            // Mismo largo que una fila normal y fondo de frente a contrafrente.
+            const anchoU = (porFila * (ancho + .3) - .3 - .9) / 4;
+            const geoU = new THREE.BoxGeometry(anchoU, alto, prof + 2 * sep);
+            const bordesU = new THREE.EdgesGeometry(geoU);
+            for (let c = 0; c < 4; c++) {
+              const caja = new THREE.Mesh(geoU, new THREE.MeshStandardMaterial({
+                color: ESTADOS_REAL.sinDato, roughness: .45, metalness: .05, transparent: true, opacity: .94
+              }));
+              caja.position.set((c - 1.5) * (anchoU + .3), p * paso + alto / 2, 0);
+              const bl = new THREE.LineSegments(bordesU,
+                new THREE.LineBasicMaterial({ color: 0x0E1513, transparent: true, opacity: .6 }));
+              bl.position.copy(caja.position);
+              caja.userData.borde = bl;
+              grupo.add(caja, bl);
+              unidades.push(caja);
+            }
+            continue;
+          }
+
+          for (let f = -1; f <= 1; f += 2) {
+            for (let c = 0; c < porFila; c++) {
+              const r = azar();
+              let estado, opacidad;
+              if (real) {
+                const disponible = !apagada && r < .18;
+                estado = disponible ? ESTADOS_REAL.disponible : ESTADOS_REAL.sinDato;
+                opacidad = disponible ? .94 : apagada ? .3 : .55;
+              } else {
+                estado = r < .2 - p * .012 ? COLORES.vend : r < .42 ? COLORES.res : COLORES.disp;
+                opacidad = .92;
+              }
+              const mat = new THREE.MeshStandardMaterial({
+                color: estado, roughness: .45, metalness: .05, transparent: true, opacity: opacidad
+              });
+              const caja = new THREE.Mesh(geo, mat);
+              caja.position.set((c - (porFila - 1) / 2) * (ancho + .3), p * paso + alto / 2, f * sep);
+              grupo.add(caja);
+
+              const bl = new THREE.LineSegments(bordes,
+                new THREE.LineBasicMaterial({
+                  color: real ? 0x1A2124 : 0x0E1513, transparent: true, opacity: real ? .26 : .5
+                }));
+              bl.position.copy(caja.position);
+              grupo.add(bl);
+            }
+          }
+        }
+        grupo.userData.altura = pisos * paso;
+        grupo.userData.unidades = unidades;
+        return grupo;
+      }
+
+      function montar(canvas, opciones, distancia, elevacion, real) {
+        if (!canvas) return null;
+        const escena = new THREE.Scene();
+        const cam = new THREE.PerspectiveCamera(34, canvas.clientWidth / canvas.clientHeight, .1, 400);
+        const gl = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        gl.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+        escena.add(new THREE.HemisphereLight(0xDDEAE6, 0x141D1B, .95));
+        const luz = new THREE.DirectionalLight(0xFFF6E8, .95);
+        luz.position.set(-24, 40, 22);
+        escena.add(luz);
+
+        // Una torre, o varias si viene una lista (cada una con su desplazamiento x/z).
+        const lista = [].concat(opciones);
+        const altura = Math.max(...lista.map(o => o.pisos * (o.alto + 0.32)));
+        const orbita = new THREE.Group();
+        const unidades = [];
+        lista.forEach(o => {
+          const torre = crearTorre(o, real);
+          torre.position.set(o.x || 0, -altura / 2, o.z || 0);
+          orbita.add(torre);
+          unidades.push(...torre.userData.unidades);
+        });
+        escena.add(orbita);
+
+        function medir() {
+          const a = canvas.clientWidth, b = canvas.clientHeight;
+          gl.setSize(a, b, false);
+          cam.aspect = a / b;
+          cam.updateProjectionMatrix();
+          // Lienzo angosto (miniaturas de la hoja en celular): alejar para que entre el ancho.
+          const lejos = distancia * Math.max(1, 1.1 / cam.aspect);
+          cam.position.set(0, elevacion * lejos / distancia, lejos);
+          cam.lookAt(0, 0, 0);
+        }
+        medir();
+        addEventListener('resize', medir);
+
+        return { gl, escena, cam, orbita, unidades };
+      }
+
+      const lienzoHero = document.getElementById('lienzo-hero');
+      const hero = montar(lienzoHero, { pisos: 11, porFila: 3, ancho: 3.4, prof: 3.6, alto: 1.9, sep: 2.4, destacado: 8 }, 34, 6, true);
+
+      const vistas = [
+        hero,
+        // BRUSCO: Torre A de 13 pisos y Torre B de 11, más angosta.
+        montar(document.getElementById('lam-brusco'), [
+          { pisos: 13, porFila: 3, ancho: 2.6, prof: 2.8, alto: 1.5, sep: 1.8, x: -5.2 },
+          { pisos: 11, porFila: 2, ancho: 2.6, prof: 2.8, alto: 1.5, sep: 1.8, x: 5.6 },
+        ], 54, 5, true),
+      ].filter(Boolean);
+
+      // Miniaturas del popup: montarOtros existe recién cuando llegó three.js.
+      montarOtros = () => vistas.push(...[
+        // ROSSO: 10 pisos de 8 unidades (4 por frente).
+        montar(document.getElementById('lam-rosso'), { pisos: 10, porFila: 4, ancho: 2.6, prof: 3.0, alto: 1.6, sep: 2.0 }, 40, 4, true),
+        // Altamira: 6 niveles, más bajo y ancho.
+        montar(document.getElementById('lam-altamira'), { pisos: 6, porFila: 4, ancho: 2.8, prof: 3.0, alto: 1.7, sep: 2.0 }, 34, 6, true),
+      ].filter(Boolean));
+      montarOtrosSiSePuede();
+
+      /* ============================================================
+         Hero: piso 8 seleccionable. Datos en data/hero-units.json; si el fetch
+         falla (doble clic = file://) el hero queda decorativo, como antes.
+         ============================================================ */
+      const COLOR_ESTADO = { disponible: COLORES.disp, reservada: COLORES.res, vendida: COLORES.vend };
+      const usd = n => 'US$ ' + n.toLocaleString('es-UY');
+      // `auto` es la unidad que muestra la auto-demo; cede ante cualquier otra.
+      const heroSel = { hover: null, foco: null, sel: null, auto: null };
+
+      function pintarHero() {
+        const activa = heroSel.hover || heroSel.foco || heroSel.sel || heroSel.auto;
+        hero.unidades.forEach(u => {
+          const on = u === activa;
+          u.material.emissive.copy(u.material.color).multiplyScalar(on ? .45 : 0);
+          u.userData.borde.material.color.setHex(on ? 0xEDE9E2 : 0x0E1513);
+          u.userData.borde.material.opacity = on ? .95 : .6;
+          u.userData.boton.setAttribute('aria-pressed', u === heroSel.sel);
+        });
+        llenarFicha(activa);
+      }
+
+      const ficha = document.getElementById('ficha-hero');
+      const ESTADO_TXT = { disponible: 'Disponible', reservada: 'Reservada', vendida: 'Vendida' };
+      // Mismo criterio que el CSS: sin hover o angosto, la ficha es tarjeta fija.
+      const fichaFija = matchMedia('(hover: none), (max-width: 900px)');
+      let enFicha = null;
+
+      function llenarFicha(u) {
+        ficha.classList.toggle('con-unidad', !!u);
+        if (!u || u === enFicha) return;
+        enFicha = u;
+        const d = u.userData.dato;
+        const campo = f => ficha.querySelector(`[data-f="${f}"]`);
+        campo('id').textContent = d.id;
+        campo('tipo').textContent = `${d.dormitorios} dorm. · ${d.m2} m² · ${d.orientacion}`;
+        campo('precio').textContent = usd(d.precioUSD);
+        campo('estado').textContent = ESTADO_TXT[d.estado];
+        ficha.dataset.estado = d.estado;
+        ubicarFicha();
+      }
+
+      // Cada cuadro, porque el vaivén mueve la unidad: la ficha queda encima de ella.
+      const sobre = new THREE.Vector3();
+      function ubicarFicha() {
+        if (!enFicha || !ficha.classList.contains('con-unidad') || fichaFija.matches) return;
+        const a = lienzoHero.clientWidth, b = lienzoHero.clientHeight;
+        const enPantalla = dy => {
+          enFicha.getWorldPosition(sobre);
+          sobre.y += dy;
+          sobre.project(hero.cam);
+          return { x: (sobre.x + 1) / 2 * a, y: (1 - sobre.y) / 2 * b };
+        };
+        // Arriba de la unidad; si no entra, debajo, para no taparla.
+        const medio = enFicha.geometry.parameters.height / 2;
+        let p = enPantalla(medio);
+        const abajo = p.y < ficha.offsetHeight + 22;
+        if (abajo) p = enPantalla(-medio);
+        ficha.classList.toggle('abajo', abajo);
+        const m = ficha.offsetWidth / 2 + 8;
+        ficha.style.left = Math.min(Math.max(p.x, m), a - m) + 'px';
+        ficha.style.top = p.y + 'px';
+      }
+
+      function seleccionarHero(u) {
+        heroSel.sel = u;
+        pintarHero();
+      }
+
+      /* Auto-demo: mientras nadie toca el hero, recorre las unidades mostrando su
+         ficha. Se frena al primer hover, tap o foco y vuelve tras 8 s quieto. Con
+         movimiento reducido no hay ciclo: queda fija una unidad disponible. */
+      let autoActivo = false, autoReloj = null, esperaReloj = null, autoI = -1;
+
+      function pasoAuto() {
+        const lista = hero.unidades.filter(u => u.userData.dato);
+        autoI = (autoI + 1) % lista.length;
+        heroSel.auto = lista[autoI];
+        pintarHero();
+      }
+
+      function arrancarAuto() {
+        // Mouse quieto sobre una unidad o foco de teclado todavía puesto: esperar más.
+        if (heroSel.hover || heroSel.foco) {
+          esperaReloj = setTimeout(arrancarAuto, 8000);
+          return;
+        }
+        heroSel.sel = null;
+        autoActivo = true;
+        if (quieto) {
+          heroSel.auto = hero.unidades.find(u => u.userData.dato && u.userData.dato.estado === 'disponible') || null;
+          pintarHero();
+          return;
+        }
+        pasoAuto();
+        autoReloj = setInterval(pasoAuto, 2500);
+      }
+
+      function frenarAuto() {
+        clearInterval(autoReloj);
+        clearTimeout(esperaReloj);
+        esperaReloj = setTimeout(arrancarAuto, 8000);
+        if (!autoActivo) return;
+        autoActivo = false;
+        heroSel.auto = null;
+        pintarHero();
+      }
+
+      function activarHero(datos) {
+        const caja = document.getElementById('unidades-hero');
+        datos.unidades.forEach((d, i) => {
+          const u = hero.unidades[i];
+          if (!u) return;
+          u.userData.dato = d;
+          u.material.color.setHex(COLOR_ESTADO[d.estado]);
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.setAttribute('aria-label', `Unidad ${d.id}, ${d.dormitorios} ${d.dormitorios === 1 ? 'dormitorio' : 'dormitorios'}, ` +
+            `${d.m2} metros cuadrados, orientación ${d.orientacion.toLowerCase()}, ${usd(d.precioUSD)}, ${d.estado}. Datos de ejemplo.`);
+          b.textContent = d.id;
+          b.addEventListener('focus', () => { heroSel.foco = u; frenarAuto(); pintarHero(); });
+          b.addEventListener('blur', () => { heroSel.foco = null; pintarHero(); });
+          b.addEventListener('click', () => seleccionarHero(heroSel.sel === u ? null : u));
+          u.userData.boton = b;
+          caja.appendChild(b);
+        });
+
+        const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
+        function apuntada(e) {
+          const r = lienzoHero.getBoundingClientRect();
+          ptr.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
+          ray.setFromCamera(ptr, hero.cam);
+          const hit = ray.intersectObjects(hero.unidades)[0];
+          return hit ? hit.object : null;
+        }
+        lienzoHero.addEventListener('pointermove', e => {
+          if (e.pointerType !== 'mouse') return;
+          const u = apuntada(e);
+          // Sobre una unidad frena la demo; ya frenada, cualquier movimiento cuenta como actividad.
+          if (u || !autoActivo) frenarAuto();
+          if (u === heroSel.hover) return;
+          heroSel.hover = u;
+          lienzoHero.style.cursor = u ? 'pointer' : '';
+          pintarHero();
+        });
+        lienzoHero.addEventListener('pointerleave', () => {
+          heroSel.hover = null;
+          lienzoHero.style.cursor = '';
+          pintarHero();
+        });
+        lienzoHero.addEventListener('click', e => { frenarAuto(); seleccionarHero(apuntada(e)); });
+        ficha.hidden = false;
+        pintarHero();
+        arrancarAuto();
+      }
+
+      if (hero) {
+        fetch('data/hero-units.json')
+          .then(r => r.ok ? r.json() : Promise.reject(r.status))
+          .then(activarHero)
+          .catch(err => console.warn('Hero sin datos, queda decorativo:', err));
+      }
+
+      let t = 0, heroListo = false;
+      (function animar() {
+        requestAnimationFrame(animar);
+        t += quieto ? 0 : 0.0022;
+        vistas.forEach(v => {
+          // El hero no gira entero: vaivén corto para que el piso 8 quede siempre de frente.
+          v.orbita.rotation.y = v === hero ? 0.5 + Math.sin(t * 3) * .2 : 0.6 + t * 0.7;
+          v.gl.render(v.escena, v.cam);
+        });
+        if (hero) ubicarFicha();
+        // Primer cuadro dibujado: se desvanece el SVG estático.
+        if (hero && !heroListo) {
+          heroListo = true;
+          lienzoHero.parentElement.classList.add('con-3d');
+        }
+      })();
+    }
   </script>
 </body>
 </html>
