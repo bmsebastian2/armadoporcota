@@ -99,7 +99,8 @@ radios 0 (bloques) y 2 px (controles); los bloques se separan con líneas. Las m
 Se probó un fondo grafito cálido (#1D1C1A) y se descartó: se veía marrón.
 ```
 --tinta #0E1513   --tinta-2 #141D1B   --papel #EDE9E2   --gris #7C8886
---suave / --tenue / --linea = papel al 62 / 38 / 13 %
+--suave / --tenue / --trazo / --linea = papel al 62 / 52 / 38 / 13 %
+(--tenue es texto chico, 4,5:1; --trazo son líneas de dibujo)
 --state-available #3E9B84   --state-reserved #D3A04A   --state-sold #626B6A
 Tipografía: IBM Plex Sans (títulos y texto) + IBM Plex Mono 400/500 (datos y etiquetas)
 ```

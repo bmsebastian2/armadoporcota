@@ -20,7 +20,10 @@
       --tinta-3: #1F2B28;
       --papel: #EDE9E2;
       --suave: rgba(237, 233, 226, .62);
-      --tenue: rgba(237, 233, 226, .38);
+      /* Texto chico: 52 % es lo mínimo para 4,5:1 sobre --tinta y --tinta-2. */
+      --tenue: rgba(237, 233, 226, .52);
+      /* Líneas de dibujo (cotas, contornos): no son texto, quedan suaves. */
+      --trazo: rgba(237, 233, 226, .38);
       --linea: rgba(237, 233, 226, .13);
       --linea-fuerte: rgba(237, 233, 226, .3);
       --linea-hover: rgba(237, 233, 226, .4);
@@ -247,7 +250,7 @@
 
     :is(.cotas-hero, .cotas-marco) :is(line, circle) {
       fill: none;
-      stroke: var(--tenue);
+      stroke: var(--trazo);
       stroke-width: 1
     }
 
@@ -256,7 +259,7 @@
     }
 
     :is(.cotas-hero, .cotas-marco) :is(.marca-nivel, .flecha) {
-      fill: var(--tenue)
+      fill: var(--trazo)
     }
 
     :is(.cotas-hero, .cotas-marco) text {
@@ -678,13 +681,13 @@
 
     .doc-hoja {
       fill: var(--tinta);
-      stroke: var(--tenue)
+      stroke: var(--trazo)
     }
 
     .doc-pliegue,
     .doc-linea {
       fill: none;
-      stroke: var(--tenue)
+      stroke: var(--trazo)
     }
 
     .doc-linea {
@@ -701,7 +704,7 @@
 
     .mini-logo {
       fill: none;
-      stroke: var(--tenue);
+      stroke: var(--trazo);
       stroke-dasharray: 3 2
     }
 
@@ -711,7 +714,7 @@
 
     .mini-estructura {
       fill: none;
-      stroke: var(--tenue);
+      stroke: var(--trazo);
       stroke-width: .75
     }
 
@@ -975,7 +978,7 @@
     }
 
     .inv-estructura .inv-suelo {
-      stroke: var(--tenue)
+      stroke: var(--trazo)
     }
 
     .inv-estructura text {
@@ -1524,7 +1527,7 @@
     }
 
     .mini-fachada .techo {
-      fill: var(--tenue)
+      fill: var(--trazo)
     }
 
     .mini-fachada .u {
