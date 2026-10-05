@@ -13,6 +13,10 @@ Responsable: Sebastián, Montevideo.
 Al ser dominios distintos, **los enlaces entre landing y demo van con URL absoluta**. No
 usar `/rosso`: la demo está en la raíz de su propio dominio, no en una subcarpeta.
 
+- Landing → demo principal BRUSCO: `https://armadoporcota.vercel.app/?p=brusco`. Proyecto
+  real armado por Cota, en negociación con IXOU: **no decir "cliente"**.
+- Landing → popup "Otros proyectos": ROSSO (`/`) y Altamira (`/?p=altamira`), rotulados
+  como reconstrucciones con datos de avisos públicos.
 - Landing → demo ROSSO: `https://armadoporcota.vercel.app/`
 - Demo ROSSO → landing, sello "Armado por Cota": `https://armadoporcotauy.vercel.app/`
 - `BASE` en la demo, para los links por unidad: `https://armadoporcota.vercel.app/`
@@ -21,7 +25,7 @@ usar `/rosso`: la demo está en la raíz de su propio dominio, no en una subcarp
 
 ```
 index.html            Landing de Cota
-mapa-uruguay-3d.html  Demo de loteo (grilla de lotes con calles) — enlace relativo
+mapa-uruguay-3d.html  Demo de loteo (grilla de lotes con calles) — sin enlace desde la landing
 logo-desarrollo.jpg   Logo de Desarrollo de Soluciones Tecnológicas
 README.md
 ```
@@ -55,11 +59,8 @@ para cuando el cliente ya respondió. El cartel es del desarrollador, así que s
 
 ## Modelo de negocio
 
-| Plan | Armado | Mensual | Alcance |
-|------|--------|---------|---------|
-| Loteo | 1.400 | 140 | Hasta 120 lotes |
-| Torre | 2.400 | 190 | Hasta 100 unidades |
-| Portafolio | 4.500 | 390 | Varios proyectos, CRM, vistas por altura |
+Un único plan (octubre 2026): **1.800 de armado + 120 por mes**, hasta 200 unidades en
+una o varias torres. Más de 200 unidades o varios proyectos a la vez se cotizan aparte.
 
 USD, sin IVA. Pago anual: dos meses bonificados.
 Anzuelo: se arma una planta del proyecto gratis, en 3 días.

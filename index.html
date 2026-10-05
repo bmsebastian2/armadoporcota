@@ -328,6 +328,203 @@
       margin: 0 auto
     }
 
+    .demo-principal {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      border-color: rgba(62, 155, 132, .45)
+    }
+
+    .demo-principal .lam {
+      height: auto;
+      min-height: 300px
+    }
+
+    .demo-principal .cuerpo {
+      padding: 34px 32px;
+      align-self: center
+    }
+
+    .demo-principal h3 {
+      font-size: 24px
+    }
+
+    .etiq-real {
+      border-color: rgba(62, 155, 132, .5);
+      color: var(--verde)
+    }
+
+    .mas-proyectos {
+      margin-top: 16px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border: 1px solid var(--linea);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--suave);
+      font: inherit;
+      font-size: 14.5px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color .16s, color .16s;
+    }
+
+    .mas-proyectos b {
+      color: var(--papel);
+      font-weight: 550
+    }
+
+    .mas-proyectos:hover {
+      border-color: rgba(237, 233, 226, .4);
+      color: var(--papel)
+    }
+
+    .mas-proyectos:focus-visible,
+    .otros-cerrar:focus-visible {
+      outline: 2px solid var(--papel);
+      outline-offset: 3px
+    }
+
+    .mas-flecha {
+      color: var(--verde);
+      font-weight: 550;
+      white-space: nowrap
+    }
+
+    /* ---------- sol ---------- */
+    .sol-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.08fr;
+      gap: 52px;
+      align-items: center
+    }
+
+    .comparar {
+      margin-top: 26px;
+      border: 1px solid var(--linea);
+      border-radius: 8px;
+      background: var(--tinta-2);
+      padding: 16px 18px
+    }
+
+    .comparar-tit {
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--tenue);
+      margin-bottom: 8px
+    }
+
+    .comparar-fila {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 8px 0;
+      font-size: 14.5px
+    }
+
+    .comparar-fila + .comparar-fila {
+      border-top: 1px solid var(--linea)
+    }
+
+    .comparar-fila i {
+      font-style: normal;
+      color: var(--suave)
+    }
+
+    .comparar-fila b {
+      font-weight: 550;
+      color: var(--ambar);
+      font-variant-numeric: tabular-nums;
+      text-align: right
+    }
+
+    .comparar-fila b.sin {
+      color: var(--gris)
+    }
+
+    .sol-captura {
+      margin: 0
+    }
+
+    .sol-captura img {
+      width: 100%;
+      height: auto;
+      display: block
+    }
+
+    .sol-captura figcaption {
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: var(--tenue);
+      border-top: 1px solid var(--linea)
+    }
+
+    /* ---------- popup otros proyectos ---------- */
+    #otros {
+      width: min(760px, calc(100% - 32px));
+      max-height: calc(100dvh - 48px);
+      padding: 26px;
+      border: 1px solid var(--linea);
+      border-radius: 10px;
+      background: var(--tinta);
+      color: var(--papel);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    #otros::backdrop {
+      background: rgba(5, 9, 8, .72);
+      backdrop-filter: blur(3px)
+    }
+
+    .otros-cabeza {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px
+    }
+
+    .otros-cabeza h3 {
+      font-size: 22px
+    }
+
+    .otros-cerrar {
+      width: 40px;
+      height: 40px;
+      flex: none;
+      border: 1px solid var(--linea);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--papel);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer
+    }
+
+    .otros-nota {
+      margin: 8px 0 22px;
+      font-size: 14px;
+      color: var(--tenue)
+    }
+
+    .otros-lista {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px
+    }
+
+    .otros-lista .demo .lam {
+      height: 150px
+    }
+
+    html.sin-scroll {
+      overflow: hidden
+    }
+
     .demo-torre .lam {
       background: radial-gradient(circle at 50% 25%, rgba(62, 155, 132, .18), transparent 35%),
         linear-gradient(180deg, #111b19 0%, #0d1513 100%);
@@ -507,6 +704,25 @@
       justify-content: center
     }
 
+    .plan-unico {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 40px;
+      align-items: center;
+      max-width: 880px;
+      padding: 36px;
+      border-color: rgba(62, 155, 132, .5);
+      background: rgba(62, 155, 132, .05)
+    }
+
+    .plan-unico ul {
+      margin: 0
+    }
+
+    .plan-unico .btn {
+      margin-top: 8px
+    }
+
     .nota-precio {
       margin-top: 26px;
       font-size: 13.5px;
@@ -617,6 +833,8 @@
       }
 
       #hero .env,
+      .sol-grid,
+      .plan-unico,
       .g3,
       .g2,
       .demanda,
@@ -627,6 +845,71 @@
 
       #lienzo-hero {
         height: 320px
+      }
+
+      .demo-principal {
+        grid-template-columns: 1fr
+      }
+
+      .demo-principal .lam {
+        min-height: 220px
+      }
+
+      .demo-principal .cuerpo {
+        padding: 22px 24px 26px
+      }
+
+      /* Celular: hoja inferior a todo el ancho, con lista horizontal compacta. */
+      #otros {
+        width: 100%;
+        max-width: none;
+        margin: auto 0 0;
+        max-height: 88dvh;
+        padding: 22px 16px calc(22px + env(safe-area-inset-bottom));
+        border-radius: 14px 14px 0 0;
+        border-bottom: none
+      }
+
+      .otros-lista {
+        grid-template-columns: 1fr;
+        gap: 14px
+      }
+
+      .otros-lista .demo {
+        display: grid;
+        grid-template-columns: 112px 1fr
+      }
+
+      .otros-lista .demo .lam {
+        height: auto;
+        min-height: 150px
+      }
+
+      .otros-lista .demo .cuerpo {
+        padding: 16px 16px 18px
+      }
+
+      .otros-lista .demo .cuerpo p:not(.abrir) {
+        font-size: 13.5px
+      }
+
+      .otros-lista .etiq {
+        margin-bottom: 10px
+      }
+
+      .plan-unico {
+        padding: 26px
+      }
+
+      .plan-unico .btn {
+        width: 100%;
+        justify-content: center
+      }
+
+      .mas-proyectos {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px
       }
 
       .enlaces {
@@ -655,8 +938,9 @@
       <div class="enlaces">
         <a href="#como">Cómo funciona</a>
         <a href="#demos">Demos</a>
+        <a href="#sol">Sol</a>
         <a href="#datos">Datos</a>
-        <a href="#planes">Planes</a>
+        <a href="#planes">Precio</a>
         <a href="#quien">Quién</a>
       </div>
       <a class="btn btn-p" href="#contacto">Pedir una planta gratis</a>
@@ -677,7 +961,7 @@
           <a class="btn btn-p" href="#contacto">Armamos una planta de tu proyecto, gratis</a>
           <a class="btn btn-s" href="#demos">Ver las demos</a>
         </div>
-        <p class="pie-hero">Sin cambiar tu forma de trabajar: el estado sale de la planilla que ya usás.</p>
+        <p class="pie-hero">Tu equipo marca una unidad como vendida y el edificio cambia en el momento.</p>
       </div>
       <div class="marco">
         <canvas id="lienzo-hero"></canvas>
@@ -737,15 +1021,15 @@
         </div>
         <div class="tarjeta">
           <p class="num">Paso 2</p>
-          <h3>Lo publicamos en tu dominio</h3>
-          <p>Con tu marca, tus colores y tu formulario. Entra en la web que ya tenés,
+          <h3>Lo publicamos con tu marca</h3>
+          <p>Tus colores y tu formulario, en un link propio. Entra en la web que ya tenés,
             o vive solo. En dos semanas está online.</p>
         </div>
         <div class="tarjeta">
           <p class="num">Paso 3</p>
-          <h3>Se actualiza solo</h3>
-          <p>Marcás una unidad como reservada en tu planilla y el sitio cambia en el
-            momento. Nadie vuelve a publicar nada.</p>
+          <h3>Se actualiza al instante</h3>
+          <p>Tu equipo marca una unidad como reservada en su panel y el edificio cambia
+            en el momento. Cada vendedor con su usuario. Nadie vuelve a publicar nada.</p>
         </div>
       </div>
     </div>
@@ -756,36 +1040,99 @@
     <div class="env">
       <div class="intro">
         <p class="rotulo">Demostraciones</p>
-        <h2>Tocalas. Son las mismas piezas que armamos para un proyecto real.</h2>
+        <h2>Tocala. Es un proyecto real, en venta hoy.</h2>
         <p>
-          Estas dos son piezas propias, hechas con datos inventados para mostrar el formato.
-          No son clientes.
+          BRUSCO lo armamos con su inventario y sus precios reales: 172 unidades en dos
+          torres, cada una con link propio.
         </p>
       </div>
-      <div class="g2">
-        <a class="demo" href="https://armadoporcota.vercel.app/">
-          <div class="lam"><canvas id="lam-torre" style="width:100%;height:100%;display:block"></canvas></div>
-          <div class="cuerpo">
-            <span class="etiq">Torre</span>
-            <h3>12 pisos, 72 unidades</h3>
-            <p>Filtros por tipología y estado, aislar un piso, separar la torre para ver
-              la planta por dentro. Cada unidad con su ficha y su precio.</p>
-            <p class="abrir">Abrir la demo →</p>
-          </div>
-        </a>
-        <a class="demo" href="mapa-uruguay-3d.html">
-          <div class="lam"><canvas id="lam-mapa" style="width:100%;height:100%;display:block"></canvas></div>
-          <div class="cuerpo">
-            <span class="etiq">Territorio</span>
-            <h3>Mapa por zonas</h3>
-            <p>La misma lógica aplicada a un territorio: puntos geolocalizados, zonas de
-              cobertura y filtros. Es la base del plano de loteo.</p>
-            <p class="abrir">Abrir la demo →</p>
-          </div>
-        </a>
-      </div>
+      <a class="demo demo-principal" href="https://armadoporcota.vercel.app/?p=brusco">
+        <div class="lam"><canvas id="lam-brusco" style="width:100%;height:100%;display:block"></canvas></div>
+        <div class="cuerpo">
+          <span class="etiq etiq-real">Proyecto real · Centro, Montevideo</span>
+          <h3>BRUSCO by IXOU</h3>
+          <p>Dos torres, 172 unidades, cada una con su precio y su estado. Filtrás por
+            tipología, aislás un piso, abrís la ficha y mandás el link de esa unidad por
+            WhatsApp.</p>
+          <p class="abrir">Abrir BRUSCO →</p>
+        </div>
+      </a>
+      <button class="mas-proyectos" type="button" id="abrir-otros" aria-haspopup="dialog">
+        <span><b>Otros dos proyectos</b> · ROSSO, Cordón · Altamira, Tres Cruces</span>
+        <span class="mas-flecha" aria-hidden="true">Ver →</span>
+      </button>
     </div>
   </section>
+
+  <!-- ============ SOL ============ -->
+  <section id="sol">
+    <div class="env sol-grid">
+      <div>
+        <p class="rotulo">Asoleamiento</p>
+        <h2>¿Cuánto sol tiene? Que lo vea él.</h2>
+        <p class="plomo" style="margin-top:18px">
+          Es lo primero que pregunta todo comprador, y hoy se contesta de palabra. En Cota
+          mueve la hora y ve el sol girar sobre el edificio, en la fecha que quiera.
+          Incluso el 21 de junio, el peor día del año.
+        </p>
+        <p class="plomo" style="margin-top:16px">
+          En Uruguay el sol del mediodía viene del norte: las unidades al norte son las
+          mejor asoleadas. Eso deja de ser algo que dice el vendedor y pasa a ser algo que
+          el comprador comprueba solo.
+        </p>
+        <div class="comparar" aria-label="Sol directo el 21 de junio en BRUSCO">
+          <p class="comparar-tit">BRUSCO · 21 de junio</p>
+          <div class="comparar-fila"><i>B803 · al norte</i><b>Sol de 07:57 a 17:36</b></div>
+          <div class="comparar-fila"><i>A906 · al sur</i><b class="sin">Sin sol directo</b></div>
+        </div>
+        <p style="margin-top:22px">
+          Para vos, es el argumento del sobreprecio: la unidad al norte vale más, y ahora
+          se puede demostrar.
+        </p>
+        <a class="btn btn-s" style="margin-top:26px"
+          href="https://armadoporcota.vercel.app/?p=brusco&amp;sol=invierno">Probalo en BRUSCO, el 21 de junio →</a>
+      </div>
+      <figure class="marco sol-captura">
+        <img src="sol-brusco.jpg" width="1044" height="791" loading="lazy"
+          alt="Visor de BRUSCO con el simulador solar en el 21 de junio: la unidad B803, al norte, recibe sol directo de 07:57 a 17:36.">
+        <figcaption>Captura real del visor · B803, 21 de junio, 12:00</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Otros proyectos: popup centrado en escritorio, hoja inferior en celular.
+       Las miniaturas 3D se montan recién al abrirlo (con el dialog cerrado el
+       canvas mide 0). -->
+  <dialog id="otros" aria-labelledby="otros-titulo">
+    <div class="otros-cabeza">
+      <h3 id="otros-titulo">Otros proyectos</h3>
+      <button type="button" class="otros-cerrar" id="cerrar-otros" aria-label="Cerrar">×</button>
+    </div>
+    <p class="otros-nota">Reconstrucciones con datos de avisos públicos, para mostrar el formato. No son
+      clientes.</p>
+    <div class="otros-lista">
+      <a class="demo" href="https://armadoporcota.vercel.app/">
+        <div class="lam"><canvas id="lam-rosso" style="width:100%;height:100%;display:block"></canvas></div>
+        <div class="cuerpo">
+          <span class="etiq">Cordón · Montevideo</span>
+          <h3>ROSSO by Block</h3>
+          <p>78 unidades en 10 pisos. Solo en verde lo que tiene aviso publicado; el resto,
+            sin dato público.</p>
+          <p class="abrir">Abrir ROSSO →</p>
+        </div>
+      </a>
+      <a class="demo" href="https://armadoporcota.vercel.app/?p=altamira">
+        <div class="lam"><canvas id="lam-altamira" style="width:100%;height:100%;display:block"></canvas></div>
+        <div class="cuerpo">
+          <span class="etiq">Tres Cruces · Montevideo</span>
+          <h3>Altamira Tres Cruces</h3>
+          <p>49 unidades en 6 niveles, entrega abril 2028. Filtros por tipología y ficha
+            por unidad.</p>
+          <p class="abrir">Abrir Altamira →</p>
+        </div>
+      </a>
+    </div>
+  </dialog>
 
   <!-- ============ DATOS ============ -->
   <section id="datos">
@@ -800,8 +1147,8 @@
             lista de precios de lo que no se mueve, antes de tener que rematarlo.
           </p>
           <p class="plomo" style="margin-top:16px">
-            Y el lead es tuyo. En tu dominio no hay un competidor a tres centímetros del
-            botón de contacto.
+            Y el lead es tuyo. La consulta te llega directo, con la unidad puesta, y al
+            lado del botón de contacto no hay otro aviso compitiendo por la misma persona.
           </p>
         </div>
         <div>
@@ -826,58 +1173,32 @@
   <section id="planes">
     <div class="env">
       <div class="intro">
-        <p class="rotulo">Planes</p>
+        <p class="rotulo">Precio</p>
         <h2>Armado una vez, mantenimiento mientras vendas.</h2>
-        <p>Precios en dólares, sin IVA. El mantenimiento incluye los cambios de estado,
-          ajustes de precio y el panel de demanda.</p>
+        <p>Un solo plan, sin letra chica. Precios en dólares, sin IVA.</p>
       </div>
-      <div class="g3">
-        <div class="plan">
-          <p class="cinta">Loteo</p>
-          <h3>Fraccionamientos y barrios privados</h3>
-          <p class="precio">1.400 <small>de armado</small></p>
-          <p class="mensual">+ 140 por mes</p>
-          <ul>
-            <li>Hasta 120 lotes</li>
-            <li>Plano navegable con estado en vivo</li>
-            <li>Ficha por lote: padrón, superficie, precio</li>
-            <li>Formulario de consulta por lote</li>
-            <li>Publicado en tu dominio</li>
-          </ul>
-          <a class="btn btn-s" href="#contacto">Consultar</a>
-        </div>
-        <div class="plan destacado">
-          <p class="cinta">Torre · el más pedido</p>
-          <h3>Edificios en pozo</h3>
-          <p class="precio">2.400 <small>de armado</small></p>
-          <p class="mensual">+ 190 por mes</p>
-          <ul>
-            <li>Hasta 100 unidades</li>
-            <li>Filtros por tipología, estado y orientación</li>
-            <li>Planta 2D y render por tipología</li>
-            <li>Panel de demanda por unidad</li>
-            <li>Sincronización con tu planilla</li>
-          </ul>
+      <div class="plan plan-unico">
+        <div>
+          <p class="cinta">Todo incluido</p>
+          <h3>Tu proyecto, navegable y al día</h3>
+          <p class="precio">1.800 <small>de armado</small></p>
+          <p class="mensual">+ 120 por mes mientras vendas</p>
           <a class="btn btn-p" href="#contacto">Empezar</a>
         </div>
-        <div class="plan">
-          <p class="cinta">Portafolio</p>
-          <h3>Varios proyectos a la vez</h3>
-          <p class="precio">4.500 <small>de armado</small></p>
-          <p class="mensual">+ 390 por mes</p>
-          <ul>
-            <li>Proyectos ilimitados</li>
-            <li>Panel para tu equipo de ventas</li>
-            <li>Integración con tu CRM</li>
-            <li>Fotos de vista real por altura</li>
-            <li>Soporte prioritario</li>
-          </ul>
-          <a class="btn btn-s" href="#contacto">Consultar</a>
-        </div>
+        <ul>
+          <li>Hasta 200 unidades, en una o varias torres</li>
+          <li>Link propio por unidad, para mandar por WhatsApp</li>
+          <li>Filtros por tipología, estado y orientación</li>
+          <li>Simulador de sol con las horas de cada unidad</li>
+          <li>Planta 2D y render por tipología</li>
+          <li>Panel de ventas con usuarios y permisos</li>
+          <li>Panel de demanda por unidad</li>
+          <li>Con tu marca, en un link propio</li>
+        </ul>
       </div>
       <p class="nota-precio">
-        Pago anual adelantado: dos meses bonificados. Proyectos de más de 150 unidades o
-        con varias torres se cotizan aparte.
+        Pago anual adelantado: dos meses bonificados. Proyectos de más de 200 unidades, o
+        varios proyectos a la vez, se cotizan aparte.
       </p>
     </div>
   </section>
@@ -909,9 +1230,19 @@
       </details>
       <details>
         <summary>¿Quién actualiza los estados?</summary>
-        <p>Tu equipo, en la planilla que ya usa. Nos conectamos a ella y el sitio se
-          actualiza solo. Si preferís un panel propio, lo tenés incluido en el plan
-          Portafolio.</p>
+        <p>Tu equipo, desde un panel propio. El vendedor entra con su usuario, marca la
+          unidad como reservada o vendida y el edificio cambia al instante, sin pasar por
+          nosotros. Cada uno ve solo los proyectos que le tocan: el vendedor cambia
+          estados, el administrador maneja el equipo. Es mejor que la planilla: no hay
+          una versión vieja dando vueltas.</p>
+      </details>
+      <details>
+        <summary>¿Los datos del sol son reales?</summary>
+        <p>Sí. La posición del sol se calcula para cada fecha y hora con la latitud y la
+          longitud del terreno y la orientación real de la manzana. No es una animación
+          decorativa: si una unidad dice sol de 07:57 a 17:36 el 21 de junio, es porque el
+          sol pasa por esa fachada a esas horas. Lo único que no considera es la sombra de
+          los edificios vecinos, y cada ficha lo aclara.</p>
       </details>
       <details>
         <summary>¿Cuánto tarda?</summary>
@@ -967,7 +1298,7 @@
   <footer>
     <div class="env">
       <span>Cota · Planos navegables para venta en pozo · Sebastián, Montevideo, Uruguay</span>
-      <span>Las demos de este sitio son piezas propias con datos ficticios.</span>
+      <span>BRUSCO usa inventario y precios reales. ROSSO y Altamira son reconstrucciones con datos de avisos públicos.</span>
     </div>
   </footer>
 
@@ -1045,10 +1376,15 @@
       luz.position.set(-24, 40, 22);
       escena.add(luz);
 
-      const torre = crearTorre(opciones, real);
-      torre.position.y = -torre.userData.altura / 2;
+      // Una torre, o varias si viene una lista (cada una con su desplazamiento x/z).
+      const lista = [].concat(opciones);
+      const altura = Math.max(...lista.map(o => o.pisos * (o.alto + 0.32)));
       const orbita = new THREE.Group();
-      orbita.add(torre);
+      lista.forEach(o => {
+        const torre = crearTorre(o, real);
+        torre.position.set(o.x || 0, -altura / 2, o.z || 0);
+        orbita.add(torre);
+      });
       escena.add(orbita);
 
       function medir() {
@@ -1056,21 +1392,51 @@
         gl.setSize(a, b, false);
         cam.aspect = a / b;
         cam.updateProjectionMatrix();
+        // Lienzo angosto (miniaturas de la hoja en celular): alejar para que entre el ancho.
+        const lejos = distancia * Math.max(1, 1.1 / cam.aspect);
+        cam.position.set(0, elevacion * lejos / distancia, lejos);
+        cam.lookAt(0, 0, 0);
       }
       medir();
       addEventListener('resize', medir);
-
-      cam.position.set(0, elevacion, distancia);
-      cam.lookAt(0, 0, 0);
 
       return { gl, escena, cam, orbita };
     }
 
     const vistas = [
       montar(document.getElementById('lienzo-hero'), { pisos: 11, porFila: 3, ancho: 3.4, prof: 3.6, alto: 1.9, sep: 2.4 }, 34, 6, true),
-      montar(document.getElementById('lam-torre'), { pisos: 9, porFila: 3, ancho: 3.2, prof: 3.4, alto: 1.8, sep: 2.2 }, 30, 4, true),
-      montar(document.getElementById('lam-mapa'), { pisos: 2, porFila: 6, ancho: 2.6, prof: 3.0, alto: .7, sep: 2.0 }, 26, 12),
+      // BRUSCO: Torre A de 13 pisos y Torre B de 11, más angosta.
+      montar(document.getElementById('lam-brusco'), [
+        { pisos: 13, porFila: 3, ancho: 2.6, prof: 2.8, alto: 1.5, sep: 1.8, x: -5.2 },
+        { pisos: 11, porFila: 2, ancho: 2.6, prof: 2.8, alto: 1.5, sep: 1.8, x: 5.6 },
+      ], 54, 5, true),
     ].filter(Boolean);
+
+    /* Popup de otros proyectos. Las miniaturas se montan la primera vez que se
+       abre: con el dialog cerrado el canvas mide 0 y la cámara saldría mal. */
+    const otros = document.getElementById('otros');
+    let otrosMontados = false;
+    document.getElementById('abrir-otros').addEventListener('click', () => {
+      otros.showModal();
+      document.documentElement.classList.add('sin-scroll');
+      if (otrosMontados) return;
+      otrosMontados = true;
+      vistas.push(...[
+        // ROSSO: 10 pisos de 8 unidades (4 por frente).
+        montar(document.getElementById('lam-rosso'), { pisos: 10, porFila: 4, ancho: 2.6, prof: 3.0, alto: 1.6, sep: 2.0 }, 40, 4, true),
+        // Altamira: 6 niveles, más bajo y ancho.
+        montar(document.getElementById('lam-altamira'), { pisos: 6, porFila: 4, ancho: 2.8, prof: 3.0, alto: 1.7, sep: 2.0 }, 34, 6, true),
+      ].filter(Boolean));
+    });
+    document.getElementById('cerrar-otros').addEventListener('click', () => otros.close());
+    // Clic en el fondo oscuro (fuera de la caja) cierra.
+    otros.addEventListener('click', e => {
+      if (e.target !== otros) return;
+      const r = otros.getBoundingClientRect();
+      const fuera = e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+      if (fuera) otros.close();
+    });
+    otros.addEventListener('close', () => document.documentElement.classList.remove('sin-scroll'));
 
     let t = 0;
     (function animar() {
