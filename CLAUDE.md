@@ -93,13 +93,14 @@ dependencias. Se despliega arrastrando la carpeta a Vercel.
 
 ### Paletas
 
-Landing — hormigón oscuro, "arquitectura + datos + interacción". Sin fotos, sin
-sombras, radios 0 (bloques) y 2 px (controles); los bloques se separan con líneas.
-Solo se animan cosas ligadas a datos.
+Landing — oscura, "arquitectura + datos + interacción". Sin fotos, sin sombras,
+radios 0 (bloques) y 2 px (controles); los bloques se separan con líneas. Las maquetas
+3D se mueven (vaivén del hero, giro de miniaturas): Sebastián lo quiere así.
+Se probó un fondo grafito cálido (#1D1C1A) y se descartó: se veía marrón.
 ```
---tinta #1D1C1A   --tinta-2 #252321   --papel #EDE8E0
---suave #B5AEA3   --tenue #938B80     --linea #3A3733   --gris #908A80
---state-available #3E9B84   --state-reserved #D3A04A   --state-sold #6A7271
+--tinta #0E1513   --tinta-2 #141D1B   --papel #EDE9E2   --gris #7C8886
+--suave / --tenue / --linea = papel al 62 / 38 / 13 %
+--state-available #3E9B84   --state-reserved #D3A04A   --state-sold #626B6A
 Tipografía: IBM Plex Sans (títulos y texto) + IBM Plex Mono 400/500 (datos y etiquetas)
 ```
 

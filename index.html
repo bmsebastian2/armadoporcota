@@ -15,19 +15,18 @@
     content="Convertimos loteos y edificios en pozo en mapas navegables con disponibilidad en vivo. Para desarrolladoras e inmobiliarias en Uruguay.">
   <style>
     :root {
-      /* Hormigón: grafito cálido. Sólidos, para que el contraste no dependa del fondo. */
-      --tinta: #1D1C1A;
-      --tinta-2: #252321;
-      --tinta-3: #2D2B28;
-      --papel: #EDE8E0;
-      --suave: #B5AEA3;
-      --tenue: #938B80;
-      --linea: #3A3733;
-      --linea-fuerte: #524E48;
-      --linea-hover: #6E6A63;
-      --gris: #908A80;
+      --tinta: #0E1513;
+      --tinta-2: #141D1B;
+      --tinta-3: #1F2B28;
+      --papel: #EDE9E2;
+      --suave: rgba(237, 233, 226, .62);
+      --tenue: rgba(237, 233, 226, .38);
+      --linea: rgba(237, 233, 226, .13);
+      --linea-fuerte: rgba(237, 233, 226, .3);
+      --linea-hover: rgba(237, 233, 226, .4);
+      --gris: #7C8886;
       /* Trama de vendida: líneas de papel sobre el relleno de --state-sold. */
-      --trama: rgba(237, 232, 224, .35);
+      --trama: rgba(237, 233, 226, .35);
       /* Luz del simulador de sol, no un estado: no reusar el ámbar de "reservado". */
       --sol: #F5C969;
       --sol-sombra: rgba(0, 0, 0, .38);
@@ -44,7 +43,7 @@
       /* Estados de unidad: el verde solo significa "disponible". */
       --state-available: #3E9B84;
       --state-reserved: #D3A04A;
-      --state-sold: #6A7271;
+      --state-sold: #626B6A;
       /* El relleno de vendido es oscuro para separarse del verde; como texto no alcanza. */
       --state-sold-text: #7C8886;
       /* Acción principal: neutra, para que el color lo pongan solo los estados. */
@@ -2914,12 +2913,13 @@
           .catch(err => console.warn('Hero sin datos, queda decorativo:', err));
       }
 
-      let heroListo = false;
+      let t = 0, heroListo = false;
       (function animar() {
         requestAnimationFrame(animar);
+        t += quieto ? 0 : 0.0022;
         vistas.forEach(v => {
-          // Ángulo fijo: lo que se mueve son los datos, no la maqueta. El hero deja el piso 8 de frente.
-          v.orbita.rotation.y = v === hero ? 0.5 : 0.6;
+          // El hero no gira entero: vaivén corto para que el piso 8 quede siempre de frente.
+          v.orbita.rotation.y = v === hero ? 0.5 + Math.sin(t * 3) * .2 : 0.6 + t * 0.7;
           v.gl.render(v.escena, v.cam);
         });
         if (hero) ubicarFicha();
