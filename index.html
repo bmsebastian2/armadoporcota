@@ -586,42 +586,6 @@
       }
     }
 
-    /* ---------- grillas ---------- */
-    .g3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 26px
-    }
-
-    .g2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 26px
-    }
-
-    .tarjeta {
-      border: 1px solid var(--linea);
-      border-radius: 8px;
-      padding: 26px;
-      background: var(--tinta-2)
-    }
-
-    .tarjeta h3 {
-      margin-bottom: 10px
-    }
-
-    .tarjeta p {
-      color: var(--suave);
-      font-size: 15px
-    }
-
-    .num {
-      font-size: 12px;
-      letter-spacing: .14em;
-      color: var(--papel);
-      margin-bottom: 14px
-    }
-
     .intro {
       max-width: 56ch;
       margin-bottom: 46px
@@ -631,6 +595,258 @@
       margin-top: 16px;
       color: var(--suave);
       font-size: 17px
+    }
+
+    /* ---------- cómo funciona ---------- */
+    .pasos {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 56px
+    }
+
+    .paso {
+      position: relative
+    }
+
+    /* Conector a la altura del centro de la lámina: 30 de número + 16 de margen + 76. */
+    .paso + .paso::before {
+      content: "→";
+      position: absolute;
+      top: 113px;
+      left: -42px;
+      width: 28px;
+      text-align: center;
+      font: 18px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      color: var(--tenue)
+    }
+
+    .paso-num {
+      margin: 0 0 16px;
+      font: 500 30px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      letter-spacing: .06em;
+      color: var(--tenue);
+      font-variant-numeric: tabular-nums
+    }
+
+    .paso-lamina {
+      height: 152px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      border: 1px solid var(--linea);
+      border-radius: 8px;
+      background: var(--tinta-2)
+    }
+
+    .paso-lamina svg {
+      display: block;
+      height: 100%;
+      width: auto;
+      overflow: visible
+    }
+
+    .paso h3 {
+      margin: 20px 0 6px
+    }
+
+    .paso > p:last-child {
+      margin: 0;
+      color: var(--suave);
+      font-size: 15px
+    }
+
+    .paso-defs {
+      position: absolute;
+      width: 0;
+      height: 0
+    }
+
+    .paso-lamina text {
+      font: 600 8px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      letter-spacing: .08em;
+      text-anchor: middle
+    }
+
+    .doc-hoja {
+      fill: var(--tinta);
+      stroke: var(--tenue)
+    }
+
+    .doc-pliegue,
+    .doc-linea {
+      fill: none;
+      stroke: var(--tenue)
+    }
+
+    .doc-linea {
+      opacity: .5
+    }
+
+    .doc-tag {
+      fill: var(--papel)
+    }
+
+    .doc text {
+      fill: var(--tinta)
+    }
+
+    .mini-logo {
+      fill: none;
+      stroke: var(--tenue);
+      stroke-dasharray: 3 2
+    }
+
+    .mini-logo-txt {
+      fill: var(--tenue)
+    }
+
+    .mini-estructura {
+      fill: none;
+      stroke: var(--tenue);
+      stroke-width: .75
+    }
+
+    .mini-unidades rect {
+      fill: var(--gris);
+      stroke: var(--tinta-2)
+    }
+
+    .mini-unidades [data-estado="disponible"] {
+      fill: var(--state-available)
+    }
+
+    /* Mismas señales sin color que la fachada del inventario. */
+    .mini-unidades [data-estado="reservada"] {
+      fill: var(--state-reserved);
+      stroke: var(--tinta);
+      stroke-width: 1.5;
+      stroke-dasharray: 3 2
+    }
+
+    .mini-unidades [data-estado="vendida"] {
+      fill: url(#mini-trama)
+    }
+
+    .mini-unidades .mini-foco {
+      stroke: var(--papel);
+      stroke-width: 1.5
+    }
+
+    .paso-sync {
+      gap: 12px;
+      padding: 14px 12px
+    }
+
+    .paso-sync .inv-planilla {
+      width: auto;
+      font-size: 12px
+    }
+
+    .paso-sync .inv-planilla :is(th, td) {
+      padding: 5px 6px;
+      white-space: nowrap
+    }
+
+    .paso-sync .inv-planilla td {
+      color: var(--papel)
+    }
+
+    .paso-sync .ficha-ejemplo {
+      margin: 8px 0 0 6px
+    }
+
+    .sync-estado {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .sync-estado i {
+      width: 12px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--gris)
+    }
+
+    .sync-estado[data-estado="disponible"] i {
+      background: var(--state-available)
+    }
+
+    .sync-estado[data-estado="reservada"] i {
+      background: var(--state-reserved);
+      border: 1.5px dashed var(--tinta)
+    }
+
+    /* Paso 03: la celda cambia primero y la unidad la sigue. */
+    .paso-sync .mini-unidades rect {
+      transition: fill .3s, stroke .3s
+    }
+
+    .mini-pulso {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: mini-pulso .5s ease-out
+    }
+
+    @keyframes mini-pulso {
+      40% {
+        transform: scale(1.3)
+      }
+    }
+
+    .sync-flash {
+      animation: sync-flash 1s ease-out
+    }
+
+    @keyframes sync-flash {
+      from {
+        background: rgba(237, 233, 226, .16)
+      }
+    }
+
+    .sync-flecha {
+      display: none;
+      font: 16px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      color: var(--tenue)
+    }
+
+    .sync-fijo .sync-flecha {
+      display: block
+    }
+
+    /* Si falta ancho cede la fachada, no la planilla. */
+    .paso-sync > * {
+      flex-shrink: 0
+    }
+
+    .paso-sync svg {
+      flex-shrink: 1;
+      min-width: 0
+    }
+
+    .paso-sync.sync-fijo {
+      gap: 8px
+    }
+
+    /* Por debajo de este ancho la fila de planilla y la fachada no entran en un tercio. */
+    @media (max-width:1080px) {
+      .pasos {
+        grid-template-columns: 1fr;
+        gap: 64px;
+        max-width: 520px
+      }
+
+      .paso + .paso::before {
+        content: "↓";
+        top: -44px;
+        left: 50%;
+        margin-left: -14px
+      }
     }
 
     /* ---------- inventario ---------- */
@@ -1399,8 +1615,6 @@
       #hero .env,
       .sol-grid,
       .plan-unico,
-      .g3,
-      .g2,
       .demanda,
       .firma {
         grid-template-columns: 1fr;
@@ -1768,26 +1982,82 @@
         <p class="rotulo">Puesta en marcha</p>
         <h2>Tu edificio online en dos semanas, con el material que ya tenés.</h2>
       </div>
-      <div class="g3">
-        <div class="tarjeta">
-          <p class="num">Paso 1</p>
-          <h3>Nos pasás lo que ya tenés</h3>
-          <p>Planta tipo, lista de precios y renders del arquitecto. No hay que producir
-            nada nuevo: seis tipologías cubren un edificio entero.</p>
-        </div>
-        <div class="tarjeta">
-          <p class="num">Paso 2</p>
-          <h3>Lo publicamos con tu marca</h3>
-          <p>Tus colores y tu formulario, en un link propio. Entra en la web que ya tenés,
-            o vive solo. En dos semanas está online.</p>
-        </div>
-        <div class="tarjeta">
-          <p class="num">Paso 3</p>
-          <h3>Se actualiza al instante</h3>
-          <p>Tu equipo marca una unidad como reservada en su panel y el edificio cambia
-            en el momento. Cada vendedor con su usuario. Nadie vuelve a publicar nada.</p>
-        </div>
-      </div>
+      <!-- Trama de vendida para las fachadas mini; id propio para no chocar con #inv-trama. -->
+      <svg class="paso-defs" aria-hidden="true" focusable="false">
+        <pattern id="mini-trama" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="4" height="4" fill="var(--state-sold)" />
+          <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(237,233,226,.35)" />
+        </pattern>
+      </svg>
+      <ol class="pasos">
+        <li class="paso">
+          <p class="paso-num" aria-hidden="true">01</p>
+          <div class="paso-lamina">
+            <svg viewBox="-2 -2 128 92" role="img" aria-label="Un plano en PDF y una planilla en XLSX">
+              <g class="doc">
+                <path class="doc-hoja" d="M0 4h40l10 10v70H0z" />
+                <path class="doc-pliegue" d="M40 4v10h10" />
+                <path class="doc-linea" d="M8 24h34v44H8zM24 24v18h18M8 50h16" />
+                <rect class="doc-tag" x="-2" y="64" width="24" height="12" rx="2" />
+                <text x="10" y="72.5">PDF</text>
+              </g>
+              <g class="doc" transform="translate(70 0)">
+                <path class="doc-hoja" d="M0 4h40l10 10v70H0z" />
+                <path class="doc-pliegue" d="M40 4v10h10" />
+                <path class="doc-linea" d="M8 24h34M8 34h34M8 44h34M8 54h34M20 20v38M32 20v38" />
+                <rect class="doc-tag" x="-2" y="64" width="30" height="12" rx="2" />
+                <text x="13" y="72.5">XLSX</text>
+              </g>
+            </svg>
+          </div>
+          <h3>Tus archivos</h3>
+          <p>Planos y planilla de precios. Lo que ya tenés.</p>
+        </li>
+        <li class="paso">
+          <p class="paso-num" aria-hidden="true">02</p>
+          <div class="paso-lamina">
+            <svg viewBox="-8 -26 96 122" role="img" aria-label="Fachada del edificio con el logo de la desarrolladora">
+              <rect class="mini-logo" x="16" y="-22" width="48" height="14" rx="2" />
+              <text class="mini-logo-txt" x="40" y="-12.5">TU LOGO</text>
+              <path class="mini-estructura" d="M0 0h80v92H0zM0 4h80M0 26h80M0 48h80M0 70h80M-6 92h92" />
+              <g class="mini-unidades">
+                <rect x="6" y="7" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="24" y="7" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="7" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="60" y="7" width="14" height="16" rx="1.5" data-estado="reservada" />
+                <rect x="6" y="29" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="24" y="29" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="42" y="29" width="14" height="16" rx="1.5" data-estado="reservada" /><rect x="60" y="29" width="14" height="16" rx="1.5" data-estado="vendida" />
+                <rect x="6" y="51" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="24" y="51" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="51" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="60" y="51" width="14" height="16" rx="1.5" data-estado="disponible" />
+                <rect x="6" y="73" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="24" y="73" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="73" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="60" y="73" width="14" height="16" rx="1.5" data-estado="vendida" />
+              </g>
+            </svg>
+          </div>
+          <h3>Tu edificio, con tu marca</h3>
+          <p>Online en dos semanas, con tus colores.</p>
+        </li>
+        <li class="paso">
+          <p class="paso-num" aria-hidden="true">03</p>
+          <div class="paso-lamina paso-sync" id="sync">
+            <div>
+              <table class="inv-planilla">
+                <caption class="solo-lector">Planilla de ventas, ejemplo</caption>
+                <thead><tr><th scope="col">Unidad</th><th scope="col">Estado</th></tr></thead>
+                <tbody><tr><td id="sync-id">A803</td><td id="sync-celda"><span class="sync-estado" data-estado="disponible"><i></i><span>Disponible</span></span></td></tr></tbody>
+              </table>
+              <p class="ficha-ejemplo">Datos de ejemplo</p>
+            </div>
+            <!-- Solo con movimiento reducido: une la celda con la unidad. -->
+            <span class="sync-flecha" aria-hidden="true">→</span>
+            <svg viewBox="-8 -2 96 98" aria-hidden="true">
+              <path class="mini-estructura" d="M0 0h80v92H0zM0 4h80M0 26h80M0 48h80M0 70h80M-6 92h92" />
+              <g class="mini-unidades">
+                <rect x="6" y="7" width="14" height="16" rx="1.5" data-estado="disponible" data-id="A801" /><rect x="24" y="7" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="7" width="14" height="16" rx="1.5" data-estado="disponible" class="mini-foco" data-id="A803" /><rect x="60" y="7" width="14" height="16" rx="1.5" data-estado="reservada" />
+                <rect x="6" y="29" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="24" y="29" width="14" height="16" rx="1.5" data-estado="disponible" data-id="A702" /><rect x="42" y="29" width="14" height="16" rx="1.5" data-estado="reservada" /><rect x="60" y="29" width="14" height="16" rx="1.5" data-estado="vendida" />
+                <rect x="6" y="51" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="24" y="51" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="51" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="60" y="51" width="14" height="16" rx="1.5" data-estado="disponible" />
+                <rect x="6" y="73" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="24" y="73" width="14" height="16" rx="1.5" data-estado="vendida" /><rect x="42" y="73" width="14" height="16" rx="1.5" data-estado="disponible" /><rect x="60" y="73" width="14" height="16" rx="1.5" data-estado="vendida" />
+              </g>
+            </svg>
+          </div>
+          <h3>Se actualiza solo</h3>
+          <p>Cambiás la planilla y el edificio cambia al instante.</p>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -2717,6 +2987,85 @@
         .then(r => r.ok ? r.json() : Promise.reject(r.status))
         .then(armar)
         .catch(err => console.warn('Inventario sin datos, la lámina queda oculta:', err));
+    })();
+
+    /* ============================================================
+       Cómo funciona, paso 03: una fila de planilla pasa a reservada y
+       la unidad de la fachada mini la sigue. Loop solo mientras se ve.
+       ============================================================ */
+    (function () {
+      const ORDEN = ['A803', 'A702', 'A801'];
+      const TXT = { disponible: 'Disponible', reservada: 'Reservado' };
+      // Cada PASO ms una unidad nueva; la celda cambia a los CAMBIO ms y la unidad, ECO ms después.
+      const PASO = 4000, CAMBIO = 900, ECO = 200;
+      const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const lamina = document.getElementById('sync');
+      if (!lamina) return;
+      const celdaId = document.getElementById('sync-id');
+      const celda = document.getElementById('sync-celda');
+      const estado = celda.querySelector('.sync-estado');
+      const unidad = id => lamina.querySelector(`rect[data-id="${id}"]`);
+
+      function fila(id, est) {
+        celdaId.textContent = id;
+        estado.dataset.estado = est;
+        estado.lastElementChild.textContent = TXT[est];
+      }
+
+      // Quita la clase, fuerza reflow y la vuelve a poner, para repetir la animación.
+      function repetir(el, clase) {
+        el.classList.remove(clase);
+        void el.getBoundingClientRect();
+        el.classList.add(clase);
+      }
+
+      function reservar(id, animar) {
+        fila(id, 'reservada');
+        const u = unidad(id);
+        if (!animar) return u.dataset.estado = 'reservada';
+        repetir(celda, 'sync-flash');
+        timers.push(setTimeout(() => {
+          u.dataset.estado = 'reservada';
+          repetir(u, 'mini-pulso');
+        }, ECO));
+      }
+
+      if (quieto || !('IntersectionObserver' in window)) {
+        reservar('A803', false);
+        lamina.classList.add('sync-fijo');
+        return;
+      }
+
+      let i = 0, timers = [], reloj = 0;
+
+      function ciclo() {
+        const id = ORDEN[i++ % ORDEN.length];
+        // La anterior vuelve a disponible para que la fachada no se llene de reservas.
+        ORDEN.forEach(otro => {
+          const u = unidad(otro);
+          u.dataset.estado = 'disponible';
+          u.classList.toggle('mini-foco', otro === id);
+        });
+        fila(id, 'disponible');
+        timers.push(setTimeout(() => reservar(id, true), CAMBIO));
+      }
+
+      function parar() {
+        clearInterval(reloj);
+        timers.forEach(clearTimeout);
+        timers = [];
+        reloj = 0;
+      }
+
+      new IntersectionObserver(entradas => {
+        if (!entradas[0].isIntersecting) return parar();
+        if (reloj) return;
+        // Al volver a entrar arranca por la unidad que estaba en pantalla.
+        if (i) i--;
+        ciclo();
+        reloj = setInterval(ciclo, PASO);
+      }, { threshold: .5 }).observe(lamina);
     })();
   </script>
 </body>
