@@ -430,6 +430,246 @@
       font-size: 17px
     }
 
+    /* ---------- inventario ---------- */
+    .inv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start
+    }
+
+    .inv-grid .intro {
+      margin-bottom: 0
+    }
+
+    .inv-lamina {
+      border: 1px solid var(--linea);
+      border-radius: 8px;
+      padding: 18px 20px 20px;
+      background: var(--tinta-2)
+    }
+
+    .inv-cab {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      font-size: 13.5px;
+      color: var(--tenue)
+    }
+
+    .inv-cab b {
+      font-size: 15px;
+      font-weight: 650;
+      color: var(--papel)
+    }
+
+    .inv-planilla {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 13.5px;
+      font-variant-numeric: tabular-nums
+    }
+
+    .inv-planilla th,
+    .inv-planilla td {
+      padding: 6px 10px;
+      text-align: left;
+      font-weight: 400;
+      border-bottom: 1px solid var(--linea)
+    }
+
+    .inv-planilla thead th {
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--tenue)
+    }
+
+    .inv-planilla th[scope="rowgroup"] {
+      padding-top: 14px;
+      color: var(--tenue)
+    }
+
+    .inv-planilla td {
+      color: var(--suave)
+    }
+
+    .inv-lamina {
+      position: relative
+    }
+
+    .inv-escena {
+      position: relative;
+      display: grid;
+      transition: height .6s .35s ease
+    }
+
+    .inv-escena > * {
+      grid-area: 1 / 1
+    }
+
+    .inv-planilla {
+      transition: opacity .35s
+    }
+
+    .inv-edificio .inv-planilla {
+      opacity: 0
+    }
+
+    /* Terminada la transformación la planilla sale del flujo y la altura es la del edificio. */
+    .inv-listo .inv-planilla {
+      position: absolute;
+      visibility: hidden
+    }
+
+    .inv-fachada {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+      pointer-events: none
+    }
+
+    .inv-edificio .inv-fachada {
+      pointer-events: auto
+    }
+
+    .inv-estructura {
+      opacity: 0;
+      transition: opacity .5s .5s
+    }
+
+    .inv-edificio .inv-estructura {
+      opacity: 1
+    }
+
+    .inv-estructura line,
+    .inv-estructura rect {
+      stroke: var(--linea);
+      fill: none;
+      vector-effect: non-scaling-stroke
+    }
+
+    .inv-estructura .inv-suelo {
+      stroke: var(--tenue)
+    }
+
+    .inv-estructura text {
+      fill: var(--tenue);
+      font-variant-numeric: tabular-nums
+    }
+
+    .inv-u {
+      cursor: pointer;
+      outline: none
+    }
+
+    .inv-u rect {
+      fill: var(--gris);
+      stroke: var(--tinta);
+      vector-effect: non-scaling-stroke;
+      transform-box: fill-box;
+      transform-origin: 0 0;
+      opacity: 0;
+      transition: transform .7s cubic-bezier(.2, .7, .2, 1), opacity .45s
+    }
+
+    .inv-sin-transicion .inv-u rect {
+      transition: none
+    }
+
+    .inv-edificio .inv-u rect {
+      opacity: 1
+    }
+
+    .inv-u[data-estado="disponible"] rect {
+      fill: var(--verde)
+    }
+
+    .inv-u[data-estado="reservada"] rect {
+      fill: var(--ambar)
+    }
+
+    .inv-u[data-estado="vendida"] rect {
+      fill-opacity: .55
+    }
+
+    .inv-u.activa rect,
+    .inv-u:focus-visible rect {
+      stroke: var(--papel);
+      stroke-width: 2
+    }
+
+    .inv-pie {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px 18px;
+      margin-top: 16px;
+      font-size: 13.5px;
+      color: var(--suave);
+      opacity: 0;
+      transition: opacity .4s .9s
+    }
+
+    .inv-edificio .inv-pie {
+      opacity: 1
+    }
+
+    .inv-leyenda {
+      display: flex;
+      gap: 14px
+    }
+
+    .inv-leyenda span {
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .inv-leyenda i {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--gris)
+    }
+
+    .inv-leyenda [data-estado="disponible"] i {
+      background: var(--verde)
+    }
+
+    .inv-leyenda [data-estado="reservada"] i {
+      background: var(--ambar)
+    }
+
+    .inv-leyenda [data-estado="vendida"] i {
+      opacity: .55
+    }
+
+    .inv-resumen {
+      font-variant-numeric: tabular-nums
+    }
+
+    @media (max-width:900px) {
+      .inv-grid {
+        grid-template-columns: 1fr;
+        gap: 34px
+      }
+    }
+
+    @media (max-width:560px) {
+      .inv-lamina {
+        padding: 14px 12px 16px
+      }
+
+      .inv-cab {
+        flex-wrap: wrap;
+        gap: 2px 12px
+      }
+    }
+
     /* ---------- demos ---------- */
     .demo {
       border: 1px solid var(--linea);
@@ -1143,7 +1383,7 @@
     <div class="env">
       <div class="intro">
         <p class="rotulo">El problema</p>
-        <h2>El portal muestra unidades. Nadie muestra el inventario.</h2>
+        <h2>78 avisos sueltos no son un edificio.</h2>
         <p>
           Un edificio de 78 unidades en un portal son 78 avisos que compiten entre sí,
           o uno solo que dice “desde US$ 128.000”. En los dos casos falta lo mismo:
@@ -1168,6 +1408,50 @@
           <h3>No hay escasez visible</h3>
           <p>“Quedan pocas” dicho por el vendedor es una frase. Mostrado sobre el
             edificio, es un hecho que el comprador verifica solo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INVENTARIO ============ -->
+  <section id="inventario">
+    <div class="env inv-grid">
+      <div class="intro">
+        <p class="rotulo">El inventario</p>
+        <h2>El inventario deja de ser una planilla.</h2>
+        <p>El portal muestra unidades. Nadie muestra el inventario.</p>
+      </div>
+      <!-- Se arma desde data/inventory-demo.json; si el fetch falla queda oculta. -->
+      <div class="inv-lamina" id="inv-lamina" hidden>
+        <p class="inv-cab">
+          <span><b id="inv-nombre"></b> <span class="ficha-ejemplo">Datos de ejemplo</span></span>
+          <span id="inv-rango"></span>
+        </p>
+        <!-- Planilla y fachada ocupan la misma celda: las filas vuelan a sus unidades. -->
+        <div class="inv-escena" id="inv-escena">
+          <table class="inv-planilla" id="inv-planilla">
+            <caption class="solo-lector"></caption>
+            <thead><tr><th scope="col">Unidad</th><th scope="col">Estado</th></tr></thead>
+          </table>
+          <svg class="inv-fachada" id="inv-fachada" role="group"></svg>
+        </div>
+        <div class="inv-pie">
+          <p class="inv-leyenda">
+            <span data-estado="disponible"><i></i>Disponible</span>
+            <span data-estado="reservada"><i></i>Reservada</span>
+            <span data-estado="vendida"><i></i>Vendida</span>
+          </p>
+          <p class="inv-resumen" id="inv-resumen"></p>
+        </div>
+        <!-- Mismo componente que la ficha del hero. Repite el aria-label de cada unidad. -->
+        <div class="ficha-hero" id="inv-ficha" aria-hidden="true">
+          <p class="ficha-pista">Tocá una unidad para ver sus datos.</p>
+          <div class="ficha-datos">
+            <p class="ficha-cab"><b data-f="id"></b><span class="ficha-ejemplo">Datos de ejemplo</span></p>
+            <p class="ficha-tipo" data-f="tipo"></p>
+            <p class="ficha-precio" data-f="precio"></p>
+            <p class="ficha-estado"><i></i><span data-f="estado"></span></p>
+          </div>
         </div>
       </div>
     </div>
@@ -1843,6 +2127,269 @@
         }
       })();
     }
+  </script>
+
+  <script>
+    /* ============================================================
+       Inventario: la planilla de los pisos altos se convierte en la
+       fachada del edificio. Datos en data/inventory-demo.json.
+       No depende de three.js.
+       ============================================================ */
+    (function () {
+      const NOMBRE_EDIFICIO = 'Edificio Demo';
+      const PISOS_PLANILLA = [10, 9, 8, 7];
+      // Elevación en unidades del viewBox: columna de números de piso a la izquierda.
+      // El alto de la unidad no es fijo: sale del ancho real para no bajar de TACTIL px.
+      const G = { ancho: 100, sepX: 6, sepY: 8, margen: 12, x0: 40, techo: 14, base: 18 };
+      const TACTIL = 42;
+      const ESTADO_TXT = { disponible: 'Disponible', reservada: 'Reservada', vendida: 'Vendida' };
+      const PLURAL = { disponible: 'disponibles', reservada: 'reservadas', vendida: 'vendidas' };
+      const SVG = 'http://www.w3.org/2000/svg';
+      // "A1004" → piso 10, columna 4.
+      const piso = u => +u.id.slice(1, -2);
+      const columna = u => +u.id.slice(-2);
+      const usd = n => 'US$ ' + n.toLocaleString('es-UY');
+      const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const lamina = document.getElementById('inv-lamina');
+      const escena = document.getElementById('inv-escena');
+      const tabla = document.getElementById('inv-planilla');
+      const svg = document.getElementById('inv-fachada');
+      const ficha = document.getElementById('inv-ficha');
+      // Mismo criterio que el CSS de la ficha: sin hover o angosto, es tarjeta fija.
+      const fichaFija = matchMedia('(hover: none), (max-width: 900px)');
+
+      let datos = null, unidades = [], alto = 0, transformado = false;
+
+      function el(tag, attrs, padre) {
+        const n = document.createElementNS(SVG, tag);
+        for (const k in attrs) n.setAttribute(k, attrs[k]);
+        return padre.appendChild(n);
+      }
+
+      function armarPlanilla() {
+        PISOS_PLANILLA.forEach(p => {
+          const grupo = tabla.createTBody();
+          grupo.insertRow().innerHTML = `<th colspan="2" scope="rowgroup">Piso ${p}</th>`;
+          datos.unidades.filter(u => piso(u) === p).forEach(u => {
+            const fila = grupo.insertRow();
+            fila.dataset.id = u.id;
+            fila.innerHTML = `<th scope="row">${u.id}</th><td>${ESTADO_TXT[u.estado]}</td>`;
+          });
+        });
+        const rango = `Pisos ${PISOS_PLANILLA[0]} a ${PISOS_PLANILLA[PISOS_PLANILLA.length - 1]}`;
+        document.getElementById('inv-nombre').textContent = NOMBRE_EDIFICIO;
+        document.getElementById('inv-rango').textContent = rango;
+        tabla.caption.textContent = `${NOMBRE_EDIFICIO}, estado por unidad. ${rango}.`;
+      }
+
+      const anchoVista = () => G.x0 + 2 * G.margen + datos.porPiso * G.ancho + (datos.porPiso - 1) * G.sepX;
+      // Escala pantalla/viewBox. El ancho del SVG no depende del viewBox: es el de la lámina.
+      const escala = () => svg.clientWidth / anchoVista();
+      const altoPara = s => Math.max(40, Math.ceil(TACTIL / s));
+
+      // Llena `unidades` con [{ u, g, rect, x, y }].
+      function armarFachada() {
+        const { pisos, porPiso } = datos;
+        const s = escala();
+        alto = altoPara(s);
+        const paso = alto + G.sepY;
+        const W = anchoVista();
+        const alturaCuerpo = pisos * paso;
+        const H = G.techo + alturaCuerpo + G.base;
+        // Números de piso legibles aunque la fachada se achique.
+        const letra = Math.round(11 / Math.min(s, 1));
+        svg.textContent = '';
+        svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+        svg.setAttribute('aria-label', `${NOMBRE_EDIFICIO}, fachada: ${pisos} pisos de ${porPiso} unidades`);
+
+        const est = el('g', { class: 'inv-estructura', 'aria-hidden': 'true' }, svg);
+        el('rect', { x: G.x0, y: G.techo - 6, width: W - G.x0, height: 6 }, est);
+        el('rect', { x: G.x0, y: G.techo, width: W - G.x0, height: alturaCuerpo }, est);
+        for (let i = 1; i < pisos; i++) {
+          el('line', { x1: G.x0, x2: W, y1: G.techo + i * paso, y2: G.techo + i * paso }, est);
+        }
+        el('line', { class: 'inv-suelo', x1: 0, x2: W, y1: G.techo + alturaCuerpo, y2: G.techo + alturaCuerpo }, est);
+        for (let p = 1; p <= pisos; p++) {
+          el('text', { x: G.x0 - 8, y: G.techo + (pisos - p) * paso + paso / 2 + letra * .35, 'font-size': letra, 'text-anchor': 'end' }, est)
+            .textContent = p;
+        }
+
+        unidades = datos.unidades.map(u => {
+          const x = G.x0 + G.margen + (columna(u) - 1) * (G.ancho + G.sepX);
+          const y = G.techo + (pisos - piso(u)) * paso + G.sepY / 2;
+          const dorm = u.dormitorios === 1 ? '1 dormitorio' : `${u.dormitorios} dormitorios`;
+          const g = el('g', {
+            class: 'inv-u', role: 'button', tabindex: 0, 'aria-pressed': 'false', 'data-id': u.id, 'data-estado': u.estado,
+            'aria-label': `${u.id}, piso ${piso(u)}, ${dorm}, ${u.m2} m², orientación ${u.orientacion}, ` +
+              `${usd(u.precioUSD)}, ${ESTADO_TXT[u.estado].toLowerCase()}`,
+          }, svg);
+          const rect = el('rect', { x, y, width: G.ancho, height: alto, rx: 2 }, g);
+          g.dato = u;
+          return { u, g, rect, x, y };
+        });
+      }
+
+      function armarResumen() {
+        const n = { disponible: 0, reservada: 0, vendida: 0 };
+        datos.unidades.forEach(u => n[u.estado]++);
+        document.getElementById('inv-resumen').textContent =
+          Object.keys(n).map(k => `${n[k]} ${n[k] === 1 ? k : PLURAL[k]}`).join(' · ');
+      }
+
+      /* ---------- transformación: cada fila vuela a su unidad (FLIP) ---------- */
+      function prepararVuelo() {
+        const caja = svg.getBoundingClientRect();
+        const s = caja.width / svg.viewBox.baseVal.width;
+        let i = 0;
+        // La posición de partida se aplica sin transición; si no, la unidad viajaría ya ahora.
+        svg.classList.add('inv-sin-transicion');
+        unidades.forEach(o => {
+          const fila = tabla.querySelector(`tr[data-id="${o.u.id}"]`);
+          if (fila) {
+            const r = fila.getBoundingClientRect();
+            const dx = (r.left - caja.left) / s - o.x;
+            const dy = (r.top - caja.top) / s - o.y;
+            o.rect.style.transform =
+              `translate(${dx}px, ${dy}px) scale(${r.width / s / G.ancho}, ${r.height / s / alto})`;
+            o.rect.style.transitionDelay = `${i++ * 25}ms`;
+          } else {
+            // Los pisos de abajo no estaban en la planilla: aparecen de arriba hacia abajo.
+            o.rect.style.transform = 'translateY(10px)';
+            o.rect.style.transitionDelay = `${450 + (PISOS_PLANILLA[PISOS_PLANILLA.length - 1] - piso(o.u)) * 60}ms`;
+          }
+        });
+        svg.getBoundingClientRect();
+        svg.classList.remove('inv-sin-transicion');
+      }
+
+      let rotuloEdificio = '';
+
+      function transformar() {
+        transformado = true;
+        const hIni = escena.offsetHeight;
+        lamina.classList.add('inv-edificio');
+        document.getElementById('inv-rango').textContent = rotuloEdificio;
+        unidades.forEach(o => { o.rect.style.transform = ''; });
+        // La altura pasa de la de la planilla a la del edificio sin salto.
+        escena.style.height = hIni + 'px';
+        escena.offsetHeight;
+        escena.style.height = svg.getBoundingClientRect().height + 'px';
+        setTimeout(() => {
+          lamina.classList.add('inv-listo');
+          escena.style.height = '';
+          unidades.forEach(o => { o.rect.style.transitionDelay = ''; });
+        }, 1400);
+      }
+
+      function mostrarEdificio() {
+        transformado = true;
+        lamina.classList.add('inv-edificio', 'inv-listo');
+        document.getElementById('inv-rango').textContent = rotuloEdificio;
+      }
+
+      /* ---------- ficha: hover, foco o tap ---------- */
+      const sel = { hover: null, foco: null, fijo: null };
+
+      // Guarda códigos, no nodos: la fachada se rehace si cambia el ancho.
+      function pintar() {
+        const id = sel.hover || sel.foco || sel.fijo;
+        let activa = null;
+        svg.querySelectorAll('.inv-u').forEach(g => {
+          if (g.dato.id === id) activa = g;
+          g.classList.toggle('activa', g.dato.id === id);
+          g.setAttribute('aria-pressed', g.dato.id === sel.fijo);
+        });
+        ficha.classList.toggle('con-unidad', !!activa);
+        if (!activa) return;
+        const d = activa.dato;
+        const campo = f => ficha.querySelector(`[data-f="${f}"]`);
+        campo('id').textContent = d.id;
+        campo('tipo').textContent = `${d.dormitorios} dorm. · ${d.m2} m² · ${d.orientacion}`;
+        campo('precio').textContent = usd(d.precioUSD);
+        campo('estado').textContent = ESTADO_TXT[d.estado];
+        ficha.dataset.estado = d.estado;
+        if (!fichaFija.matches) ubicarFicha(activa);
+      }
+
+      // Encima de la unidad, o debajo si no entra; sin salirse de la lámina.
+      function ubicarFicha(g) {
+        const base = lamina.getBoundingClientRect();
+        const r = g.getBoundingClientRect();
+        const arriba = r.top - base.top;
+        const abajo = arriba < ficha.offsetHeight + 22;
+        const m = ficha.offsetWidth / 2 + 8;
+        ficha.classList.toggle('abajo', abajo);
+        ficha.style.left = Math.min(Math.max(r.left - base.left + r.width / 2, m), base.width - m) + 'px';
+        ficha.style.top = (abajo ? r.bottom - base.top : arriba) + 'px';
+      }
+
+      function conectarFicha() {
+        const nodo = e => e.target.closest && e.target.closest('.inv-u');
+        const unidad = e => { const g = nodo(e); return g ? g.dato.id : null; };
+        // El foco queda para el teclado: con mouse o dedo, un segundo clic deselecciona.
+        svg.addEventListener('mousedown', e => { if (nodo(e)) e.preventDefault(); });
+        svg.addEventListener('pointerover', e => { sel.hover = unidad(e); pintar(); });
+        svg.addEventListener('pointerleave', () => { sel.hover = null; pintar(); });
+        svg.addEventListener('click', e => {
+          const g = unidad(e);
+          sel.fijo = g && g !== sel.fijo ? g : null;
+          pintar();
+        });
+        svg.addEventListener('focusin', e => { sel.foco = unidad(e); pintar(); });
+        svg.addEventListener('focusout', () => { sel.foco = null; pintar(); });
+        svg.addEventListener('keydown', e => {
+          const g = unidad(e);
+          if (g && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            sel.fijo = g !== sel.fijo ? g : null;
+            pintar();
+          } else if (e.key === 'Escape') {
+            sel.fijo = null;
+            pintar();
+          }
+        });
+      }
+
+      // Al cambiar el ancho: si el alto táctil cambia se rehace la fachada; si todavía
+      // no se transformó, las filas se movieron y hay que recalcular el vuelo.
+      let pendiente = false;
+      function alCambiarAncho() {
+        if (pendiente) return;
+        pendiente = true;
+        requestAnimationFrame(() => {
+          pendiente = false;
+          if (altoPara(escala()) !== alto) { armarFachada(); pintar(); }
+          if (!transformado) prepararVuelo();
+        });
+      }
+
+      function armar(d) {
+        datos = d;
+        armarPlanilla();
+        armarResumen();
+        rotuloEdificio = `${datos.pisos} pisos · ${datos.unidades.length} unidades`;
+        // Visible antes de armar la fachada: su alto depende del ancho medido.
+        lamina.hidden = false;
+        armarFachada();
+        conectarFicha();
+        addEventListener('resize', alCambiarAncho);
+
+        if (quieto || !('IntersectionObserver' in window)) return mostrarEdificio();
+        prepararVuelo();
+        const io = new IntersectionObserver(entradas => {
+          if (!entradas[0].isIntersecting) return;
+          io.disconnect();
+          transformar();
+        }, { threshold: .35 });
+        io.observe(escena);
+      }
+
+      fetch('data/inventory-demo.json')
+        .then(r => r.ok ? r.json() : Promise.reject(r.status))
+        .then(armar)
+        .catch(err => console.warn('Inventario sin datos, la lámina queda oculta:', err));
+    })();
   </script>
 </body>
 </html>

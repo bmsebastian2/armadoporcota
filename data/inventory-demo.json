@@ -1,0 +1,56 @@
+{
+  "nota": "Datos de ejemplo",
+  "pisos": 10,
+  "porPiso": 4,
+  "unidades": [
+    { "id": "A1001", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 191500, "estado": "vendida" },
+    { "id": "A1002", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 136000, "estado": "vendida" },
+    { "id": "A1003", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 143500, "estado": "reservada" },
+    { "id": "A1004", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 245000, "estado": "vendida" },
+
+    { "id": "A901", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 189000, "estado": "vendida" },
+    { "id": "A902", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 134000, "estado": "disponible" },
+    { "id": "A903", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 141500, "estado": "vendida" },
+    { "id": "A904", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 241500, "estado": "vendida" },
+
+    { "id": "A801", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 186000, "estado": "disponible" },
+    { "id": "A802", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 132000, "estado": "vendida" },
+    { "id": "A803", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 139500, "estado": "reservada" },
+    { "id": "A804", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 238000, "estado": "disponible" },
+
+    { "id": "A701", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 183000, "estado": "vendida" },
+    { "id": "A702", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 130000, "estado": "disponible" },
+    { "id": "A703", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 137500, "estado": "vendida" },
+    { "id": "A704", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 234500, "estado": "reservada" },
+
+    { "id": "A601", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 180500, "estado": "disponible" },
+    { "id": "A602", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 128000, "estado": "vendida" },
+    { "id": "A603", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 135500, "estado": "disponible" },
+    { "id": "A604", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 231000, "estado": "vendida" },
+
+    { "id": "A501", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 177500, "estado": "vendida" },
+    { "id": "A502", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 126000, "estado": "reservada" },
+    { "id": "A503", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 133000, "estado": "vendida" },
+    { "id": "A504", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 227500, "estado": "disponible" },
+
+    { "id": "A401", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 175000, "estado": "disponible" },
+    { "id": "A402", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 124000, "estado": "disponible" },
+    { "id": "A403", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 131000, "estado": "vendida" },
+    { "id": "A404", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 223500, "estado": "reservada" },
+
+    { "id": "A301", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 172000, "estado": "vendida" },
+    { "id": "A302", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 122000, "estado": "disponible" },
+    { "id": "A303", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 129000, "estado": "disponible" },
+    { "id": "A304", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 220000, "estado": "vendida" },
+
+    { "id": "A201", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 169500, "estado": "disponible" },
+    { "id": "A202", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 120000, "estado": "disponible" },
+    { "id": "A203", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 127000, "estado": "vendida" },
+    { "id": "A204", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 216500, "estado": "disponible" },
+
+    { "id": "A101", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 166500, "estado": "disponible" },
+    { "id": "A102", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 118000, "estado": "vendida" },
+    { "id": "A103", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 125000, "estado": "reservada" },
+    { "id": "A104", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 213000, "estado": "disponible" }
+  ]
+}
