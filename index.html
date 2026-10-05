@@ -5,18 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- three.js se pide tarde (ver cargar3D); la conexión ya queda abierta. -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Plex Sans variable (un archivo); Plex Mono estática, solo 400 y 500. -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400..700&display=swap">
   <title>Cota · Tu edificio se vende antes de existir</title>
   <meta name="description"
     content="Convertimos loteos y edificios en pozo en mapas navegables con disponibilidad en vivo. Para desarrolladoras e inmobiliarias en Uruguay.">
   <style>
     :root {
-      --tinta: #0E1513;
-      --tinta-2: #141D1B;
-      --papel: #EDE9E2;
-      --suave: rgba(237, 233, 226, .62);
-      --tenue: rgba(237, 233, 226, .38);
-      --linea: rgba(237, 233, 226, .13);
-      --gris: #7C8886;
+      /* Hormigón: grafito cálido. Sólidos, para que el contraste no dependa del fondo. */
+      --tinta: #1D1C1A;
+      --tinta-2: #252321;
+      --tinta-3: #2D2B28;
+      --papel: #EDE8E0;
+      --suave: #B5AEA3;
+      --tenue: #938B80;
+      --linea: #3A3733;
+      --linea-fuerte: #524E48;
+      --linea-hover: #6E6A63;
+      --gris: #908A80;
+      /* Trama de vendida: líneas de papel sobre el relleno de --state-sold. */
+      --trama: rgba(237, 232, 224, .35);
+      /* Luz del simulador de sol, no un estado: no reusar el ámbar de "reservado". */
+      --sol: #F5C969;
+      --sol-sombra: rgba(0, 0, 0, .38);
+      /* Maqueta 3D: los grises claros de la demo, para que el hero se vea como el producto. */
+      --maqueta-losa: #B4BBBD;
+      --maqueta-canto: #8E9698;
+      --maqueta-unidad: #9AA2A5;
+      --maqueta-borde: #1A2124;
+      --fuente: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --fuente-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      /* Bloques sin radio; controles apenas suavizados. Sin sombras: separan las líneas. */
+      --radio: 0;
+      --radio-ctrl: 2px;
       /* Estados de unidad: el verde solo significa "disponible". */
       --state-available: #3E9B84;
       --state-reserved: #D3A04A;
@@ -42,7 +66,7 @@
       margin: 0;
       background: var(--tinta);
       color: var(--papel);
-      font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: var(--fuente);
       font-size: 16px;
       line-height: 1.62;
       -webkit-font-smoothing: antialiased;
@@ -108,8 +132,8 @@
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(14, 21, 19, .86);
-      backdrop-filter: blur(12px);
+      background: var(--tinta);
+      background: color-mix(in srgb, var(--tinta) 94%, transparent);
       border-bottom: 1px solid var(--linea);
     }
 
@@ -152,7 +176,7 @@
       align-items: center;
       gap: 8px;
       padding: 13px 22px;
-      border-radius: 5px;
+      border-radius: var(--radio-ctrl);
       text-decoration: none;
       font-size: 15px;
       font-weight: 550;
@@ -175,7 +199,7 @@
     }
 
     .btn-s:hover {
-      border-color: rgba(237, 233, 226, .4)
+      border-color: var(--linea-hover)
     }
 
     .btn:focus-visible {
@@ -236,7 +260,7 @@
     }
 
     :is(.cotas-hero, .cotas-marco) text {
-      font: 11px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 11px/1 var(--fuente-mono);
       letter-spacing: .16em;
       fill: var(--tenue)
     }
@@ -362,7 +386,7 @@
     .marco {
       position: relative;
       border: 1px solid var(--linea);
-      border-radius: 8px;
+      border-radius: var(--radio);
       overflow: hidden;
       background: var(--tinta-2)
     }
@@ -418,9 +442,9 @@
       width: 220px;
       padding: 14px 16px 15px;
       background: var(--tinta);
-      border: 1px solid var(--linea);
-      border-radius: 8px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      /* Sin sombra: flota sobre el 3D separada por un borde más marcado. */
+      border: 1px solid var(--linea-fuerte);
+      border-radius: var(--radio);
       transform: translate(-50%, calc(-100% - 14px));
       pointer-events: none;
       opacity: 0;
@@ -538,7 +562,7 @@
       height: 24px;
       padding: 0;
       border: 0;
-      border-radius: 4px;
+      border-radius: var(--radio-ctrl);
       background: none;
       color: var(--suave);
       font: inherit;
@@ -565,7 +589,7 @@
         min-height: 116px;
         margin-top: 12px;
         transform: none;
-        box-shadow: none;
+        border-color: var(--linea);
         opacity: 1;
         visibility: visible;
         transition: none
@@ -619,13 +643,13 @@
       left: -42px;
       width: 28px;
       text-align: center;
-      font: 18px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 18px/1 var(--fuente-mono);
       color: var(--tenue)
     }
 
     .paso-num {
       margin: 0 0 16px;
-      font: 500 30px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 500 30px/1 var(--fuente-mono);
       letter-spacing: .06em;
       color: var(--tenue);
       font-variant-numeric: tabular-nums
@@ -639,7 +663,7 @@
       justify-content: center;
       gap: 18px;
       border: 1px solid var(--linea);
-      border-radius: 8px;
+      border-radius: var(--radio);
       background: var(--tinta-2)
     }
 
@@ -667,7 +691,7 @@
     }
 
     .paso-lamina text {
-      font: 600 8px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 500 8px/1 var(--fuente-mono);
       letter-spacing: .08em;
       text-anchor: middle
     }
@@ -769,7 +793,7 @@
     .sync-estado i {
       width: 12px;
       height: 8px;
-      border-radius: 2px;
+      border-radius: var(--radio-ctrl);
       background: var(--gris)
     }
 
@@ -805,13 +829,13 @@
 
     @keyframes sync-flash {
       from {
-        background: rgba(237, 233, 226, .16)
+        background: var(--linea)
       }
     }
 
     .sync-flecha {
       display: none;
-      font: 16px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 16px/1 var(--fuente-mono);
       color: var(--tenue)
     }
 
@@ -863,7 +887,7 @@
 
     .inv-lamina {
       border: 1px solid var(--linea);
-      border-radius: 8px;
+      border-radius: var(--radio);
       padding: 18px 20px 20px;
       background: var(--tinta-2)
     }
@@ -886,7 +910,7 @@
     .inv-planilla {
       width: 100%;
       border-collapse: collapse;
-      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-family: var(--fuente-mono);
       font-size: 13.5px;
       font-variant-numeric: tabular-nums
     }
@@ -1023,7 +1047,7 @@
     }
 
     .inv-trama-linea {
-      stroke: rgba(237, 233, 226, .35);
+      stroke: var(--trama);
       stroke-width: 1.5
     }
 
@@ -1064,7 +1088,7 @@
       /* Proporción de unidad de fachada: deja ver el punteado y la trama. */
       width: 16px;
       height: 10px;
-      border-radius: 2px;
+      border-radius: var(--radio-ctrl);
       background: var(--gris)
     }
 
@@ -1078,7 +1102,7 @@
     }
 
     .inv-leyenda [data-estado="vendida"] i {
-      background: repeating-linear-gradient(45deg, rgba(237, 233, 226, .35) 0 1.5px, transparent 1.5px 4px),
+      background: repeating-linear-gradient(45deg, var(--trama) 0 1.5px, transparent 1.5px 4px),
         var(--state-sold)
     }
 
@@ -1107,7 +1131,7 @@
     /* ---------- demos ---------- */
     .demo {
       border: 1px solid var(--linea);
-      border-radius: 8px;
+      border-radius: var(--radio);
       overflow: hidden;
       background: var(--tinta-2);
       display: flex;
@@ -1117,7 +1141,7 @@
     }
 
     .demo:hover {
-      border-color: rgba(237, 233, 226, .4);
+      border-color: var(--linea-hover);
       transform: translateY(-2px)
     }
 
@@ -1154,7 +1178,7 @@
     .demo-principal {
       display: grid;
       grid-template-columns: 1.1fr .9fr;
-      border-color: rgba(237, 233, 226, .3)
+      border-color: var(--linea-fuerte)
     }
 
     .demo-principal .lam {
@@ -1172,7 +1196,7 @@
     }
 
     .etiq-real {
-      border-color: rgba(237, 233, 226, .3);
+      border-color: var(--linea-fuerte);
       color: var(--papel)
     }
 
@@ -1185,7 +1209,7 @@
       gap: 16px;
       padding: 18px 22px;
       border: 1px solid var(--linea);
-      border-radius: 8px;
+      border-radius: var(--radio);
       background: transparent;
       color: var(--suave);
       font: inherit;
@@ -1201,7 +1225,7 @@
     }
 
     .mas-proyectos:hover {
-      border-color: rgba(237, 233, 226, .4);
+      border-color: var(--linea-hover);
       color: var(--papel)
     }
 
@@ -1225,10 +1249,8 @@
       align-items: center
     }
 
-    /* Simulador de sol: planta con norte arriba, el sol recorre su arco del día.
-       --sol es la luz, no un estado: no reusar el ámbar de "reservado". */
+    /* Simulador de sol: planta con norte arriba, el sol recorre su arco del día. */
     .sol-sim {
-      --sol: #F5C969;
       margin: 0
     }
 
@@ -1241,19 +1263,19 @@
 
     .sol-sim .ruedo { fill: none; stroke: var(--linea) }
     .sol-sim .anillo { fill: none; stroke: var(--linea); stroke-dasharray: 2 5 }
-    .sol-sim .rumbo { fill: var(--tenue); font: 600 11px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; text-anchor: middle }
+    .sol-sim .rumbo { fill: var(--tenue); font: 500 11px/1 var(--fuente-mono); text-anchor: middle }
     .sol-sim .rumbo.n { fill: var(--papel) }
     .sol-sim .arco { fill: none; stroke: var(--sol); stroke-opacity: .35; stroke-width: 1.5; stroke-dasharray: 1 6; stroke-linecap: round }
     .sol-sim .marca { fill: var(--sol); fill-opacity: .5 }
-    .sol-sim .marca-txt { fill: var(--tenue); font: 10px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; text-anchor: middle; dominant-baseline: middle }
-    .sol-sim .sombra { fill: #000; fill-opacity: .38 }
+    .sol-sim .marca-txt { fill: var(--tenue); font: 10px/1 var(--fuente-mono); text-anchor: middle; dominant-baseline: middle }
+    .sol-sim .sombra { fill: var(--sol-sombra) }
     .sol-sim .rayo { stroke: var(--sol); stroke-opacity: .28; stroke-width: 1; stroke-dasharray: 3 5 }
-    .sol-sim .planta { fill: #1F2B28; stroke: var(--linea) }
+    .sol-sim .planta { fill: var(--tinta-3); stroke: var(--linea) }
     .sol-sim .div { stroke: var(--linea) }
     .sol-sim .celda { fill: var(--sol); fill-opacity: 0; stroke: var(--papel); stroke-width: 1.5; transition: fill-opacity .25s }
     .sol-sim .cara { stroke: var(--gris); stroke-opacity: .35; stroke-width: 4; stroke-linecap: square; transition: stroke .25s, stroke-opacity .25s }
     .sol-sim .cara.luz { stroke: var(--sol); stroke-width: 5; filter: url(#sol-brillo) }
-    .sol-sim .cod { fill: var(--papel); font: 600 12px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; text-anchor: middle }
+    .sol-sim .cod { fill: var(--papel); font: 500 12px/1 var(--fuente-mono); text-anchor: middle }
     .sol-sim .halo { fill: var(--sol); fill-opacity: .16 }
     .sol-sim .disco { fill: var(--sol) }
 
@@ -1271,7 +1293,7 @@
     }
 
     .sol-hora output {
-      font: 500 30px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 500 30px/1 var(--fuente-mono);
       color: var(--papel);
       font-variant-numeric: tabular-nums
     }
@@ -1292,7 +1314,7 @@
     .sol-extremos {
       display: flex;
       justify-content: space-between;
-      font: 11.5px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 11.5px/1.4 var(--fuente-mono);
       color: var(--tenue)
     }
 
@@ -1347,7 +1369,7 @@
       max-height: calc(100dvh - 48px);
       padding: 26px;
       border: 1px solid var(--linea);
-      border-radius: 10px;
+      border-radius: var(--radio);
       background: var(--tinta);
       color: var(--papel);
       overflow-y: auto;
@@ -1355,8 +1377,7 @@
     }
 
     #otros::backdrop {
-      background: rgba(5, 9, 8, .72);
-      backdrop-filter: blur(3px)
+      background: color-mix(in srgb, var(--tinta, #1D1C1A) 80%, transparent);
     }
 
     .otros-cabeza {
@@ -1375,7 +1396,7 @@
       height: 40px;
       flex: none;
       border: 1px solid var(--linea);
-      border-radius: 6px;
+      border-radius: var(--radio-ctrl);
       background: transparent;
       color: var(--papel);
       font-size: 22px;
@@ -1403,15 +1424,10 @@
       overflow: hidden
     }
 
-    .demo-torre .lam {
-      background: radial-gradient(circle at 50% 25%, rgba(237, 233, 226, .06), transparent 35%),
-        linear-gradient(180deg, #111b19 0%, #0d1513 100%);
-    }
-
     .etiq {
       display: inline-block;
       padding: 4px 9px;
-      border-radius: 3px;
+      border-radius: var(--radio-ctrl);
       font-size: 11px;
       letter-spacing: .1em;
       text-transform: uppercase;
@@ -1434,14 +1450,14 @@
       align-items: center;
       gap: 8px 14px;
       margin: 14px 0 30px;
-      font: 11.5px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 11.5px/1.4 var(--fuente-mono);
       color: var(--tenue)
     }
 
     .demanda-ejemplo {
       padding: 4px 8px;
       border: 1px solid var(--linea);
-      border-radius: 3px;
+      border-radius: var(--radio-ctrl);
       letter-spacing: .08em;
       text-transform: uppercase;
       font-size: 10px
@@ -1473,7 +1489,7 @@
       border: 0;
       background: none;
       text-align: left;
-      font: 13px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 13px/1 var(--fuente-mono);
       color: var(--suave)
     }
 
@@ -1497,7 +1513,7 @@
     .barras .riel {
       grid-column: 1 / -1;
       height: 4px;
-      border-radius: 2px;
+      border-radius: var(--radio-ctrl);
       background: var(--linea);
       overflow: hidden
     }
@@ -1559,7 +1575,7 @@
 
     .mini-fachada figcaption {
       margin-top: 12px;
-      font: 10.5px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 10.5px/1.5 var(--fuente-mono);
       color: var(--tenue);
       text-align: center
     }
@@ -1619,7 +1635,7 @@
 
     .tramo-etiq,
     .tarifa-condiciones {
-      font: 11px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font: 11px/1.5 var(--fuente-mono);
       letter-spacing: .16em;
       text-transform: uppercase;
       color: var(--tenue)
@@ -1723,7 +1739,7 @@
 
     .logo-caja {
       background: #fff;
-      border-radius: 8px;
+      border-radius: var(--radio);
       padding: 28px 30px;
       border: 1px solid var(--linea);
       display: flex;
@@ -1736,13 +1752,6 @@
       max-width: 340px;
       height: auto;
       display: block
-    }
-
-    footer .logo-pie {
-      height: 22px;
-      width: auto;
-      opacity: .55;
-      filter: grayscale(1) invert(1)
     }
 
     /* ---------- cierre ---------- */
@@ -1813,7 +1822,7 @@
         margin: auto 0 0;
         max-height: 88dvh;
         padding: 22px 16px calc(22px + env(safe-area-inset-bottom));
-        border-radius: 14px 14px 0 0;
+        border-radius: var(--radio);
         border-bottom: none
       }
 
@@ -1933,8 +1942,8 @@
           <!-- Respaldo estático: mientras carga three.js o si no hay WebGL. Dibujado por código. -->
           <svg class="fallback-hero" viewBox="0 0 480 440" preserveAspectRatio="xMidYMid slice" role="img"
             aria-label="Edificio de ejemplo con el piso 8 resaltado">
-            <defs><g id="piso-fb"><path d="M122 20h180l38 16H160z" fill="#B4BBBD" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" fill="#8E9698"/><rect x="160" y="36" width="180" height="4" fill="#B4BBBD"/><path d="M127-13l38 16v33l-38-16z" fill="#9AA2A5" fill-opacity=".18"/><g fill="#9AA2A5" fill-opacity=".3" stroke="#1A2124" stroke-opacity=".26"><rect x="165" y="3" width="54" height="33"/><rect x="222" y="3" width="54" height="33"/><rect x="279" y="3" width="54" height="33"/></g></g><pattern id="fb-trama" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" style="fill:var(--state-sold)"/><line x1="0" y1="0" x2="0" y2="6" stroke="#EDE9E2" stroke-opacity=".35" stroke-width="1.5"/></pattern></defs>
-            <use href="#piso-fb" y="392"/><use href="#piso-fb" y="352"/><use href="#piso-fb" y="312"/><use href="#piso-fb" y="272"/><use href="#piso-fb" y="232"/><use href="#piso-fb" y="192"/><use href="#piso-fb" y="152"/><use href="#piso-fb" y="112"/><g transform="translate(0 72)"><path d="M122 20h180l38 16H160z" fill="#B4BBBD" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" fill="#8E9698"/><rect x="160" y="36" width="180" height="4" fill="#B4BBBD"/><path d="M127-13l38 16v33l-38-16z" style="fill:var(--state-available)" fill-opacity=".75"/><g stroke="#0E1513" stroke-opacity=".6"><rect x="165" y="3" width="40.25" height="33" style="fill:var(--state-available)"/><rect x="208.25" y="3" width="40.25" height="33" fill="url(#fb-trama)"/><rect x="251.5" y="3" width="40.25" height="33" style="fill:var(--state-reserved)" stroke-width="3" stroke-dasharray="4 3" stroke-opacity="1"/><rect x="294.75" y="3" width="40.25" height="33" style="fill:var(--state-available)"/></g></g><use href="#piso-fb" y="32"/><use href="#piso-fb" y="-8"/>
+            <defs><g id="piso-fb"><path d="M122 20h180l38 16H160z" style="fill:var(--maqueta-losa)" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" style="fill:var(--maqueta-canto)"/><rect x="160" y="36" width="180" height="4" style="fill:var(--maqueta-losa)"/><path d="M127-13l38 16v33l-38-16z" style="fill:var(--maqueta-unidad)" fill-opacity=".18"/><g style="fill:var(--maqueta-unidad);stroke:var(--maqueta-borde)" fill-opacity=".3" stroke-opacity=".26"><rect x="165" y="3" width="54" height="33"/><rect x="222" y="3" width="54" height="33"/><rect x="279" y="3" width="54" height="33"/></g></g><pattern id="fb-trama" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" style="fill:var(--state-sold)"/><line x1="0" y1="0" x2="0" y2="6" style="stroke:var(--trama)" stroke-width="1.5"/></pattern></defs>
+            <use href="#piso-fb" y="392"/><use href="#piso-fb" y="352"/><use href="#piso-fb" y="312"/><use href="#piso-fb" y="272"/><use href="#piso-fb" y="232"/><use href="#piso-fb" y="192"/><use href="#piso-fb" y="152"/><use href="#piso-fb" y="112"/><g transform="translate(0 72)"><path d="M122 20h180l38 16H160z" style="fill:var(--maqueta-losa)" fill-opacity=".35"/><path d="M122 20l38 16v4l-38-16z" style="fill:var(--maqueta-canto)"/><rect x="160" y="36" width="180" height="4" style="fill:var(--maqueta-losa)"/><path d="M127-13l38 16v33l-38-16z" style="fill:var(--state-available)" fill-opacity=".75"/><g style="stroke:var(--tinta)" stroke-opacity=".6"><rect x="165" y="3" width="40.25" height="33" style="fill:var(--state-available)"/><rect x="208.25" y="3" width="40.25" height="33" fill="url(#fb-trama)"/><rect x="251.5" y="3" width="40.25" height="33" style="fill:var(--state-reserved)" stroke-width="3" stroke-dasharray="4 3" stroke-opacity="1"/><rect x="294.75" y="3" width="40.25" height="33" style="fill:var(--state-available)"/></g></g><use href="#piso-fb" y="32"/><use href="#piso-fb" y="-8"/>
           </svg>
           <canvas id="lienzo-hero"></canvas>
           <div class="solo-lector" id="unidades-hero" role="group" aria-label="Piso 8, unidades de ejemplo"></div>
@@ -2190,8 +2199,8 @@
       <!-- Trama de vendida para las fachadas mini; id propio para no chocar con #inv-trama. -->
       <svg class="paso-defs" aria-hidden="true" focusable="false">
         <pattern id="mini-trama" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <rect width="4" height="4" fill="var(--state-sold)" />
-          <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(237,233,226,.35)" />
+          <rect width="4" height="4" style="fill:var(--state-sold)" />
+          <line x1="0" y1="0" x2="0" y2="4" style="stroke:var(--trama)" />
         </pattern>
       </svg>
       <ol class="pasos">
@@ -2600,7 +2609,8 @@
       const COLORES = { disp: token('--state-available'), res: token('--state-reserved'), vend: token('--state-sold') };
       // Esquema real de la demo: unidades gris translúcido
       // por defecto, con una franja destacada en verde "disponible".
-      const ESTADOS_REAL = { disponible: COLORES.disp, sinDato: 0x9AA2A5 };
+      const ESTADOS_REAL = { disponible: COLORES.disp, sinDato: token('--maqueta-unidad') };
+      const MAQUETA = { losa: token('--maqueta-losa'), borde: token('--maqueta-borde'), fondo: token('--tinta'), papel: token('--papel'), suelo: token('--tinta-2') };
       const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       // `destacado`: piso (0 = planta baja) que se arma con 4 unidades pasantes
@@ -2614,7 +2624,7 @@
         const azar = () => (semilla = (semilla * 1103515245 + 12345) % 2147483648) / 2147483648;
 
         const matLosa = new THREE.MeshStandardMaterial({
-          color: real ? 0xB4BBBD : 0x2A3634, roughness: .9
+          color: real ? MAQUETA.losa : 0x2A3634, roughness: .9
         });
         const geoLosa = new THREE.BoxGeometry(porFila * (ancho + .3) + .5, .3, prof * 2 + sep + .5);
         const apagada = destacado !== undefined;
@@ -2636,7 +2646,7 @@
               }));
               caja.position.set((c - 1.5) * (anchoU + .3), p * paso + alto / 2, 0);
               const bl = new THREE.LineSegments(bordesU,
-                new THREE.LineBasicMaterial({ color: 0x0E1513, transparent: true, opacity: .6 }));
+                new THREE.LineBasicMaterial({ color: MAQUETA.fondo, transparent: true, opacity: .6 }));
               bl.position.copy(caja.position);
               caja.userData.borde = bl;
               grupo.add(caja, bl);
@@ -2666,7 +2676,7 @@
 
               const bl = new THREE.LineSegments(bordes,
                 new THREE.LineBasicMaterial({
-                  color: real ? 0x1A2124 : 0x0E1513, transparent: true, opacity: real ? .26 : .5
+                  color: real ? MAQUETA.borde : MAQUETA.fondo, transparent: true, opacity: real ? .26 : .5
                 }));
               bl.position.copy(caja.position);
               grupo.add(bl);
@@ -2685,7 +2695,7 @@
         const gl = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         gl.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-        escena.add(new THREE.HemisphereLight(0xDDEAE6, 0x141D1B, .95));
+        escena.add(new THREE.HemisphereLight(0xDDEAE6, MAQUETA.suelo, .95));
         const luz = new THREE.DirectionalLight(0xFFF6E8, .95);
         luz.position.set(-24, 40, 22);
         escena.add(luz);
@@ -2757,7 +2767,7 @@
         hero.unidades.forEach(u => {
           const on = u === activa;
           u.material.emissive.copy(u.material.color).multiplyScalar(on ? .45 : 0);
-          u.userData.borde.material.color.setHex(on ? 0xEDE9E2 : 0x0E1513);
+          u.userData.borde.material.color.setHex(on ? MAQUETA.papel : MAQUETA.fondo);
           u.userData.borde.material.opacity = on ? .95 : .6;
           u.userData.boton.setAttribute('aria-pressed', u === heroSel.sel);
         });
