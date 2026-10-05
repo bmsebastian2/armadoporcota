@@ -93,10 +93,14 @@ dependencias. Se despliega arrastrando la carpeta a Vercel.
 
 ### Paletas
 
-Landing — oscura, verde de marca:
+Landing — hormigón oscuro, "arquitectura + datos + interacción". Sin fotos, sin
+sombras, radios 0 (bloques) y 2 px (controles); los bloques se separan con líneas.
+Solo se animan cosas ligadas a datos.
 ```
---tinta #0E1513   --tinta-2 #141D1B   --papel #EDE9E2
---verde #3E9B84   --ambar #D3A04A     --gris #7C8886
+--tinta #1D1C1A   --tinta-2 #252321   --papel #EDE8E0
+--suave #B5AEA3   --tenue #938B80     --linea #3A3733   --gris #908A80
+--state-available #3E9B84   --state-reserved #D3A04A   --state-sold #6A7271
+Tipografía: IBM Plex Sans (títulos y texto) + IBM Plex Mono 400/500 (datos y etiquetas)
 ```
 
 Demo ROSSO — clara, tipo maqueta de arquitecto:
