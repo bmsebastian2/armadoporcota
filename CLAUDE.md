@@ -31,10 +31,11 @@ sol-brusco.jpg        Captura del visor con el sol. Ya no se usa: la sección #s
 data/
   hero-units.json       Piso 8 seleccionable del hero (datos de ejemplo)
   inventory-demo.json   Sección #inventario: 10 pisos × 4 unidades, de planilla a fachada SVG
+  demand-demo.json      Sección #datos: % de consultas por tipología (dorm. × orientación)
 README.md
 ```
 
-Las dos piezas de `data/` se cargan con `fetch`: con doble clic (`file://`) el hero queda
+Las piezas de `data/` se cargan con `fetch`: con doble clic (`file://`) el hero queda
 decorativo y `#inventario` muestra solo el titular. Para probar en local, levantar un
 servidor (`python -m http.server`).
 

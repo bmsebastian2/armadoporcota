@@ -1,0 +1,12 @@
+{
+  "nota": "Datos de ejemplo",
+  "metrica": "% de consultas por tipología",
+  "periodo": "últimos 30 días",
+  "tipologias": [
+    { "etiqueta": "2 dorm. · Norte",    "dormitorios": 2,    "orientacion": "Norte",    "pct": 38, "unidades": 10, "disponibles": 5 },
+    { "etiqueta": "1 dorm. · Norte",    "dormitorios": 1,    "orientacion": "Norte",    "pct": 24, "unidades": 10, "disponibles": 5 },
+    { "etiqueta": "3 dorm. · Noroeste", "dormitorios": 3,    "orientacion": "Noroeste", "pct": 17, "unidades": 10, "disponibles": 4 },
+    { "etiqueta": "1 dorm. · Sur",      "dormitorios": 1,    "orientacion": "Sur",      "pct": 13, "unidades": 10, "disponibles": 2 },
+    { "etiqueta": "Otros",              "dormitorios": null, "orientacion": null,       "pct": 8,  "unidades": null, "disponibles": null }
+  ]
+}

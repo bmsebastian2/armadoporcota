@@ -1424,42 +1424,109 @@
     .demanda {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 44px;
+      gap: 64px;
       align-items: center
     }
 
-    .barras {
+    .demanda-metrica {
       display: flex;
-      flex-direction: column;
-      gap: 11px
-    }
-
-    .barra {
-      display: grid;
-      grid-template-columns: 88px 1fr 44px;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 14px;
-      font-size: 13.5px
-    }
-
-    .barra i {
-      font-style: normal;
+      gap: 8px 14px;
+      margin: 14px 0 30px;
+      font: 11.5px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
       color: var(--tenue)
     }
 
-    .barra u {
-      display: block;
-      height: 8px;
-      border-radius: 2px;
-      background: var(--suave);
-      text-decoration: none;
+    .demanda-ejemplo {
+      padding: 4px 8px;
+      border: 1px solid var(--linea);
+      border-radius: 3px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: 10px
     }
 
-    .barra b {
-      font-weight: 500;
-      color: var(--suave);
-      text-align: right;
+    /* Barras neutras: el verde queda reservado para "disponible". */
+    .barras {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 18px
+    }
+
+    .barras li {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 16px;
+      font: 13px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      color: var(--suave)
+    }
+
+    .barras .pct {
       font-variant-numeric: tabular-nums
+    }
+
+    .barras .riel {
+      grid-column: 1 / -1;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--linea);
+      overflow: hidden
+    }
+
+    .barras .lleno {
+      display: block;
+      height: 100%;
+      width: var(--w);
+      background: var(--gris);
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform .9s cubic-bezier(.2, .7, .2, 1) calc(var(--i) * 90ms)
+    }
+
+    .barras.llenas .lleno {
+      transform: none
+    }
+
+    .barras li.lider {
+      color: var(--papel)
+    }
+
+    .barras li.lider .lleno {
+      background: var(--papel)
+    }
+
+    .insight {
+      font-size: clamp(26px, 3vw, 36px);
+      line-height: 1.18;
+      letter-spacing: -.02em;
+      font-weight: 500
+    }
+
+    .insight span {
+      display: block
+    }
+
+    .insight-accion {
+      margin-top: 10px;
+      color: var(--suave)
+    }
+
+    .insight-accion b {
+      font-weight: 500;
+      color: var(--papel);
+      font-variant-numeric: tabular-nums
+    }
+
+    .insight-nota {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid var(--linea);
+      font-size: 14.5px;
+      max-width: 44ch
     }
 
     /* ---------- planes ---------- */
@@ -1678,6 +1745,11 @@
 
       #lienzo-hero {
         height: 320px
+      }
+
+      /* En celular primero la conclusión, después el dato que la sostiene. */
+      .demanda-insight {
+        order: -1
       }
 
       .demo-principal {
@@ -2043,31 +2115,26 @@
   <section id="datos">
     <div class="env">
       <div class="demanda">
-        <div>
+        <div class="demanda-datos">
           <p class="rotulo">Para la desarrolladora</p>
-          <h2>Cada clic del comprador te dice qué unidad subir y cuál rebajar.</h2>
-          <p class="plomo" style="margin-top:18px">
-            Un portal te dice cuántos vieron el aviso. Nosotros te decimos qué miraron:
-            qué tipología, qué orientación, qué franja de pisos. Con eso reajustás la
-            lista de precios de lo que no se mueve, antes de tener que rematarlo.
+          <h2>Qué está buscando la gente</h2>
+          <p class="demanda-metrica">
+            <span>% de consultas por tipología · últimos 30 días</span>
+            <span class="demanda-ejemplo">Datos de ejemplo</span>
           </p>
-          <p class="plomo" style="margin-top:16px">
-            Y el lead es tuyo. La consulta te llega directo, con la unidad puesta, y al
-            lado del botón de contacto no hay otro aviso compitiendo por la misma persona.
-          </p>
+          <ol class="barras" id="demanda-barras" aria-label="Porcentaje de consultas por tipología"></ol>
         </div>
-        <div>
-          <p class="rotulo">Clics por tipología · ejemplo</p>
-          <div class="barras">
-            <div class="barra"><i>2 dorm norte</i><u style="width:100%"></u><b>38%</b></div>
-            <div class="barra"><i>3 dorm</i><u style="width:63%"></u><b>24%</b></div>
-            <div class="barra"><i>1 dorm norte</i><u style="width:55%"></u><b>21%</b></div>
-            <div class="barra"><i>2 dorm sur</i><u style="width:29%"></u><b>11%</b></div>
-            <div class="barra"><i>1 dorm sur</i><u style="width:16%"></u><b>6%</b></div>
-          </div>
-          <p class="plomo" style="margin-top:20px;font-size:14px">
-            Acá el dato dice: sobran unidades al sur y falta stock de 2 dormitorios al
-            norte. Es una decisión de precio, no de marketing.
+        <div class="demanda-insight">
+          <p class="insight">
+            <span id="demanda-lider">Hay demanda por 2 dormitorios al norte.</span>
+            <span class="insight-accion" id="demanda-accion" hidden>
+              Quedan <b id="demanda-quedan"></b>. Es el momento de revisar su precio.
+            </span>
+          </p>
+          <p class="plomo insight-nota">
+            Un portal te dice cuántos vieron el aviso. Cota te dice qué miraron, y con eso
+            reajustás la lista de precios antes de tener que rematar. Y el lead es tuyo:
+            al lado del botón de contacto no hay otro aviso compitiendo por la misma persona.
           </p>
         </div>
       </div>
@@ -3086,6 +3153,52 @@
         .then(r => r.ok ? r.json() : Promise.reject(r.status))
         .then(armar)
         .catch(err => console.warn('Inventario sin datos, la lámina queda oculta:', err));
+    })();
+
+    /* ============================================================
+       Demanda: filas de % de consultas por tipología y la conclusión
+       para la desarrolladora. El "Quedan N" sale del JSON.
+       ============================================================ */
+    (function () {
+      const lista = document.getElementById('demanda-barras');
+      if (!lista) return;
+      const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function armar(d) {
+        const filas = d.tipologias.slice().sort((a, b) => b.pct - a.pct);
+        // "Otros" va siempre al final, aunque supere a alguna tipología.
+        filas.sort((a, b) => (a.dormitorios === null) - (b.dormitorios === null));
+        const max = Math.max(...filas.map(f => f.pct));
+
+        filas.forEach((f, i) => {
+          const li = document.createElement('li');
+          if (i === 0) li.className = 'lider';
+          li.innerHTML = `<span></span><span class="pct">${f.pct}%</span>` +
+            `<span class="riel" aria-hidden="true"><span class="lleno" style="--w:${f.pct / max * 100}%;--i:${i}"></span></span>`;
+          li.firstChild.textContent = f.etiqueta;
+          lista.appendChild(li);
+        });
+
+        const lider = filas[0];
+        const dorm = `${lider.dormitorios} dormitorio${lider.dormitorios === 1 ? '' : 's'}`;
+        document.getElementById('demanda-lider').textContent =
+          `Hay demanda por ${dorm} al ${lider.orientacion.toLowerCase()}.`;
+        document.getElementById('demanda-quedan').textContent = lider.disponibles;
+        document.getElementById('demanda-accion').hidden = false;
+
+        if (quieto || !('IntersectionObserver' in window)) return lista.classList.add('llenas');
+        const io = new IntersectionObserver(entradas => {
+          if (!entradas[0].isIntersecting) return;
+          io.disconnect();
+          lista.classList.add('llenas');
+        }, { threshold: .4 });
+        io.observe(lista);
+      }
+
+      fetch('data/demand-demo.json')
+        .then(r => r.ok ? r.json() : Promise.reject(r.status))
+        .then(armar)
+        .catch(err => console.warn('Demanda sin datos, queda solo el titular:', err));
     })();
 
     /* ============================================================

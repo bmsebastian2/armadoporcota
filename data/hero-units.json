@@ -2,9 +2,9 @@
   "piso": 8,
   "nota": "Datos de ejemplo",
   "unidades": [
-    { "id": "A801", "dormitorios": 2, "m2": 74, "orientacion": "Noreste", "precioUSD": 186000, "estado": "disponible" },
+    { "id": "A801", "dormitorios": 2, "m2": 74, "orientacion": "Norte", "precioUSD": 186000, "estado": "disponible" },
     { "id": "A802", "dormitorios": 1, "m2": 48, "orientacion": "Norte", "precioUSD": 132000, "estado": "vendida" },
-    { "id": "A803", "dormitorios": 1, "m2": 51, "orientacion": "Norte", "precioUSD": 139500, "estado": "reservada" },
+    { "id": "A803", "dormitorios": 1, "m2": 51, "orientacion": "Sur", "precioUSD": 139500, "estado": "reservada" },
     { "id": "A804", "dormitorios": 3, "m2": 96, "orientacion": "Noroeste", "precioUSD": 238000, "estado": "disponible" }
   ]
 }
