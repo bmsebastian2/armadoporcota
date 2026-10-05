@@ -309,7 +309,22 @@
       margin-top: 34px;
       display: flex;
       gap: 12px;
-      flex-wrap: wrap
+      flex-wrap: wrap;
+      /* El secundario queda a la altura del botón, no del botón + microcopy. */
+      align-items: flex-start
+    }
+
+    .accion-principal {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px
+    }
+
+    .microcopy {
+      margin: 0;
+      font-size: 13px;
+      color: var(--suave)
     }
 
     .pie-hero {
@@ -1472,7 +1487,7 @@
         <a href="#planes">Precio</a>
         <a href="#quien">Quién</a>
       </div>
-      <a class="btn btn-p" href="#contacto">Pedir una planta gratis</a>
+      <a class="btn btn-p" href="#contacto">Ver mi edificio en Cota <span aria-hidden="true">→</span></a>
     </div>
   </nav>
 
@@ -1505,7 +1520,10 @@
           elige su unidad; el vendedor deja de contestar por WhatsApp qué queda.
         </p>
         <div class="acciones">
-          <a class="btn btn-p" href="#contacto">Armamos una planta de tu proyecto, gratis</a>
+          <div class="accion-principal">
+            <a class="btn btn-p" href="#contacto" aria-describedby="microcopy-hero">Ver mi edificio en Cota <span aria-hidden="true">→</span></a>
+            <p class="microcopy" id="microcopy-hero">Te armamos una planta gratis · Sin compromiso</p>
+          </div>
           <a class="btn btn-s" href="#demos">Ver las demos</a>
         </div>
         <p class="pie-hero">Tu equipo marca una unidad como vendida y el edificio cambia en el momento.</p>
